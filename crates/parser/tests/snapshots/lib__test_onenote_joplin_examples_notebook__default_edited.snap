@@ -1,6 +1,6 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_notebook(Path::new(path)).unwrap()"
+expression: "parser.parse_notebook(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
 ---
 Notebook {
     entries: [

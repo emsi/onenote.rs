@@ -1,6 +1,6 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(path)).unwrap()"
+expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
 ---
 Section {
     display_name: "Math",
