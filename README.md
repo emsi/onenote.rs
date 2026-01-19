@@ -113,6 +113,14 @@ built from several layers of encodings:
 - [LibMsON]: A work in progress OneNote® revision store file parser in C++
 - [FSSHTTP - parser tools for protocol FSSHTTP/B/D]: A FSSHTTPB data parser
 
+## License
+
+This project is licensed under the [Mozilla Public License 2.0](LICENSE).
+
+Test fixtures in `crates/parser/tests/samples/` include files from third-party
+sources under their respective licenses (MIT, AGPL-3.0-or-later). See the
+LICENSE files in those directories for details.
+
 ## Disclaimer
 
 This project is neither related to nor endorsed by Microsoft in any way. The
