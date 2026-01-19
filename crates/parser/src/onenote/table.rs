@@ -185,7 +185,7 @@ pub(crate) fn parse_table(table_id: ExGuid, space: &(impl ObjectSpace + ?Sized))
         borders_visible: data.borders_visible,
         layout_alignment_in_parent: data.layout_alignment_in_parent,
         layout_alignment_self: data.layout_alignment_self,
-        note_tags: parse_note_tags(data.note_tags, space)?,
+        note_tags: parse_note_tags(&*data.note_tags, space)?,
     };
 
     Ok(table)

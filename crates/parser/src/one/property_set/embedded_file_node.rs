@@ -26,8 +26,8 @@ pub(crate) struct Data {
     pub(crate) text_language_code: Option<u32>,
     pub(crate) layout_alignment_in_parent: Option<LayoutAlignment>,
     pub(crate) layout_alignment_self: Option<LayoutAlignment>,
-    pub(crate) embedded_file_container: ExGuid,
-    pub(crate) embedded_file_name: String,
+    pub(crate) embedded_file_container: Option<ExGuid>,
+    pub(crate) embedded_file_name: Option<String>,
     pub(crate) source_path: Option<String>,
     pub(crate) file_type: FileType,
     pub(crate) picture_width: Option<f32>,
@@ -56,13 +56,8 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
         LayoutAlignment::parse(PropertyType::LayoutAlignmentInParent, object)?;
     let layout_alignment_self = LayoutAlignment::parse(PropertyType::LayoutAlignmentSelf, object)?;
     let embedded_file_container =
-        ObjectReference::parse(PropertyType::EmbeddedFileContainer, object)?.ok_or_else(|| {
-            ErrorKind::MalformedOneNoteFileData("embedded file has no file container".into())
-        })?;
-    let embedded_file_name = simple::parse_string(PropertyType::EmbeddedFileName, object)?
-        .ok_or_else(|| {
-            ErrorKind::MalformedOneNoteFileData("embedded file has no file name".into())
-        })?;
+        ObjectReference::parse(PropertyType::EmbeddedFileContainer, object)?;
+    let embedded_file_name = simple::parse_string(PropertyType::EmbeddedFileName, object)?;
     let source_path = simple::parse_string(PropertyType::SourceFilepath, object)?;
     let file_type = FileType::parse(object)?;
     let picture_width = simple::parse_f32(PropertyType::PictureWidth, object)?;

@@ -244,7 +244,7 @@ pub(crate) fn parse_image(image_id: ExGuid, space: &(impl ObjectSpace + ?Sized))
         offset_horizontal: node.offset_from_parent_horiz,
         offset_vertical: node.offset_from_parent_vert,
         is_background: node.is_background,
-        note_tags: parse_note_tags(node.note_tags, space)?,
+        note_tags: parse_note_tags(&*node.note_tags, space)?,
         embeds: embed,
     };
 

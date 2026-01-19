@@ -101,21 +101,45 @@ pub(crate) fn parse_embedded_file(
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("embedded file is missing".into()))?;
     let node = embedded_file_node::parse(node_object)?;
 
-    let container_object_id = node.embedded_file_container;
+    // Helper function to create a fallback for corrupted files
+    let create_fallback = |filename: String| -> Result<EmbeddedFile> {
+        Ok(EmbeddedFile {
+            filename,
+            file_type: node.file_type,
+            data: FileBlob::default(),
+            layout_max_width: node.layout_max_width,
+            layout_max_height: node.layout_max_height,
+            offset_horizontal: node.offset_from_parent_horiz,
+            offset_vertical: node.offset_from_parent_vert,
+            note_tags: parse_note_tags(&*node.note_tags, space)?,
+        })
+    };
+
+    // Check if we have the required fields to parse a valid embedded file
+    let embedded_filename = match node.embedded_file_name {
+        Some(name) => name,
+        None => return create_fallback(String::new()),
+    };
+
+    let container_object_id = match node.embedded_file_container {
+        Some(id) => id,
+        None => return create_fallback(embedded_filename),
+    };
+
     let container_object = space.get_object(container_object_id).ok_or_else(|| {
         ErrorKind::MalformedOneNoteData("embedded file container is missing".into())
     })?;
-    let container = embedded_file_container::parse(container_object)?;
+    let container = embedded_file_container::parse(&container_object)?;
 
     let file = EmbeddedFile {
-        filename: node.embedded_file_name,
+        filename: embedded_filename,
         file_type: node.file_type,
         data: container.into_value(),
         layout_max_width: node.layout_max_width,
         layout_max_height: node.layout_max_height,
         offset_horizontal: node.offset_from_parent_horiz,
         offset_vertical: node.offset_from_parent_vert,
-        note_tags: parse_note_tags(node.note_tags, space)?,
+        note_tags: parse_note_tags(&*node.note_tags, space)?,
     };
 
     Ok(file)

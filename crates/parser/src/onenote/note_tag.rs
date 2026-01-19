@@ -92,7 +92,7 @@ impl NoteTagDefinition {
 }
 
 pub(crate) fn parse_note_tags(
-    note_tags: Vec<Data>,
+    note_tags: &[Data],
     space: &(impl ObjectSpace + ?Sized),
 ) -> Result<Vec<NoteTag>> {
     note_tags
