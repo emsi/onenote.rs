@@ -14,7 +14,7 @@ use crate::shared::guid::Guid;
 #[allow(dead_code)]
 pub(crate) struct Data {
     pub(crate) entity_guid: Guid,
-    pub(crate) cached_title: String,
+    pub(crate) cached_title: Option<String>,
     pub(crate) schema_revision_in_order_to_read: Option<u32>,
     pub(crate) schema_revision_in_order_to_write: Option<u32>,
     pub(crate) page_level: i32,
@@ -27,10 +27,7 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
 
     let entity_guid = simple::parse_guid(PropertyType::NotebookManagementEntityGuid, object)?
         .ok_or_else(|| ErrorKind::MalformedOneNoteFileData("page metadata has no guid".into()))?;
-    let cached_title =
-        simple::parse_string(PropertyType::CachedTitleString, object)?.ok_or_else(|| {
-            ErrorKind::MalformedOneNoteFileData("page metadata has no cached title".into())
-        })?;
+    let cached_title = simple::parse_string(PropertyType::CachedTitleString, object)?;
     let schema_revision_in_order_to_read =
         simple::parse_u32(PropertyType::SchemaRevisionInOrderToRead, object)?;
     let schema_revision_in_order_to_write =
