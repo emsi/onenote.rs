@@ -3,6 +3,7 @@ use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::compact_u64::CompactU64;
 use crate::shared::guid::Guid;
 use std::fmt;
+use std::ops::BitXor;
 
 /// A variable-width encoding of an extended GUID (GUID + 32 bit value)
 ///
@@ -97,6 +98,17 @@ impl ExGuid {
         }
 
         Ok(values)
+    }
+}
+
+impl BitXor for ExGuid {
+    type Output = Self;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        Self {
+            guid: self.guid ^ rhs.guid,
+            value: self.value ^ rhs.value,
+        }
     }
 }
 

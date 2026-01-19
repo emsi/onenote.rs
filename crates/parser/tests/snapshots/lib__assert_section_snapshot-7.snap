@@ -8,6 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {81FAECE0-FB0B-4C56-B210-E793FAB7CBB4},
                     title: Some(
                         Title {
                             contents: [
@@ -598,6 +599,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {B3E4BC02-F975-4B98-9882-87F8EA2366F2},
                     title: Some(
                         Title {
                             contents: [
@@ -1089,6 +1091,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {F1C52C40-28D4-4F24-91C8-8953D684716F},
                     title: Some(
                         Title {
                             contents: [
@@ -1586,6 +1589,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {9597F578-92F6-4A61-BEB4-A67C25363494},
                     title: Some(
                         Title {
                             contents: [
@@ -2079,6 +2083,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {A74CC303-786A-421F-8E42-821AD413BCD7},
                     title: Some(
                         Title {
                             contents: [
@@ -2572,6 +2577,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {61FF840E-989A-4D18-A24B-63DEE50386C6},
                     title: Some(
                         Title {
                             contents: [
@@ -3065,6 +3071,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {7FA895BF-CB43-4FC0-93B3-CD2B06419453},
                     title: Some(
                         Title {
                             contents: [
@@ -3558,6 +3565,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {8B9413EF-7137-417E-BD89-9B9B73A1C3AF},
                     title: Some(
                         Title {
                             contents: [
@@ -4051,6 +4059,7 @@ Section {
                     ],
                 },
                 Page {
+                    entity_id: Guid {1244E84F-0A7F-4600-BCD5-A662F0F1F503},
                     title: Some(
                         Title {
                             contents: [

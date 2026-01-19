@@ -11,6 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {5EAF76B1-8DDE-8745-A8A7-1A9865CC478A},
                                 title: Some(
                                     Title {
                                         contents: [
@@ -7373,6 +7374,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {B3784418-303A-BA4E-A772-5BB05ABC8DDF},
                                 title: Some(
                                     Title {
                                         contents: [
@@ -7815,6 +7817,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {A4BDA32F-941A-48FF-99CD-D61430E9694C},
                                 title: Some(
                                     Title {
                                         contents: [
@@ -8190,6 +8193,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {1C4DC559-7643-3D4F-95B2-36E41ADD244B},
                                 title: Some(
                                     Title {
                                         contents: [
@@ -8628,6 +8632,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {A5CCB703-669F-BB42-B5D6-2F0A953242F4},
                                 title: Some(
                                     Title {
                                         contents: [

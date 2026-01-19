@@ -11,6 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {5EAF76B1-8DDE-8745-A8A7-1A9865CC478A},
                                 title: Some(
                                     Title {
                                         contents: [

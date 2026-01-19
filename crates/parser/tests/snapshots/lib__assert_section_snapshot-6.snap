@@ -8,6 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {3DB79201-A9D3-4FBD-AAC5-2178D16CB20B},
                     title: Some(
                         Title {
                             contents: [

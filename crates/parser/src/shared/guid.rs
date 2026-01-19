@@ -1,6 +1,7 @@
 use crate::Reader;
 use crate::errors::Result;
 use std::fmt;
+use std::ops::BitXor;
 use uuid::Uuid;
 
 /// A global UUID.
@@ -56,6 +57,20 @@ impl Guid {
 
     pub(crate) fn is_nil(&self) -> bool {
         self.0.is_nil()
+    }
+}
+
+impl BitXor for Guid {
+    type Output = Self;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        let (high_bits_1, low_bits_1) = self.0.as_u64_pair();
+        let (high_bits_2, low_bits_2) = rhs.0.as_u64_pair();
+
+        let high_bits = high_bits_1 ^ high_bits_2;
+        let low_bits = low_bits_1 ^ low_bits_2;
+
+        Self(Uuid::from_u64_pair(high_bits, low_bits))
     }
 }
 

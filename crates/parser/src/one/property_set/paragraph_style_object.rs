@@ -3,7 +3,7 @@ use crate::one::property::charset::Charset;
 use crate::one::property::color_ref::ColorRef;
 use crate::one::property::paragraph_alignment::ParagraphAlignment;
 use crate::one::property::{PropertyType, simple};
-use crate::one::property_set::{PropertySetId, assert_property_set};
+use crate::one::property_set::PropertySetId;
 use crate::onestore::Object;
 
 /// A paragraph style.
@@ -41,8 +41,42 @@ pub(crate) struct Data {
     pub(crate) text_run_object_type: Option<u32>,
 }
 
+const FALLBACK: Data = Data {
+    charset: Some(Charset::Ansi),
+    bold: false,
+    italic: false,
+    underline: false,
+    strikethrough: false,
+    superscript: false,
+    subscript: false,
+    font: None,
+    font_size: None,
+    font_color: None,
+    highlight: None,
+    next_style: None,
+    style_id: None,
+    paragraph_alignment: None,
+    paragraph_space_before: None,
+    paragraph_space_after: None,
+    paragraph_line_spacing_exact: None,
+    language_code: Some(1033),
+    math_formatting: false,
+    hyperlink: false,
+    hyperlink_protected: false,
+    hidden: false,
+    text_run_is_embedded_object: false,
+    text_run_object_type: None,
+};
+
 pub(crate) fn parse(object: &Object) -> Result<Data> {
-    assert_property_set(object, PropertySetId::ParagraphStyleObject)?;
+    if object.id() != PropertySetId::ParagraphStyleObject.as_jcid() {
+        log::warn!(
+            "Unexpected object type: 0x{:X}. Using fallback style",
+            object.id().0
+        );
+
+        return Ok(FALLBACK);
+    }
 
     let charset = Charset::parse(PropertyType::Charset, object)?;
     let bold = simple::parse_bool(PropertyType::Bold, object)?.unwrap_or_default();

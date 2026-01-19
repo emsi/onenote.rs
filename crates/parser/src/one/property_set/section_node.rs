@@ -27,7 +27,11 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
     let context_id = object.context_id;
 
     let entity_guid = simple::parse_guid(PropertyType::NotebookManagementEntityGuid, object)?
-        .ok_or_else(|| ErrorKind::MalformedOneNoteFileData("section has no guid".into()))?;
+        .unwrap_or_else(|| {
+            log::warn!("Section has no GUID");
+
+            Guid::nil()
+        });
     let page_series =
         ObjectReference::parse_vec(PropertyType::ElementChildNodes, object)?.unwrap_or_default();
     let created_at = Timestamp::parse(PropertyType::TopologyCreationTimeStamp, object)?

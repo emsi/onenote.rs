@@ -11,6 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
+                                entity_id: Guid {01D80F61-B9FA-4096-A204-592374993ADD},
                                 title: Some(
                                     Title {
                                         contents: [
@@ -457,6 +458,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
+                                            entity_id: Guid {B7D8B739-713F-4381-B722-38613D739506},
                                             title: Some(
                                                 Title {
                                                     contents: [
@@ -884,6 +886,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
+                                            entity_id: Guid {6CF2F39B-CF80-484A-A007-52239EDCFDB2},
                                             title: Some(
                                                 Title {
                                                     contents: [
@@ -1330,6 +1333,7 @@ Notebook {
                                             PageSeries {
                                                 pages: [
                                                     Page {
+                                                        entity_id: Guid {BD9D75DF-E234-4880-8E9E-01366A7FADA6},
                                                         title: Some(
                                                             Title {
                                                                 contents: [
@@ -1757,6 +1761,7 @@ Notebook {
                                             PageSeries {
                                                 pages: [
                                                     Page {
+                                                        entity_id: Guid {8F7D8D37-89B4-416D-B5C0-65703170D347},
                                                         title: Some(
                                                             Title {
                                                                 contents: [
@@ -2209,6 +2214,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
+                                            entity_id: Guid {97E729E1-AD87-4D5E-A156-C31220B5F044},
                                             title: Some(
                                                 Title {
                                                     contents: [

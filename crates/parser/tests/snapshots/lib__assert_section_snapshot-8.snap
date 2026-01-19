@@ -8,6 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {1AA1839C-D5BF-4AB7-99F3-793769C6259A},
                     title: Some(
                         Title {
                             contents: [
@@ -657,6 +658,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {542DF835-4AE2-4231-A924-98D4B8D4F95C},
                     title: Some(
                         Title {
                             contents: [
@@ -1176,6 +1178,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {D099B6F3-7F5A-4C08-AED7-E8D42C59523F},
                     title: Some(
                         Title {
                             contents: [
@@ -1549,6 +1552,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
+                    entity_id: Guid {B4FB39E6-163B-472A-9330-A37F97DCF590},
                     title: Some(
                         Title {
                             contents: [
