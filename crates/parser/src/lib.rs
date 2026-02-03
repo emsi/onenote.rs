@@ -94,7 +94,7 @@
 mod macros;
 
 pub mod errors;
-pub(crate) mod fs;
+pub mod fs;
 mod fsshttpb;
 mod one;
 mod onenote;

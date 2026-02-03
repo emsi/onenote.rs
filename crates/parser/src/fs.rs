@@ -1,3 +1,5 @@
+//! File system abstraction used by the OneNote parser.
+
 #[cfg(feature = "native-fs")]
 use std::fs;
 #[cfg(feature = "native-fs")]
@@ -15,7 +17,10 @@ use std::path::{Path, PathBuf};
 ///
 /// All implementations must be thread-safe (`Send + Sync`) as the parser may be used
 /// across threads.
-pub trait FileSystem: Send + Sync {
+///
+/// Implementations must also be `Copy` so callers can pass the filesystem handle
+/// by value.
+pub trait FileSystem: Send + Sync + Copy {
     /// Checks if the given path points to a directory.
     ///
     /// # Arguments
@@ -105,6 +110,7 @@ pub trait FileSystem: Send + Sync {
 /// This is the default implementation of [`FileSystem`] that performs actual
 /// file system operations using Rust's standard library.
 #[cfg(feature = "native-fs")]
+#[derive(Clone, Copy)]
 pub struct NativeFs {}
 
 #[cfg(feature = "native-fs")]
