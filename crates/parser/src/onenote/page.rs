@@ -5,7 +5,6 @@ use crate::one::property_set::{page_manifest_node, page_metadata, page_node, tit
 use crate::onenote::outline::{Outline, parse_outline};
 use crate::onenote::page_content::{PageContent, parse_page_content};
 use crate::onestore::ObjectSpace;
-use crate::shared::guid::Guid;
 
 /// A page.
 ///
@@ -15,7 +14,6 @@ use crate::shared::guid::Guid;
 /// [\[MS-ONE\] 2.2.19]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/e381b7c7-b434-43a2-ba23-0d08bafd281a
 #[derive(Clone, Debug)]
 pub struct Page {
-    entity_id: Guid,
     link_target_id: String,
     title: Option<Title>,
     title_text: Option<String>,
@@ -168,11 +166,9 @@ pub(crate) fn parse_page(page_space: &(impl ObjectSpace + ?Sized)) -> Result<Pag
                 .map(str::to_owned)
         });
 
-    let entity_id = metadata.entity_guid;
-    let link_target_id = format!("{}", entity_id);
+    let link_target_id = format!("{}", metadata.entity_guid);
 
     Ok(Page {
-        entity_id,
         link_target_id,
         title,
         title_text,
