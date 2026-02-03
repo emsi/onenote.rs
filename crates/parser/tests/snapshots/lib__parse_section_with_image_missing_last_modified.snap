@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {1B9E762F-4FF7-4E7F-8D17-947E2BCF647A},
+                    link_target_id: "{1B9E762F-4FF7-4E7F-8D17-947E2BCF647A}",
                     title: Some(
                         Title {
                             contents: [
@@ -371,6 +371,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Note",
                     ),
                     level: 1,
                     author: None,

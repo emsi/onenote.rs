@@ -11,7 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {01D80F61-B9FA-4096-A204-592374993ADD},
+                                link_target_id: "{01D80F61-B9FA-4096-A204-592374993ADD}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -425,6 +425,9 @@ Notebook {
                                         ),
                                     },
                                 ),
+                                title_text: Some(
+                                    "First note",
+                                ),
                                 level: 1,
                                 author: Some(
                                     "Pedro Luiz Fernandes",
@@ -458,7 +461,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
-                                            entity_id: Guid {B7D8B739-713F-4381-B722-38613D739506},
+                                            link_target_id: "{B7D8B739-713F-4381-B722-38613D739506}",
                                             title: Some(
                                                 Title {
                                                     contents: [
@@ -872,6 +875,9 @@ Notebook {
                                                     ),
                                                 },
                                             ),
+                                            title_text: Some(
+                                                "Section A note 2",
+                                            ),
                                             level: 1,
                                             author: Some(
                                                 "Pedro Luiz Fernandes",
@@ -886,7 +892,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
-                                            entity_id: Guid {6CF2F39B-CF80-484A-A007-52239EDCFDB2},
+                                            link_target_id: "{6CF2F39B-CF80-484A-A007-52239EDCFDB2}",
                                             title: Some(
                                                 Title {
                                                     contents: [
@@ -1300,6 +1306,9 @@ Notebook {
                                                     ),
                                                 },
                                             ),
+                                            title_text: Some(
+                                                "Section A note 1",
+                                            ),
                                             level: 1,
                                             author: Some(
                                                 "Pedro Luiz Fernandes",
@@ -1333,7 +1342,7 @@ Notebook {
                                             PageSeries {
                                                 pages: [
                                                     Page {
-                                                        entity_id: Guid {BD9D75DF-E234-4880-8E9E-01366A7FADA6},
+                                                        link_target_id: "{BD9D75DF-E234-4880-8E9E-01366A7FADA6}",
                                                         title: Some(
                                                             Title {
                                                                 contents: [
@@ -1747,6 +1756,9 @@ Notebook {
                                                                 ),
                                                             },
                                                         ),
+                                                        title_text: Some(
+                                                            "Section B1 page 1",
+                                                        ),
                                                         level: 1,
                                                         author: Some(
                                                             "Pedro Luiz Fernandes",
@@ -1761,7 +1773,7 @@ Notebook {
                                             PageSeries {
                                                 pages: [
                                                     Page {
-                                                        entity_id: Guid {8F7D8D37-89B4-416D-B5C0-65703170D347},
+                                                        link_target_id: "{8F7D8D37-89B4-416D-B5C0-65703170D347}",
                                                         title: Some(
                                                             Title {
                                                                 contents: [
@@ -2175,6 +2187,9 @@ Notebook {
                                                                 ),
                                                             },
                                                         ),
+                                                        title_text: Some(
+                                                            "Section B1 page 2",
+                                                        ),
                                                         level: 1,
                                                         author: Some(
                                                             "Pedro Luiz Fernandes",
@@ -2214,7 +2229,7 @@ Notebook {
                                 PageSeries {
                                     pages: [
                                         Page {
-                                            entity_id: Guid {97E729E1-AD87-4D5E-A156-C31220B5F044},
+                                            link_target_id: "{97E729E1-AD87-4D5E-A156-C31220B5F044}",
                                             title: Some(
                                                 Title {
                                                     contents: [
@@ -2627,6 +2642,9 @@ Notebook {
                                                         },
                                                     ),
                                                 },
+                                            ),
+                                            title_text: Some(
+                                                "Section D1 page",
                                             ),
                                             level: 1,
                                             author: Some(

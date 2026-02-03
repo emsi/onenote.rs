@@ -11,7 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {5EAF76B1-8DDE-8745-A8A7-1A9865CC478A},
+                                link_target_id: "{5EAF76B1-8DDE-8745-A8A7-1A9865CC478A}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -424,6 +424,9 @@ Notebook {
                                             },
                                         ),
                                     },
+                                ),
+                                title_text: Some(
+                                    "Test Page",
                                 ),
                                 level: 1,
                                 author: Some(
@@ -7374,7 +7377,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {B3784418-303A-BA4E-A772-5BB05ABC8DDF},
+                                link_target_id: "{B3784418-303A-BA4E-A772-5BB05ABC8DDF}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -7788,6 +7791,9 @@ Notebook {
                                         ),
                                     },
                                 ),
+                                title_text: Some(
+                                    "Test Page",
+                                ),
                                 level: 1,
                                 author: Some(
                                     "Markus Siemens",
@@ -7817,7 +7823,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {A4BDA32F-941A-48FF-99CD-D61430E9694C},
+                                link_target_id: "{A4BDA32F-941A-48FF-99CD-D61430E9694C}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -8183,6 +8189,7 @@ Notebook {
                                         ),
                                     },
                                 ),
+                                title_text: None,
                                 level: 1,
                                 author: None,
                                 height: None,
@@ -8193,7 +8200,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {1C4DC559-7643-3D4F-95B2-36E41ADD244B},
+                                link_target_id: "{1C4DC559-7643-3D4F-95B2-36E41ADD244B}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -8603,6 +8610,7 @@ Notebook {
                                         ),
                                     },
                                 ),
+                                title_text: None,
                                 level: 1,
                                 author: Some(
                                     "Theresa Siemens",
@@ -8632,7 +8640,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {A5CCB703-669F-BB42-B5D6-2F0A953242F4},
+                                link_target_id: "{A5CCB703-669F-BB42-B5D6-2F0A953242F4}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -9042,6 +9050,7 @@ Notebook {
                                         ),
                                     },
                                 ),
+                                title_text: None,
                                 level: 1,
                                 author: Some(
                                     "Theresa Siemens",

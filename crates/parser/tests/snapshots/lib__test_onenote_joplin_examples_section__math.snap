@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {D05B6F71-2B8D-4CE6-875A-BECDEE43F742},
+                    link_target_id: "{D05B6F71-2B8D-4CE6-875A-BECDEE43F742}",
                     title: Some(
                         Title {
                             contents: [
@@ -421,6 +421,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Math",
                     ),
                     level: 1,
                     author: Some(

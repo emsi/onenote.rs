@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {11FA4CF9-50BD-465F-8FED-5BD8E0CFCB06},
+                    link_target_id: "{11FA4CF9-50BD-465F-8FED-5BD8E0CFCB06}",
                     title: Some(
                         Title {
                             contents: [
@@ -417,6 +417,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Section 2 - simple page 1 de test",
                     ),
                     level: 1,
                     author: Some(
@@ -1558,7 +1561,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {6884A10E-1760-408B-BD7C-204F497D8AA4},
+                    link_target_id: "{6884A10E-1760-408B-BD7C-204F497D8AA4}",
                     title: Some(
                         Title {
                             contents: [
@@ -1967,6 +1970,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Section 2 - avec titre accentué et caractères spéciaux &é\"'(-è_çà)=~#{[|`\\^@]}",
                     ),
                     level: 1,
                     author: Some(
@@ -4752,7 +4758,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {F2F53F70-23F8-496F-AFD7-E30617B3460E},
+                    link_target_id: "{F2F53F70-23F8-496F-AFD7-E30617B3460E}",
                     title: Some(
                         Title {
                             contents: [
@@ -5161,6 +5167,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Test niveau de titre et liens web",
                     ),
                     level: 1,
                     author: Some(
@@ -8409,7 +8418,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {2B6893BB-1B91-4E79-9E7C-93283A6591BF},
+                    link_target_id: "{2B6893BB-1B91-4E79-9E7C-93283A6591BF}",
                     title: Some(
                         Title {
                             contents: [
@@ -8818,6 +8827,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Test Todo : cases à cocher lien vers doc sur partage",
                     ),
                     level: 1,
                     author: Some(

@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {27CDD549-7E76-45B0-B18D-5A9BCF261CCB},
+                    link_target_id: "{27CDD549-7E76-45B0-B18D-5A9BCF261CCB}",
                     title: Some(
                         Title {
                             contents: [
@@ -421,6 +421,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Test",
                     ),
                     level: 1,
                     author: Some(
@@ -7070,7 +7073,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {A7185C1A-6895-48FA-B9DD-380B511D0F82},
+                    link_target_id: "{A7185C1A-6895-48FA-B9DD-380B511D0F82}",
                     title: Some(
                         Title {
                             contents: [
@@ -7484,6 +7487,9 @@ Section {
                             ),
                         },
                     ),
+                    title_text: Some(
+                        "Another page",
+                    ),
                     level: 1,
                     author: Some(
                         "Henry Heino",
@@ -7843,7 +7849,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {1A5CF75B-BF4A-4F37-B48C-F5493F4ED828},
+                    link_target_id: "{1A5CF75B-BF4A-4F37-B48C-F5493F4ED828}",
                     title: Some(
                         Title {
                             contents: [
@@ -8256,6 +8262,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Page 3",
                     ),
                     level: 1,
                     author: Some(

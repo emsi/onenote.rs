@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {D7A26766-0233-4170-9EF3-372379551FF7},
+                    link_target_id: "{D7A26766-0233-4170-9EF3-372379551FF7}",
                     title: Some(
                         Title {
                             contents: [
@@ -371,6 +371,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "A simple filename",
                     ),
                     level: 1,
                     author: None,
@@ -2511,7 +2514,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {2F308E45-ADB4-47EF-9350-D0F7A18AEC0A},
+                    link_target_id: "{2F308E45-ADB4-47EF-9350-D0F7A18AEC0A}",
                     title: Some(
                         Title {
                             contents: [
@@ -2874,6 +2877,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "A page with a lot of svgs",
                     ),
                     level: 1,
                     author: None,
@@ -14011,7 +14017,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {CB4D5A97-3C6D-4DB7-A56A-B5A8B9D85391},
+                    link_target_id: "{CB4D5A97-3C6D-4DB7-A56A-B5A8B9D85391}",
                     title: Some(
                         Title {
                             contents: [
@@ -14374,6 +14380,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "A page can have any width it wants?",
                     ),
                     level: 1,
                     author: None,
@@ -16143,7 +16152,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {6ABD6E20-4015-42B8-953E-74E620C82471},
+                    link_target_id: "{6ABD6E20-4015-42B8-953E-74E620C82471}",
                     title: Some(
                         Title {
                             contents: [
@@ -16506,6 +16515,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "A page with text and drawing above it",
                     ),
                     level: 1,
                     author: None,
@@ -20876,7 +20888,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {55390DC0-8B2B-4A1E-9795-DA8033492F7C},
+                    link_target_id: "{55390DC0-8B2B-4A1E-9795-DA8033492F7C}",
                     title: Some(
                         Title {
                             contents: [
@@ -21239,6 +21251,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "text",
                     ),
                     level: 1,
                     author: None,
@@ -23233,7 +23248,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {074A237A-AFFA-4C2E-907E-48E82E80809D},
+                    link_target_id: "{074A237A-AFFA-4C2E-907E-48E82E80809D}",
                     title: Some(
                         Title {
                             contents: [
@@ -23596,6 +23611,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "Page with more than one font size",
                     ),
                     level: 1,
                     author: None,

@@ -11,7 +11,7 @@ Notebook {
                     PageSeries {
                         pages: [
                             Page {
-                                entity_id: Guid {5B2B7262-DC9F-47D5-A64D-9BB61513B52E},
+                                link_target_id: "{5B2B7262-DC9F-47D5-A64D-9BB61513B52E}",
                                 title: Some(
                                     Title {
                                         contents: [
@@ -374,6 +374,9 @@ Notebook {
                                             },
                                         ),
                                     },
+                                ),
+                                title_text: Some(
+                                    "Action research - Wikipedia",
                                 ),
                                 level: 1,
                                 author: None,

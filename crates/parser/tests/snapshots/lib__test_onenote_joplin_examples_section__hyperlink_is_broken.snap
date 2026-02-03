@@ -8,7 +8,7 @@ Section {
         PageSeries {
             pages: [
                 Page {
-                    entity_id: Guid {3DB79201-A9D3-4FBD-AAC5-2178D16CB20B},
+                    link_target_id: "{3DB79201-A9D3-4FBD-AAC5-2178D16CB20B}",
                     title: Some(
                         Title {
                             contents: [
@@ -421,6 +421,9 @@ Section {
                                 },
                             ),
                         },
+                    ),
+                    title_text: Some(
+                        "\u{fddf}HYPERLINK \"https://www.youtube.com/watch?v=-U-uj1jaHtk\"Is Mexico safe for shooting Street Photography?",
                     ),
                     level: 1,
                     author: Some(
