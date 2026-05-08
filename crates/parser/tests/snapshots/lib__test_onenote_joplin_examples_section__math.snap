@@ -83,6 +83,8 @@ Section {
                                                                     ),
                                                                     math_formatting: false,
                                                                     hyperlink: false,
+                                                                    hyperlink_protected: false,
+                                                                    hidden: false,
                                                                 },
                                                             ],
                                                             text_run_indices: [],
@@ -123,6 +125,8 @@ Section {
                                                                 language_code: None,
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             paragraph_space_before: 0.0,
                                                             paragraph_space_after: 0.0,
@@ -213,6 +217,8 @@ Section {
                                                                     ),
                                                                     math_formatting: false,
                                                                     hyperlink: false,
+                                                                    hyperlink_protected: false,
+                                                                    hidden: false,
                                                                 },
                                                             ],
                                                             text_run_indices: [],
@@ -257,6 +263,8 @@ Section {
                                                                 language_code: None,
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             paragraph_space_before: 0.0,
                                                             paragraph_space_after: 0.0,
@@ -322,6 +330,8 @@ Section {
                                                                     ),
                                                                     math_formatting: false,
                                                                     hyperlink: false,
+                                                                    hyperlink_protected: false,
+                                                                    hidden: false,
                                                                 },
                                                             ],
                                                             text_run_indices: [],
@@ -366,6 +376,8 @@ Section {
                                                                 language_code: None,
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             paragraph_space_before: 0.0,
                                                             paragraph_space_after: 0.0,
@@ -500,6 +512,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -528,6 +542,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -556,6 +572,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -584,6 +602,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -612,6 +632,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -640,6 +662,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -668,6 +692,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -696,6 +722,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -724,6 +752,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -752,6 +782,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -780,6 +812,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -808,6 +842,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -860,6 +896,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -1021,6 +1059,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1049,6 +1089,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1077,6 +1119,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1105,6 +1149,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1133,6 +1179,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1161,6 +1209,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1189,6 +1239,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1217,6 +1269,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1245,6 +1299,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1273,6 +1329,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1301,6 +1359,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1329,6 +1389,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -1381,6 +1443,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -1538,6 +1602,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1566,6 +1632,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1594,6 +1662,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1622,6 +1692,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1650,6 +1722,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1678,6 +1752,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1706,6 +1782,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1734,6 +1812,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1762,6 +1842,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1790,6 +1872,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1818,6 +1902,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1846,6 +1932,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1874,6 +1962,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1902,6 +1992,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1930,6 +2022,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1958,6 +2052,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -1986,6 +2082,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -2043,6 +2141,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -2261,6 +2361,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2289,6 +2391,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2317,6 +2421,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2345,6 +2451,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2373,6 +2481,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2401,6 +2511,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2429,6 +2541,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2457,6 +2571,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2485,6 +2601,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2513,6 +2631,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2541,6 +2661,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2569,6 +2691,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2597,6 +2721,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2625,6 +2751,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -2679,6 +2807,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -2868,6 +2998,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2896,6 +3028,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2924,6 +3058,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2952,6 +3088,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -2980,6 +3118,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3008,6 +3148,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3036,6 +3178,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3064,6 +3208,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3092,6 +3238,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -3141,6 +3289,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -3289,6 +3439,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3317,6 +3469,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3345,6 +3499,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3373,6 +3529,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -3417,6 +3575,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -3512,6 +3672,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3540,6 +3702,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3568,6 +3732,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3596,6 +3762,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3624,6 +3792,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3652,6 +3822,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3680,6 +3852,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3708,6 +3882,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3736,6 +3912,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3764,6 +3942,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3792,6 +3972,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3820,6 +4002,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3848,6 +4032,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3876,6 +4062,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3904,6 +4092,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3932,6 +4122,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3960,6 +4152,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -3988,6 +4182,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4014,6 +4210,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -4073,6 +4271,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -4304,6 +4504,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4332,6 +4534,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4360,6 +4564,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4388,6 +4594,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4416,6 +4624,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4444,6 +4654,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4472,6 +4684,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4500,6 +4714,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4528,6 +4744,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4556,6 +4774,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4584,6 +4804,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4612,6 +4834,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4640,6 +4864,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4668,6 +4894,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4696,6 +4924,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4724,6 +4954,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4752,6 +4984,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4780,6 +5014,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -4806,6 +5042,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -4865,6 +5103,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -5094,6 +5334,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5122,6 +5364,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5150,6 +5394,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5178,6 +5424,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5206,6 +5454,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5234,6 +5484,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5262,6 +5514,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5290,6 +5544,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5318,6 +5574,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -5367,6 +5625,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -5511,6 +5771,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [],
@@ -5551,6 +5813,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -5616,6 +5880,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5642,6 +5908,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: true,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5668,6 +5936,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5696,6 +5966,8 @@ Section {
                                                                 ),
                                                                 math_formatting: true,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                             ParagraphStyling {
                                                                 charset: Some(
@@ -5722,6 +5994,8 @@ Section {
                                                                 ),
                                                                 math_formatting: false,
                                                                 hyperlink: false,
+                                                                hyperlink_protected: false,
+                                                                hidden: false,
                                                             },
                                                         ],
                                                         text_run_indices: [
@@ -5767,6 +6041,8 @@ Section {
                                                             language_code: None,
                                                             math_formatting: false,
                                                             hyperlink: false,
+                                                            hyperlink_protected: false,
+                                                            hidden: false,
                                                         },
                                                         paragraph_space_before: 0.0,
                                                         paragraph_space_after: 0.0,
@@ -5832,6 +6108,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -5860,6 +6138,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -5888,6 +6168,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -5916,6 +6198,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -5944,6 +6228,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -5972,6 +6258,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6000,6 +6288,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6028,6 +6318,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6056,6 +6348,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6084,6 +6378,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6112,6 +6408,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6140,6 +6438,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6168,6 +6468,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6196,6 +6498,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6224,6 +6528,8 @@ Section {
                                                                             ),
                                                                             math_formatting: false,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                     ],
                                                                     text_run_indices: [
@@ -6279,6 +6585,8 @@ Section {
                                                                         language_code: None,
                                                                         math_formatting: false,
                                                                         hyperlink: false,
+                                                                        hyperlink_protected: false,
+                                                                        hidden: false,
                                                                     },
                                                                     paragraph_space_before: 0.0,
                                                                     paragraph_space_after: 0.0,
@@ -6504,6 +6812,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6532,6 +6842,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6560,6 +6872,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6588,6 +6902,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6616,6 +6932,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6644,6 +6962,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6672,6 +6992,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6700,6 +7022,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6728,6 +7052,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6756,6 +7082,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6784,6 +7112,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -6812,6 +7142,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                     ],
                                                                     text_run_indices: [
@@ -6864,6 +7196,8 @@ Section {
                                                                         language_code: None,
                                                                         math_formatting: false,
                                                                         hyperlink: false,
+                                                                        hyperlink_protected: false,
+                                                                        hidden: false,
                                                                     },
                                                                     paragraph_space_before: 0.0,
                                                                     paragraph_space_after: 0.0,
@@ -7065,6 +7399,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7093,6 +7429,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7121,6 +7459,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7149,6 +7489,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7177,6 +7519,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7205,6 +7549,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7233,6 +7579,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7261,6 +7609,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7289,6 +7639,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7317,6 +7669,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7345,6 +7699,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7373,6 +7729,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                         ParagraphStyling {
                                                                             charset: Some(
@@ -7401,6 +7759,8 @@ Section {
                                                                             ),
                                                                             math_formatting: true,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                     ],
                                                                     text_run_indices: [
@@ -7454,6 +7814,8 @@ Section {
                                                                         language_code: None,
                                                                         math_formatting: false,
                                                                         hyperlink: false,
+                                                                        hyperlink_protected: false,
+                                                                        hidden: false,
                                                                     },
                                                                     paragraph_space_before: 0.0,
                                                                     paragraph_space_after: 0.0,
@@ -7666,6 +8028,8 @@ Section {
                                                                             ),
                                                                             math_formatting: false,
                                                                             hyperlink: false,
+                                                                            hyperlink_protected: false,
+                                                                            hidden: false,
                                                                         },
                                                                     ],
                                                                     text_run_indices: [],
@@ -7706,6 +8070,8 @@ Section {
                                                                         language_code: None,
                                                                         math_formatting: false,
                                                                         hyperlink: false,
+                                                                        hyperlink_protected: false,
+                                                                        hidden: false,
                                                                     },
                                                                     paragraph_space_before: 0.0,
                                                                     paragraph_space_after: 0.0,
@@ -7751,4 +8117,7 @@ Section {
         },
     ],
     color: None,
+    report: Report {
+        warnings: [],
+    },
 }

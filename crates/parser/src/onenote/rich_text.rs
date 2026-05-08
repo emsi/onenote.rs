@@ -229,6 +229,8 @@ pub struct ParagraphStyling {
     pub(crate) language_code: Option<u32>,
     pub(crate) math_formatting: bool,
     pub(crate) hyperlink: bool,
+    pub(crate) hyperlink_protected: bool,
+    pub(crate) hidden: bool,
 }
 
 impl ParagraphStyling {
@@ -363,9 +365,36 @@ impl ParagraphStyling {
         self.math_formatting
     }
 
-    /// Whether the text is the display text for a hyperlink
+    /// Whether the text is part of a hyperlink (the `\u{fddf}HYPERLINK "URL"`
+    /// marker run carries this; the visible display text run also carries it
+    /// alongside [`hyperlink_protected`](Self::hyperlink_protected)).
+    ///
+    /// See [\[MS-ONE\] 2.3.75].
+    ///
+    /// [\[MS-ONE\] 2.3.75]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/0464fc15-edd2-4f80-9d8a-3e892eea6dad
     pub fn hyperlink(&self) -> bool {
         self.hyperlink
+    }
+
+    /// Whether the text run is the visible display text for a hyperlink
+    /// (as opposed to the hidden `\u{fddf}HYPERLINK "URL"` marker run that
+    /// precedes it).
+    ///
+    /// See [\[MS-ONE\] 2.3.77].
+    ///
+    /// [\[MS-ONE\] 2.3.77]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/9bbc1f7a-9c85-46f2-9b27-7d4f9f1ec9b8
+    pub fn hyperlink_protected(&self) -> bool {
+        self.hyperlink_protected
+    }
+
+    /// Whether the text run is hidden from display (used for the marker
+    /// portion of inline hyperlinks).
+    ///
+    /// See [\[MS-ONE\] 2.3.76].
+    ///
+    /// [\[MS-ONE\] 2.3.76]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/9b67d41f-8c4f-43e6-86b3-9b3d7a1f0f5a
+    pub fn hidden(&self) -> bool {
+        self.hidden
     }
 }
 
@@ -638,5 +667,7 @@ fn parse_style(data: paragraph_style_object::Data) -> ParagraphStyling {
         language_code: data.language_code,
         math_formatting: data.math_formatting,
         hyperlink: data.hyperlink,
+        hyperlink_protected: data.hyperlink_protected,
+        hidden: data.hidden,
     }
 }
