@@ -8,6 +8,7 @@ use crate::one::property_set::{
     embedded_ink_container, math_inline_object, paragraph_style_object, rich_text_node,
     text_run_data,
 };
+use crate::onenote::ParserContext;
 use crate::onenote::ink::{Ink, InkBoundingBox, parse_ink_data};
 use crate::onenote::math_inline_object::{MathInlineObject, parse_math_inline_object};
 use crate::onenote::note_tag::{NoteTag, parse_note_tags};
@@ -375,6 +376,7 @@ const INK_END_OF_LINE_BLOB: u32 = 0x00020027;
 pub(crate) fn parse_rich_text(
     content_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<RichText> {
     let object = space
         .get_object(content_id)
@@ -385,7 +387,7 @@ pub(crate) fn parse_rich_text(
     let paragraph_style_object = space
         .get_object(data.paragraph_style)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("paragraph styling is missing".into()))?;
-    let paragraph_style_data = paragraph_style_object::parse(paragraph_style_object)?;
+    let paragraph_style_data = paragraph_style_object::parse(paragraph_style_object, ctx)?;
     let paragraph_style = parse_style(paragraph_style_data);
 
     // Parse the styles text runs (part 1)
@@ -397,7 +399,9 @@ pub(crate) fn parse_rich_text(
                 .get_object(*style_id)
                 .ok_or_else(|| ErrorKind::MalformedOneNoteData("styling is missing".into()).into())
         })
-        .map(|style_object| style_object.and_then(paragraph_style_object::parse))
+        .map(|style_object| {
+            style_object.and_then(|style| paragraph_style_object::parse(style, ctx))
+        })
         .collect::<Result<Vec<_>>>()?;
 
     // Parse text run data
@@ -460,6 +464,7 @@ pub(crate) fn parse_rich_text(
                         data.text_run_data_object[i - objects_without_ref],
                         space,
                         embedded_data,
+                        ctx,
                     )
                     .map(|container| Some(EmbeddedObject::Ink(container)));
                 }
@@ -508,8 +513,9 @@ fn parse_embedded_ink_data(
     embedded_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
     data: embedded_ink_container::Data,
+    ctx: &mut ParserContext,
 ) -> Result<EmbeddedInkContainer> {
-    let (strokes, bb) = parse_ink_data(embedded_id, space, None, None)?;
+    let (strokes, bb) = parse_ink_data(embedded_id, space, None, None, ctx)?;
 
     let display_bb = data
         .start_x

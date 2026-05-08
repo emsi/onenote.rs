@@ -27,6 +27,17 @@ macro_rules! onestore_parse_error {
     };
 }
 
+macro_rules! warn {
+    ($ctx:tt, $( $args:tt )*) => {
+        $ctx.report.push_warning(crate::warn::Warning::new($ctx.page.clone(), format!($( $args )*)));
+
+        #[allow(clippy::disallowed_macros)]
+        {
+            log::warn!($( $args )*);
+        }
+    };
+}
+
 #[cfg(test)]
 mod test {
     use crate::fsshttpb::data::exguid::ExGuid;

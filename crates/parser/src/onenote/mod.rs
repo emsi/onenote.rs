@@ -1,3 +1,5 @@
+#![deny(clippy::disallowed_macros)]
+
 use crate::FileSystem;
 use crate::errors::{ErrorKind, Result};
 #[cfg(feature = "native-fs")]
@@ -11,9 +13,11 @@ use crate::onestore::fsshttpb::parse_store;
 use crate::onestore::{ObjectSpace, OneStore, OneStoreType};
 use crate::reader::Reader;
 use crate::shared::guid::Guid;
+use crate::warn::Report;
 use sanitise_file_name::sanitise;
 use std::ffi::OsStr;
 use std::path::{Component, Path, PathBuf};
+use uuid::Uuid;
 
 pub(crate) mod content;
 pub(crate) mod embedded_file;
@@ -31,6 +35,11 @@ pub(crate) mod page_series;
 pub(crate) mod rich_text;
 pub(crate) mod section;
 pub(crate) mod table;
+
+pub(crate) struct ParserContext {
+    pub(crate) page: Option<(Uuid, String)>,
+    pub(crate) report: Report,
+}
 
 /// The OneNote file parser.
 ///
@@ -87,7 +96,9 @@ impl<FS: FileSystem> Parser<FS> {
     ///
     /// The `path` argument must point to a `.onetoc2` file. This will parse the
     /// table of contents of the notebook as well as all contained
-    /// sections from the folder that the table of contents file is in.
+    /// sections from the folder that the table of contents file is in. Each
+    /// returned [`Section`] carries its own [`Report`] of non-fatal warnings,
+    /// reachable via [`Section::report`].
     ///
     /// Returns [`ErrorKind::NotATocFile`] if the file is not a notebook table of
     /// contents.
@@ -156,7 +167,8 @@ impl<FS: FileSystem> Parser<FS> {
     /// Parse a OneNote section file.
     ///
     /// The `path` argument must point to a `.one` file that contains a
-    /// OneNote section.
+    /// OneNote section. The returned [`Section`] carries any non-fatal warnings
+    /// encountered while parsing, reachable via [`Section::report`].
     ///
     /// Returns [`ErrorKind::NotASectionFile`] if the file does not contain a
     /// section.
@@ -171,15 +183,15 @@ impl<FS: FileSystem> Parser<FS> {
             .into());
         }
 
-        section::parse_section(
-            store.as_onestore(),
-            path.file_name()
-                .ok_or_else(|| ErrorKind::InvalidPath {
-                    message: "path has no file name".into(),
-                })?
-                .to_string_lossy()
-                .to_string(),
-        )
+        let filename = path
+            .file_name()
+            .ok_or_else(|| ErrorKind::InvalidPath {
+                message: "path has no file name".into(),
+            })?
+            .to_string_lossy()
+            .to_string();
+
+        section::parse_section(store.as_onestore(), filename)
     }
 
     fn parse_section_group(&self, path: &Path) -> Result<SectionGroup> {
@@ -283,21 +295,13 @@ fn sniff_store_format(data: &[u8]) -> Option<StoreFormat> {
     // TODO: Read header directly?
 
     let mut reader = Reader::new(data);
-    let file_type = Guid::parse(&mut reader).ok()?;
-    let file = Guid::parse(&mut reader).ok()?;
+    let _file_type = Guid::parse(&mut reader).ok()?;
+    let _file = Guid::parse(&mut reader).ok()?;
     let legacy_file_version = Guid::parse(&mut reader).ok()?;
     let file_format = Guid::parse(&mut reader).ok()?;
 
     let revision_store_format = guid!("109ADD3F-911B-49F5-A5D0-1791EDC8AED8");
     let package_store_format = guid!("638DE92F-A6D4-4BC1-9A36-B3FC2511A5B7");
-
-    log::debug!(
-        "sniff_store_format header: file_type={:?} file={:?} legacy_file_version={:?} file_format={:?}",
-        file_type,
-        file,
-        legacy_file_version,
-        file_format
-    );
 
     if file_format == package_store_format {
         return Some(StoreFormat::FssHttpB {

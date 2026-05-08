@@ -38,16 +38,16 @@
 //! built from several layers of encodings:
 //!
 //! - `fsshttpb/`: This implements the FSSHTTP binary packaging format as specified
-//! in [\[MS-FSSHTTPB\]: Binary Requests for File Synchronization via SOAP Protocol].
-//! This is the packaging format used for files downloaded from OneDrive.
+//!   in [\[MS-FSSHTTPB\]: Binary Requests for File Synchronization via SOAP Protocol].
+//!   This is the packaging format used for files downloaded from OneDrive.
 //! - `onestore/`: This implements the OneStore format as specified in
-//! [\[MS-ONESTORE\]: OneNote Revision Store File Format]. This layer handles the
-//! revision store containing all OneNote objects. It supports both the desktop
-//! file format (where the revision store is the file itself) and the FSSHTTP
-//! format (where the store is built from objects and revisions inside the package).
+//!   [\[MS-ONESTORE\]: OneNote Revision Store File Format]. This layer handles the
+//!   revision store containing all OneNote objects. It supports both the desktop
+//!   file format (where the revision store is the file itself) and the FSSHTTP
+//!   format (where the store is built from objects and revisions inside the package).
 //! - `one/`: This implements the OneNote file format as specified in [\[MS-ONE\]:
-//! OneNote File Format]. This specifies how objects in a OneNote file are parsed
-//! from a OneStore revision file.
+//!   OneNote File Format]. This specifies how objects in a OneNote file are parsed
+//!   from a OneStore revision file.
 //! - `onenote/`: high-level API that resolves references between objects
 //!
 //! # Error handling
@@ -97,11 +97,12 @@ pub mod errors;
 pub mod fs;
 mod fsshttpb;
 mod one;
-mod onenote;
+pub(crate) mod onenote;
 mod onestore;
 mod reader;
 mod shared;
 mod utils;
+pub mod warn;
 
 pub(crate) type Reader<'a, 'b> = &'b mut reader::Reader<'a>;
 

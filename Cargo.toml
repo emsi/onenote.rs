@@ -4,3 +4,6 @@ members = ["crates/*"]
 
 [workspace.dependencies]
 parser-macros = { path = "crates/parser-macros", version = "0.0.0" }
+
+[workspace.lints.clippy]
+disallowed_macros = "deny"

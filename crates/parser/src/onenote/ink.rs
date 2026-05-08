@@ -3,6 +3,7 @@ use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property_set::{
     ink_container, ink_data_node, ink_stroke_node, stroke_properties_node,
 };
+use crate::onenote::ParserContext;
 use crate::onestore::ObjectSpace;
 
 /// An ink object.
@@ -167,6 +168,7 @@ impl InkBoundingBox {
 pub(crate) fn parse_ink(
     ink_container_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<Ink> {
     let container_object = space
         .get_object(ink_container_id)
@@ -190,6 +192,7 @@ pub(crate) fn parse_ink(
         space,
         container.ink_scaling_x,
         container.ink_scaling_y,
+        ctx,
     )?;
 
     Ok(Ink {
@@ -205,6 +208,7 @@ pub(crate) fn parse_ink_data(
     space: &(impl ObjectSpace + ?Sized),
     scale_x: Option<f32>,
     scale_y: Option<f32>,
+    ctx: &mut ParserContext,
 ) -> Result<(Vec<InkStroke>, Option<InkBoundingBox>)> {
     let ink_data_object = space
         .get_object(ink_data_id)
@@ -215,7 +219,7 @@ pub(crate) fn parse_ink_data(
         .strokes
         .iter()
         .copied()
-        .map(|ink_stroke_id| parse_ink_stroke(ink_stroke_id, space, scale_x, scale_y))
+        .map(|ink_stroke_id| parse_ink_stroke(ink_stroke_id, space, scale_x, scale_y, ctx))
         .collect::<Result<_>>()?;
 
     let scale_x = scale_x.unwrap_or(1.0);
@@ -238,11 +242,12 @@ fn parse_ink_stroke(
     space: &(impl ObjectSpace + ?Sized),
     scale_x: Option<f32>,
     scale_y: Option<f32>,
+    ctx: &mut ParserContext,
 ) -> Result<InkStroke> {
     let object = space
         .get_object(ink_stroke_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("ink stroke node is missing".into()))?;
-    let data = ink_stroke_node::parse(object)?;
+    let data = ink_stroke_node::parse(object, ctx)?;
 
     let props_object = space.get_object(data.properties).ok_or_else(|| {
         ErrorKind::MalformedOneNoteData("ink stroke properties node is missing".into())

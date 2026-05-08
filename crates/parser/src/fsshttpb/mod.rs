@@ -7,6 +7,8 @@
 //!
 //! [\[MS-FSSHTTPB\]]: https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-fsshttpb/f59fc37d-2232-4b14-baac-25f98e9e7b5a
 
+#![allow(clippy::disallowed_macros)]
+
 pub(crate) mod data;
 pub(crate) mod data_element;
 pub(crate) mod packaging;

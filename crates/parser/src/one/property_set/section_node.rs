@@ -4,6 +4,7 @@ use crate::one::property::object_reference::ObjectReference;
 use crate::one::property::time::Timestamp;
 use crate::one::property::{PropertyType, simple};
 use crate::one::property_set::{PropertySetId, assert_property_set};
+use crate::onenote::ParserContext;
 use crate::onestore::Object;
 use crate::shared::guid::Guid;
 
@@ -21,14 +22,14 @@ pub(crate) struct Data {
     pub(crate) created_at: Timestamp,
 }
 
-pub(crate) fn parse(object: &Object) -> Result<Data> {
+pub(crate) fn parse(object: &Object, ctx: &mut ParserContext) -> Result<Data> {
     assert_property_set(object, PropertySetId::SectionNode)?;
 
     let context_id = object.context_id;
 
     let entity_guid = simple::parse_guid(PropertyType::NotebookManagementEntityGuid, object)?
         .unwrap_or_else(|| {
-            log::warn!("Section has no GUID");
+            warn!(ctx, "Section has no GUID");
 
             Guid::nil()
         });

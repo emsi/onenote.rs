@@ -3,6 +3,7 @@ use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property::object_reference::ObjectReference;
 use crate::one::property::{PropertyType, simple};
 use crate::one::property_set::{PropertySetId, assert_property_set};
+use crate::onenote::ParserContext;
 use crate::onestore::Object;
 use crate::shared::multi_byte;
 
@@ -21,7 +22,7 @@ pub(crate) enum InkBias {
     Both,
 }
 
-pub(crate) fn parse(object: &Object) -> Result<Data> {
+pub(crate) fn parse(object: &Object, ctx: &mut ParserContext) -> Result<Data> {
     assert_property_set(object, PropertySetId::InkStrokeNode)?;
 
     let path = simple::parse_vec(PropertyType::InkPath, object)?
@@ -41,7 +42,7 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
         })
         .transpose()?
         .unwrap_or_else(|| {
-            log::warn!("Ink stroke node has no ink bias, defaulting to `Both`");
+            warn!(ctx, "Ink stroke node has no ink bias, defaulting to `Both`");
 
             InkBias::Both
         });

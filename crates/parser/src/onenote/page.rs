@@ -2,6 +2,7 @@ use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property::layout_alignment::LayoutAlignment;
 use crate::one::property_set::{page_manifest_node, page_metadata, page_node, title_node};
+use crate::onenote::ParserContext;
 use crate::onenote::outline::{Outline, parse_outline};
 use crate::onenote::page_content::{PageContent, parse_page_content};
 use crate::onestore::ObjectSpace;
@@ -133,7 +134,10 @@ impl Title {
     }
 }
 
-pub(crate) fn parse_page(page_space: &(impl ObjectSpace + ?Sized)) -> Result<Page> {
+pub(crate) fn parse_page(
+    page_space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<Page> {
     let metadata = parse_metadata(page_space)?;
     let manifest = parse_manifest(page_space)?;
 
@@ -141,37 +145,45 @@ pub(crate) fn parse_page(page_space: &(impl ObjectSpace + ?Sized)) -> Result<Pag
 
     let title = data
         .title
-        .map(|id| parse_title(id, page_space))
+        .map(|id| parse_title(id, page_space, ctx))
         .transpose()?;
 
     let level = metadata.page_level;
-
-    let contents: Vec<PageContent> = data
-        .content
-        .into_iter()
-        .map(|content_id| parse_page_content(content_id, page_space))
-        .collect::<Result<_>>()?;
 
     let title_text = title
         .as_ref()
         .and_then(|title| title.contents.first())
         .and_then(outline_text)
-        .map(remove_hyperlink)
-        .or_else(|| {
+        .map(str::to_owned);
+
+    ctx.page = Some((
+        metadata.entity_guid.0.clone(),
+        title_text
+            .clone()
+            .unwrap_or_else(|| "<Unknown title>".to_owned()),
+    ));
+
+    let contents: Vec<PageContent> = data
+        .content
+        .into_iter()
+        .map(|content_id| parse_page_content(content_id, page_space, ctx))
+        .collect::<Result<_>>()?;
+
+    let link_target_id = format!("{}", metadata.entity_guid);
+
+    ctx.page = None;
+
+    Ok(Page {
+        link_target_id,
+        title,
+        title_text: title_text.as_deref().map(remove_hyperlink).or_else(|| {
             (&contents)
                 .iter()
                 .filter_map(|page_content| page_content.outline())
                 .filter_map(outline_text)
                 .next()
                 .map(str::to_owned)
-        });
-
-    let link_target_id = format!("{}", metadata.entity_guid);
-
-    Ok(Page {
-        link_target_id,
-        title,
-        title_text,
+        }),
         level,
         author: data.author.map(|author| author.into_value()),
         height: data.page_height,
@@ -179,7 +191,11 @@ pub(crate) fn parse_page(page_space: &(impl ObjectSpace + ?Sized)) -> Result<Pag
     })
 }
 
-fn parse_title(title_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<Title> {
+fn parse_title(
+    title_id: ExGuid,
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<Title> {
     let title_object = space
         .get_object(title_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("title object is missing".into()))?;
@@ -187,7 +203,7 @@ fn parse_title(title_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<
     let contents = title
         .children
         .into_iter()
-        .map(|outline_id| parse_outline(outline_id, space))
+        .map(|outline_id| parse_outline(outline_id, space, ctx))
         .collect::<Result<_>>()?;
 
     Ok(Title {

@@ -2,6 +2,7 @@ use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property::layout_alignment::LayoutAlignment;
 use crate::one::property_set::{PropertySetId, outline_element_node, outline_group, outline_node};
+use crate::onenote::ParserContext;
 use crate::onenote::content::{Content, parse_content};
 use crate::onenote::list::{List, parse_list};
 use crate::onestore::ObjectSpace;
@@ -259,6 +260,7 @@ impl OutlineElement {
 pub(crate) fn parse_outline(
     outline_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<Outline> {
     let outline_object = space
         .get_object(outline_id)
@@ -268,7 +270,7 @@ pub(crate) fn parse_outline(
     let items = data
         .children
         .into_iter()
-        .map(|item_id| parse_outline_item(item_id, space))
+        .map(|item_id| parse_outline_item(item_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let outline = Outline {
@@ -290,7 +292,11 @@ pub(crate) fn parse_outline(
     Ok(outline)
 }
 
-fn parse_outline_item(item_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<OutlineItem> {
+fn parse_outline_item(
+    item_id: ExGuid,
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<OutlineItem> {
     let content_type = space
         .get_object(item_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("outline item is missing".into()))?
@@ -302,9 +308,11 @@ fn parse_outline_item(item_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> R
     })?;
 
     let item = match id {
-        PropertySetId::OutlineGroup => OutlineItem::Group(parse_outline_group(item_id, space)?),
+        PropertySetId::OutlineGroup => {
+            OutlineItem::Group(parse_outline_group(item_id, space, ctx)?)
+        }
         PropertySetId::OutlineElementNode => {
-            OutlineItem::Element(parse_outline_element(item_id, space)?)
+            OutlineItem::Element(parse_outline_element(item_id, space, ctx)?)
         }
         _ => {
             return Err(ErrorKind::MalformedOneNoteData(
@@ -320,6 +328,7 @@ fn parse_outline_item(item_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> R
 fn parse_outline_group(
     group_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<OutlineGroup> {
     let group_object = space
         .get_object(group_id)
@@ -329,7 +338,7 @@ fn parse_outline_group(
     let outlines = data
         .children
         .into_iter()
-        .map(|item_id| parse_outline_item(item_id, space))
+        .map(|item_id| parse_outline_item(item_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let group = OutlineGroup {
@@ -343,6 +352,7 @@ fn parse_outline_group(
 pub(crate) fn parse_outline_element(
     element_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<OutlineElement> {
     let element_object = space
         .get_object(element_id)
@@ -352,13 +362,13 @@ pub(crate) fn parse_outline_element(
     let children = data
         .children
         .into_iter()
-        .map(|item_id| parse_outline_item(item_id, space))
+        .map(|item_id| parse_outline_item(item_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let contents = data
         .contents
         .into_iter()
-        .map(|content_id| parse_content(content_id, space))
+        .map(|content_id| parse_content(content_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let list_contents = data

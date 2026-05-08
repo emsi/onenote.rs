@@ -4,6 +4,7 @@ use crate::one::property::color_ref::ColorRef;
 use crate::one::property::paragraph_alignment::ParagraphAlignment;
 use crate::one::property::{PropertyType, simple};
 use crate::one::property_set::PropertySetId;
+use crate::onenote::ParserContext;
 use crate::onestore::Object;
 
 /// A paragraph style.
@@ -68,9 +69,10 @@ const FALLBACK: Data = Data {
     text_run_object_type: None,
 };
 
-pub(crate) fn parse(object: &Object) -> Result<Data> {
+pub(crate) fn parse(object: &Object, ctx: &mut ParserContext) -> Result<Data> {
     if object.id() != PropertySetId::ParagraphStyleObject.as_jcid() {
-        log::warn!(
+        warn!(
+            ctx,
             "Unexpected object type: 0x{:X}. Using fallback style",
             object.id().0
         );

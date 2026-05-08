@@ -1,8 +1,10 @@
 use crate::errors::{ErrorKind, Result};
 use crate::one::property::color::Color;
 use crate::one::property_set::{section_metadata_node, section_node};
+use crate::onenote::ParserContext;
 use crate::onenote::page_series::{PageSeries, parse_page_series};
 use crate::onestore::{ObjectSpace, OneStore};
+use crate::warn::Report;
 
 /// An entry in a section list.
 #[allow(missing_docs)]
@@ -23,6 +25,7 @@ pub struct Section {
     display_name: String,
     page_series: Vec<PageSeries>,
     color: Option<Color>,
+    pub(crate) report: Report,
 }
 
 impl Section {
@@ -39,6 +42,11 @@ impl Section {
     /// The color of the section.
     pub fn color(&self) -> Option<Color> {
         self.color
+    }
+
+    /// Non-fatal warnings encountered while parsing this section.
+    pub fn report(&self) -> &Report {
+        &self.report
     }
 }
 
@@ -61,9 +69,17 @@ impl SectionGroup {
     }
 }
 
-pub(crate) fn parse_section(store: &(impl OneStore + ?Sized), filename: String) -> Result<Section> {
+pub(crate) fn parse_section(
+    store: &(impl OneStore + ?Sized),
+    filename: String,
+) -> Result<Section> {
+    let mut ctx = ParserContext {
+        page: None,
+        report: Report::new(),
+    };
+
     let metadata = parse_metadata(store.data_root())?;
-    let content = parse_content(store.data_root())?;
+    let content = parse_content(store.data_root(), &mut ctx)?;
 
     let display_name = metadata
         .display_name
@@ -74,17 +90,21 @@ pub(crate) fn parse_section(store: &(impl OneStore + ?Sized), filename: String) 
     let page_series = content
         .page_series
         .into_iter()
-        .map(|page_series_id| parse_page_series(page_series_id, store))
+        .map(|page_series_id| parse_page_series(page_series_id, store, &mut ctx))
         .collect::<Result<_>>()?;
 
     Ok(Section {
         display_name,
         page_series,
         color: metadata.color,
+        report: ctx.report,
     })
 }
 
-fn parse_content(space: &(impl ObjectSpace + ?Sized)) -> Result<section_node::Data> {
+fn parse_content(
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<section_node::Data> {
     let content_root_id = space
         .content_root()
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("section has no content root".into()))?;
@@ -92,7 +112,7 @@ fn parse_content(space: &(impl ObjectSpace + ?Sized)) -> Result<section_node::Da
         ErrorKind::MalformedOneNoteData("section content object is missing".into())
     })?;
 
-    section_node::parse(content_object)
+    section_node::parse(content_object, ctx)
 }
 
 fn parse_metadata(space: &(impl ObjectSpace + ?Sized)) -> Result<section_metadata_node::Data> {

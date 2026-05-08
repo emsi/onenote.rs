@@ -1,6 +1,7 @@
 use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property_set::PropertySetId;
+use crate::onenote::ParserContext;
 use crate::onenote::embedded_file::{EmbeddedFile, parse_embedded_file};
 use crate::onenote::image::{Image, parse_image};
 use crate::onenote::ink::{Ink, parse_ink};
@@ -63,6 +64,7 @@ impl PageContent {
 pub(crate) fn parse_page_content(
     content_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<PageContent> {
     let content_type = space
         .get_object(content_id)
@@ -79,8 +81,8 @@ pub(crate) fn parse_page_content(
         PropertySetId::EmbeddedFileNode => {
             PageContent::EmbeddedFile(parse_embedded_file(content_id, space)?)
         }
-        PropertySetId::OutlineNode => PageContent::Outline(parse_outline(content_id, space)?),
-        PropertySetId::InkContainer => PageContent::Ink(parse_ink(content_id, space)?),
+        PropertySetId::OutlineNode => PageContent::Outline(parse_outline(content_id, space, ctx)?),
+        PropertySetId::InkContainer => PageContent::Ink(parse_ink(content_id, space, ctx)?),
         _ => PageContent::Unknown,
     };
 

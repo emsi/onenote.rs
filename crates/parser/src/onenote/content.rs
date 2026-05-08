@@ -1,6 +1,7 @@
 use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property_set::PropertySetId;
+use crate::onenote::ParserContext;
 use crate::onenote::embedded_file::{EmbeddedFile, parse_embedded_file};
 use crate::onenote::image::{Image, parse_image};
 use crate::onenote::ink::{Ink, parse_ink};
@@ -80,11 +81,13 @@ impl Content {
 pub(crate) fn parse_content(
     content_id: ExGuid,
     space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<Content> {
     let content_type = space
         .get_object(content_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("page content is missing".into()))?
         .id();
+
     let id = PropertySetId::from_jcid(content_type).ok_or_else(|| {
         ErrorKind::MalformedOneNoteData(
             format!("invalid property set id: 0x{:X}", content_type.0).into(),
@@ -96,9 +99,9 @@ pub(crate) fn parse_content(
         PropertySetId::EmbeddedFileNode => {
             Content::EmbeddedFile(parse_embedded_file(content_id, space)?)
         }
-        PropertySetId::RichTextNode => Content::RichText(parse_rich_text(content_id, space)?),
-        PropertySetId::TableNode => Content::Table(parse_table(content_id, space)?),
-        PropertySetId::InkContainer => Content::Ink(parse_ink(content_id, space)?),
+        PropertySetId::RichTextNode => Content::RichText(parse_rich_text(content_id, space, ctx)?),
+        PropertySetId::TableNode => Content::Table(parse_table(content_id, space, ctx)?),
+        PropertySetId::InkContainer => Content::Ink(parse_ink(content_id, space, ctx)?),
         _ => Content::Unknown,
     };
 

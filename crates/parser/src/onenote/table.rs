@@ -4,6 +4,7 @@ use crate::one::property::color::Color;
 use crate::one::property::layout_alignment::LayoutAlignment;
 use crate::one::property::outline_indent_distance::OutlineIndentDistance;
 use crate::one::property_set::{table_cell_node, table_node, table_row_node};
+use crate::onenote::ParserContext;
 use crate::onenote::note_tag::{NoteTag, parse_note_tags};
 use crate::onenote::outline::{OutlineElement, parse_outline_element};
 use crate::onestore::ObjectSpace;
@@ -164,7 +165,11 @@ impl TableCell {
     }
 }
 
-pub(crate) fn parse_table(table_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<Table> {
+pub(crate) fn parse_table(
+    table_id: ExGuid,
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<Table> {
     let table_object = space
         .get_object(table_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("table object is missing".into()))?;
@@ -173,7 +178,7 @@ pub(crate) fn parse_table(table_id: ExGuid, space: &(impl ObjectSpace + ?Sized))
     let contents = data
         .rows
         .into_iter()
-        .map(|row_id| parse_row(row_id, space))
+        .map(|row_id| parse_row(row_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let table = Table {
@@ -191,7 +196,11 @@ pub(crate) fn parse_table(table_id: ExGuid, space: &(impl ObjectSpace + ?Sized))
     Ok(table)
 }
 
-fn parse_row(row_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<TableRow> {
+fn parse_row(
+    row_id: ExGuid,
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<TableRow> {
     let row_object = space
         .get_object(row_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("row object is missing".into()))?;
@@ -200,7 +209,7 @@ fn parse_row(row_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<Tabl
     let contents = data
         .cells
         .into_iter()
-        .map(|cell_id| parse_cell(cell_id, space))
+        .map(|cell_id| parse_cell(cell_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let row = TableRow { contents };
@@ -208,7 +217,11 @@ fn parse_row(row_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<Tabl
     Ok(row)
 }
 
-fn parse_cell(cell_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<TableCell> {
+fn parse_cell(
+    cell_id: ExGuid,
+    space: &(impl ObjectSpace + ?Sized),
+    ctx: &mut ParserContext,
+) -> Result<TableCell> {
     let cell_object = space
         .get_object(cell_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("cell object is missing".into()))?;
@@ -217,7 +230,7 @@ fn parse_cell(cell_id: ExGuid, space: &(impl ObjectSpace + ?Sized)) -> Result<Ta
     let contents = data
         .contents
         .into_iter()
-        .map(|element_id| parse_outline_element(element_id, space))
+        .map(|element_id| parse_outline_element(element_id, space, ctx))
         .collect::<Result<_>>()?;
 
     let cell = TableCell {

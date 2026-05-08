@@ -1,6 +1,7 @@
 use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property_set::page_series_node;
+use crate::onenote::ParserContext;
 use crate::onenote::page::{Page, parse_page};
 use crate::onestore::OneStore;
 
@@ -25,6 +26,7 @@ impl PageSeries {
 pub(crate) fn parse_page_series(
     id: ExGuid,
     store: &(impl OneStore + ?Sized),
+    ctx: &mut ParserContext,
 ) -> Result<PageSeries> {
     let object = store
         .data_root()
@@ -40,7 +42,7 @@ pub(crate) fn parse_page_series(
                 .object_space(page_space_id)
                 .ok_or_else(|| ErrorKind::MalformedOneNoteData("page space is missing".into()))
         })
-        .map(|page_space| parse_page(page_space?))
+        .map(|page_space| parse_page(page_space?, ctx))
         .collect::<Result<_>>()?;
 
     Ok(PageSeries { pages })
