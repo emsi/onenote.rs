@@ -486,19 +486,23 @@ pub(crate) fn parse_rich_text(
         .collect_vec();
 
     // Parse the styles text runs (part 2)
-    let styles = styles_data.into_iter().map(parse_style).collect_vec();
+    let mut styles = styles_data.into_iter().map(parse_style).collect_vec();
 
-    let text = if !embedded_objects.is_empty() {
+    let mut text = if !embedded_objects.is_empty() {
         "".to_string()
     } else {
         data.text.unwrap_or_default()
     };
 
+    let mut text_run_indices = data.text_run_indices;
+
+    fix_leading_vt_misalignment(&mut text, &mut text_run_indices, &mut styles);
+
     let text = RichText {
         text,
         embedded_objects,
         text_run_formatting: styles,
-        text_run_indices: data.text_run_indices,
+        text_run_indices,
         paragraph_style,
         paragraph_space_before: data.paragraph_space_before,
         paragraph_space_after: data.paragraph_space_after,
@@ -556,6 +560,60 @@ fn parse_embedded_ink_space(data: embedded_ink_container::Data) -> Result<Embedd
     })?;
 
     Ok(EmbeddedInkSpace { height, width })
+}
+
+// Workaround for an undiagnosed OneNote writer quirk: the paragraph text begins
+// with U+000B (vertical tab) and a corresponding leading TextRunIndex of 1, but
+// TextRunFormatting is built as if that leading VT segment did not exist. Every
+// styling slot ends up paired with the run before it — prose ends up flagged
+// Hyperlink/HyperlinkProtected/Hidden, link display text ends up plain — and
+// one trailing styling slot is unused.
+//
+// We don't know which writer (OneNote desktop, UWP, Web, the Web Clipper
+// extension, …) produces this or under what conditions. MS-ONE is silent on
+// the leading-VT case. Joplin's onenote-converter has the same workaround at a
+// different layer; their TODO in `text_region.rs` says "look into why this
+// issue is happening" — they don't know either. We rewrite to the
+// self-consistent form here so all consumers get aligned data.
+fn fix_leading_vt_misalignment(
+    text: &mut String,
+    indices: &mut Vec<u32>,
+    styles: &mut Vec<ParagraphStyling>,
+) {
+    if !text.starts_with('\u{000B}') {
+        return;
+    }
+    if indices.first() != Some(&1) {
+        return;
+    }
+
+    // Two variants of the same OneNote quirk are observed in the wild:
+    //
+    //   A) `len(styles) == len(indices) + 1` (spec-conformant on its face).
+    //      OneNote also wrote one phantom trailing styling slot that mirrors
+    //      the leading VT split, so after we drop the VT split we must also
+    //      drop that trailing styling slot to restore alignment.
+    //
+    //   B) `len(styles) == len(indices)`. OneNote omitted the trailing styling
+    //      slot entirely, leaving the input non-conformant. Dropping the VT
+    //      split alone makes it spec-conformant — no styling pop needed.
+    //
+    // Anything else (e.g. styles much longer or shorter) is unfamiliar; bail
+    // out rather than rewrite blindly.
+    let drop_trailing_style = match styles.len().checked_sub(indices.len()) {
+        Some(1) => true,
+        Some(0) => false,
+        _ => return,
+    };
+
+    text.remove(0);
+    indices.remove(0);
+    for idx in indices.iter_mut() {
+        *idx -= 1;
+    }
+    if drop_trailing_style {
+        styles.pop();
+    }
 }
 
 fn parse_style(data: paragraph_style_object::Data) -> ParagraphStyling {
