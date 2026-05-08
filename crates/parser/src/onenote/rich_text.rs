@@ -391,17 +391,21 @@ pub(crate) fn parse_rich_text(
     let paragraph_style = parse_style(paragraph_style_data);
 
     // Parse the styles text runs (part 1)
-    let styles_data: Vec<paragraph_style_object::Data> = data
+    let style_objects: Vec<_> = data
         .text_run_formatting
         .iter()
-        .map(|style_id| {
-            space
-                .get_object(*style_id)
-                .ok_or_else(|| ErrorKind::MalformedOneNoteData("styling is missing".into()).into())
+        .filter_map(|style_id| {
+            space.get_object(*style_id).or_else(|| {
+                warn!(ctx, "missing style for text run formatting: {:?}", style_id);
+
+                None
+            })
         })
-        .map(|style_object| {
-            style_object.and_then(|style| paragraph_style_object::parse(style, ctx))
-        })
+        .collect();
+
+    let styles_data: Vec<paragraph_style_object::Data> = style_objects
+        .into_iter()
+        .map(|style_object| paragraph_style_object::parse(style_object, ctx))
         .collect::<Result<Vec<_>>>()?;
 
     // Parse text run data
