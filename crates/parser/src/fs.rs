@@ -23,13 +23,17 @@ use std::path::{Path, PathBuf};
 pub trait FileSystem: Send + Sync + Copy {
     /// Checks if the given path points to a directory.
     ///
+    /// Mirrors the semantics of [`std::path::Path::is_dir`]: a missing path is
+    /// not an error. Use [`FileSystem::exists`] if the existence check itself
+    /// matters.
+    ///
     /// # Arguments
     /// * `path` - The path to check
     ///
     /// # Returns
     /// * `Ok(true)` if the path exists and is a directory
-    /// * `Ok(false)` if the path exists but is not a directory
-    /// * `Err` if the path doesn't exist or an I/O error occurs
+    /// * `Ok(false)` if the path does not exist, or exists but is not a directory
+    /// * `Err` only on I/O errors that aren't "not found" (e.g. permission denied)
     ///
     /// # Usage
     /// Used by the parser to distinguish between section files (.one) and section groups
@@ -116,7 +120,11 @@ pub struct NativeFs {}
 #[cfg(feature = "native-fs")]
 impl FileSystem for NativeFs {
     fn is_directory(&self, path: &Path) -> Result<bool, Error> {
-        Ok(fs::metadata(path)?.is_dir())
+        match fs::metadata(path) {
+            Ok(meta) => Ok(meta.is_dir()),
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(err) => Err(err),
+        }
     }
 
     fn read_dir(&self, path: &Path) -> Result<Vec<PathBuf>, Error> {

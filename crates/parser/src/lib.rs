@@ -31,6 +31,8 @@
 //!   virtual file systems, or WASM bindings).
 //! - `backtrace`: Captures a `std::backtrace::Backtrace` on parse errors and
 //!   exposes it via `std::error::Error::backtrace()`.
+//! - `onepkg`: Enables [`Parser::parse_package`] for reading `.onepkg`
+//!   notebook archives (CAB files containing a `.onetoc2` and its sections).
 //!
 //! # Architecture
 //!
@@ -99,6 +101,8 @@ mod fsshttpb;
 mod one;
 pub(crate) mod onenote;
 mod onestore;
+#[cfg(feature = "onepkg")]
+mod onepkg;
 mod reader;
 mod shared;
 mod utils;

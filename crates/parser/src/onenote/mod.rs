@@ -194,6 +194,23 @@ impl<FS: FileSystem> Parser<FS> {
         section::parse_section(store.as_onestore(), filename)
     }
 
+    /// Parse a OneNote package (`.onepkg`) file.
+    ///
+    /// `.onepkg` files are CAB archives bundling a `.onetoc2` plus its `.one`
+    /// section files. This method decompresses the archive in memory and parses
+    /// the contained notebook without writing anything to disk.
+    ///
+    /// Returns [`ErrorKind::MalformedPackage`] if the file is not a valid
+    /// cabinet or does not contain a `.onetoc2` table of contents.
+    #[cfg(feature = "onepkg")]
+    pub fn parse_package(&self, path: &Path) -> Result<Notebook> {
+        let data = self.fs.read_file(path)?;
+        let store = crate::onepkg::PackageStore::from_bytes(&data)?;
+        let inner_fs = crate::onepkg::PackageFs::new(&store);
+        let toc_path = store.toc_path().to_path_buf();
+        Parser::new_with_fs(inner_fs).parse_notebook(&toc_path)
+    }
+
     fn parse_section_group(&self, path: &Path) -> Result<SectionGroup> {
         let display_name = path
             .file_name()

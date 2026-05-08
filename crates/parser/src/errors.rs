@@ -148,4 +148,9 @@ pub enum ErrorKind {
     /// A filesystem path was missing required components.
     #[error("Invalid path: {message}")]
     InvalidPath { message: Cow<'static, str> },
+
+    /// A `.onepkg` package could not be opened or did not contain a notebook.
+    #[cfg(feature = "onepkg")]
+    #[error("Malformed OneNote package: {message}")]
+    MalformedPackage { message: Cow<'static, str> },
 }

@@ -15,6 +15,7 @@ categories = ["parser-implementations"]
 default = ["native-fs"]
 backtrace = []
 native-fs = []
+onepkg = ["dep:cab"]
 
 [dependencies]
 bytes = "1.11"
@@ -29,6 +30,7 @@ uuid = "1.19"
 widestring = "1.2"
 
 parser-macros = { workspace = true }
+cab = { version = "0.6", optional = true }
 
 [dev-dependencies]
 insta = "1.45"
