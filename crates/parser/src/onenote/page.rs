@@ -1,3 +1,4 @@
+use crate::contents::RichText;
 use crate::errors::{ErrorKind, Result};
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property::layout_alignment::LayoutAlignment;
@@ -153,8 +154,7 @@ pub(crate) fn parse_page(
     let title_text = title
         .as_ref()
         .and_then(|title| title.contents.first())
-        .and_then(outline_text)
-        .map(str::to_owned);
+        .and_then(outline_text);
 
     ctx.page = Some((
         metadata.entity_guid.0.clone(),
@@ -182,7 +182,6 @@ pub(crate) fn parse_page(
                 .filter_map(|page_content| page_content.outline())
                 .filter_map(outline_text)
                 .next()
-                .map(str::to_owned)
         }),
         level,
         author: data.author.map(|author| author.into_value()),
@@ -249,14 +248,56 @@ fn parse_metadata(space: &(impl ObjectSpace + ?Sized)) -> Result<page_metadata::
     page_metadata::parse(metadata_object)
 }
 
-fn outline_text(outline: &Outline) -> Option<&str> {
-    outline
+fn outline_text(outline: &Outline) -> Option<String> {
+    let text = outline
         .items
-        .first()
-        .and_then(|outline_item| outline_item.element())
-        .and_then(|outline_element| outline_element.contents.first())
-        .and_then(|content| content.rich_text())
-        .and_then(|text| Some(&*text.text).filter(|s| !s.is_empty()))
+        .first()?
+        .element()?
+        .contents
+        .first()?
+        .rich_text()?;
+
+    let visible = visible_text(text);
+    Some(visible).filter(|s| !s.is_empty())
+}
+
+/// Concatenate text runs that are not Hidden (per [MS-ONE] §2.3.76).
+/// `text_run_indices` are UTF-16 code unit positions where each run ends;
+/// the last run extends to the end of the paragraph text.
+fn visible_text(rt: &RichText) -> String {
+    let formatting = rt.text_run_formatting();
+    if formatting.is_empty() {
+        return rt.text().to_owned();
+    }
+
+    let utf16: Vec<u16> = rt.text().encode_utf16().collect();
+    let indices = rt.text_run_indices();
+
+    // Build run boundaries: [0, idx_0, idx_1, ..., utf16.len()]
+    let mut bounds: Vec<usize> = std::iter::once(0)
+        .chain(indices.iter().map(|&i| i as usize))
+        .collect();
+    if bounds.len() == formatting.len() {
+        bounds.push(utf16.len());
+    }
+
+    let mut out: Vec<u16> = Vec::with_capacity(utf16.len());
+    for (i, style) in formatting.iter().enumerate() {
+        if style.hidden() {
+            continue;
+        }
+        let start = bounds[i].min(utf16.len());
+        let end = bounds
+            .get(i + 1)
+            .copied()
+            .unwrap_or(utf16.len())
+            .min(utf16.len());
+        if start < end {
+            out.extend_from_slice(&utf16[start..end]);
+        }
+    }
+
+    String::from_utf16_lossy(&out)
 }
 
 fn remove_hyperlink(title: &str) -> String {
