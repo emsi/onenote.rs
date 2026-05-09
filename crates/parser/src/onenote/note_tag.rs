@@ -96,7 +96,7 @@ pub(crate) fn parse_note_tags(
     space: &(impl ObjectSpace + ?Sized),
 ) -> Result<Vec<NoteTag>> {
     note_tags
-        .into_iter()
+        .iter()
         .map(|data| {
             Ok(NoteTag {
                 completed_at: data.completed_at,

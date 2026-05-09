@@ -111,7 +111,7 @@ pub(crate) fn parse_embedded_file(
             layout_max_height: node.layout_max_height,
             offset_horizontal: node.offset_from_parent_horiz,
             offset_vertical: node.offset_from_parent_vert,
-            note_tags: parse_note_tags(&*node.note_tags, space)?,
+            note_tags: parse_note_tags(&node.note_tags, space)?,
         })
     };
 
@@ -129,7 +129,7 @@ pub(crate) fn parse_embedded_file(
     let container_object = space.get_object(container_object_id).ok_or_else(|| {
         ErrorKind::MalformedOneNoteData("embedded file container is missing".into())
     })?;
-    let container = embedded_file_container::parse(&container_object)?;
+    let container = embedded_file_container::parse(container_object)?;
 
     let file = EmbeddedFile {
         filename: embedded_filename,
@@ -139,7 +139,7 @@ pub(crate) fn parse_embedded_file(
         layout_max_height: node.layout_max_height,
         offset_horizontal: node.offset_from_parent_horiz,
         offset_vertical: node.offset_from_parent_vert,
-        note_tags: parse_note_tags(&*node.note_tags, space)?,
+        note_tags: parse_note_tags(&node.note_tags, space)?,
     };
 
     Ok(file)

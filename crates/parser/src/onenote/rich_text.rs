@@ -539,7 +539,7 @@ pub(crate) fn parse_rich_text(
         paragraph_alignment: data.paragraph_alignment,
         layout_alignment_in_parent: data.layout_alignment_in_parent,
         layout_alignment_self: data.layout_alignment_self,
-        note_tags: parse_note_tags(&*data.note_tags, space)?,
+        note_tags: parse_note_tags(&data.note_tags, space)?,
         math_inline_objects,
     };
 

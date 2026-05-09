@@ -157,7 +157,7 @@ pub(crate) fn parse_page(
         .and_then(outline_text);
 
     ctx.page = Some((
-        metadata.entity_guid.0.clone(),
+        metadata.entity_guid.0,
         title_text
             .clone()
             .unwrap_or_else(|| "<Unknown title>".to_owned()),
@@ -177,7 +177,7 @@ pub(crate) fn parse_page(
         link_target_id,
         title,
         title_text: title_text.as_deref().map(remove_hyperlink).or_else(|| {
-            (&contents)
+            contents
                 .iter()
                 .filter_map(|page_content| page_content.outline())
                 .filter_map(outline_text)
@@ -305,22 +305,18 @@ fn remove_hyperlink(title: &str) -> String {
 
     let mut clean_title = title.to_string();
 
-    loop {
-        // Find the first hyperlink mark
-        if let Some(marker_start) = clean_title.find(HYPERLINK_MARKER) {
-            let hyperlink_part = &clean_title[marker_start + HYPERLINK_MARKER.len()..];
+    // Find the first hyperlink mark
+    while let Some(marker_start) = clean_title.find(HYPERLINK_MARKER) {
+        let hyperlink_part = &clean_title[marker_start + HYPERLINK_MARKER.len()..];
 
-            // Find the closing double quote of the hyperlink
-            if let Some(quote_end) = hyperlink_part.find('"') {
-                let before_hyperlink = &clean_title[..marker_start];
-                let after_hyperlink = &hyperlink_part[quote_end + 1..];
-                clean_title = format!("{}{}", before_hyperlink, after_hyperlink);
-            } else {
-                // Sometimes links are broken, in these cases we only consider what is before the mark
-                clean_title = title[..marker_start].to_string();
-            }
+        // Find the closing double quote of the hyperlink
+        if let Some(quote_end) = hyperlink_part.find('"') {
+            let before_hyperlink = &clean_title[..marker_start];
+            let after_hyperlink = &hyperlink_part[quote_end + 1..];
+            clean_title = format!("{}{}", before_hyperlink, after_hyperlink);
         } else {
-            break;
+            // Sometimes links are broken, in these cases we only consider what is before the mark
+            clean_title = title[..marker_start].to_string();
         }
     }
 
