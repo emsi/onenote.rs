@@ -387,7 +387,7 @@ Section {
                         },
                     ),
                     title_text: Some(
-                        "\u{fddf}HYPERLINK \"onenote:#风景&section-id={75256889-9e75-4ec2-82ed-fc799557e1b9}&page-id={d099b6f3-7f5a-4c08-aed7-e8d42c59523f}&end\"风景  (\u{fddf}HYPERLINK \"https://onedrive.live.com/edit.aspx?resid=193EE54E3252492D!s9b62db4219f740709f444bc0129de4e9&migratedtospo=true&wd=target%28Quick%20Notes.one%7C75256889-9e75-4ec2-82ed-fc799557e1b9%2F%E9%A3%8E%E6%99%AF%7Cd099b6f3-7f5a-4c08-aed7-e8d42c59523f%2F%29&wdorigin=703&wdpreservelink=1\"Web view)",
+                        "风景  (Web view)",
                     ),
                     level: 1,
                     author: None,
@@ -1064,7 +1064,7 @@ Section {
                         },
                     ),
                     title_text: Some(
-                        "\u{fddf}HYPERLINK \"https://zh.wikipedia.org/zh-hans/%E9%A3%8E%E6%99%AF\"wikipedia link",
+                        "wikipedia link",
                     ),
                     level: 1,
                     author: None,
@@ -2044,7 +2044,7 @@ Section {
                         },
                     ),
                     title_text: Some(
-                        "\u{fddf}HYPERLINK \"onenote:https://d.docs.live.net/c8d3bbab7f1acf3a/Documents/Photography/风景.one#Tips%20from%20a%20Pro%20Using%20Trees%20for%20Dramatic%20Landscape%20Photography&section-id={262ADDFB-A4DC-4453-A239-0024D6769962}&page-id={88D803A5-4F43-48D4-9B16-4C024F5787DC}&end\"Tips from a Pro: Using Trees for Dramatic Landscape Photography",
+                        "Tips from a Pro: Using Trees for Dramatic Landscape Photography",
                     ),
                     level: 1,
                     author: Some(

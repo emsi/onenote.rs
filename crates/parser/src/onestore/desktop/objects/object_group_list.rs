@@ -77,7 +77,7 @@ impl ObjectGroupList {
                 iterator.next();
             } else if let Some(object) = Object::try_parse(iterator, &parse_context)? {
                 let id = id_table.resolve_id(&object.compact_id)?;
-                objects.entry(id).or_insert(object.data);
+                objects.insert(id, object.data);
             } else {
                 return Err(onestore_parse_error!(
                     "Unexpected node in ObjectGroupList: {:?}",

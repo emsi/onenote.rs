@@ -435,7 +435,7 @@ Section {
                         },
                     ),
                     title_text: Some(
-                        "\u{fddf}HYPERLINK \"https://www.youtube.com/watch?v=-U-uj1jaHtk\"Is Mexico safe for shooting Street Photography?",
+                        "Is Mexico safe for shooting Street Photography?",
                     ),
                     level: 1,
                     author: Some(

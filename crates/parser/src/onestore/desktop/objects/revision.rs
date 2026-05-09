@@ -114,7 +114,7 @@ impl<'a> Revision {
 
                 while let Some(object) = Object::try_parse(iterator, &parse_context)? {
                     let id = global_id_table.resolve_id(&object.compact_id)?;
-                    objects.entry(id).or_insert(object.data);
+                    objects.insert(id, object.data);
 
                     // Skip the reference counting object, if present
                     iterator_skip_if_matching!(
