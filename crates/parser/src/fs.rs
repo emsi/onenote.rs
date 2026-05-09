@@ -80,17 +80,20 @@ pub trait FileSystem: Send + Sync + Copy {
     /// May be used for extracting embedded content or creating output files.
     fn write_file(&self, path: &Path, data: &[u8]) -> Result<(), Error>;
 
-    /// Creates a directory if it doesn't already exist.
+    /// Creates a directory, including any missing parent directories.
     ///
     /// # Arguments
     /// * `path` - The directory path to create
     ///
     /// # Returns
-    /// `Ok(())` if the directory was created or already exists, or an error
-    /// if the directory cannot be created.
+    /// `Ok(())` if the directory was created or already exists as a directory,
+    /// or an error if the directory cannot be created.
     ///
     /// # Note
-    /// This method should not fail if the directory already exists (idempotent).
+    /// This method is idempotent when `path` already exists as a directory.
+    /// If `path` exists but is not a directory (e.g. a regular file or a
+    /// symlink to one), implementations must return an error rather than
+    /// silently succeeding.
     fn make_dir(&self, path: &Path) -> Result<(), Error>;
 
     /// Checks if a path exists in the file system.
@@ -154,10 +157,11 @@ impl FileSystem for NativeFs {
     }
 
     fn make_dir(&self, path: &Path) -> Result<(), Error> {
-        let result = fs::create_dir(path);
+        let result = fs::create_dir_all(path);
 
-        // Don't fail if it already existed
-        if self.exists(path)? { Ok(()) } else { result }
+        // Don't fail if it already existed as a directory; surface other errors
+        // (e.g. path exists as a file).
+        if self.is_directory(path)? { Ok(()) } else { result }
     }
 
     fn exists(&self, path: &Path) -> Result<bool, Error> {
