@@ -597,13 +597,6 @@ fn parse_embedded_ink_space(data: embedded_ink_container::Data) -> Result<Embedd
 // styling slot ends up paired with the run before it — prose ends up flagged
 // Hyperlink/HyperlinkProtected/Hidden, link display text ends up plain — and
 // one trailing styling slot is unused.
-//
-// We don't know which writer (OneNote desktop, UWP, Web, the Web Clipper
-// extension, …) produces this or under what conditions. MS-ONE is silent on
-// the leading-VT case. Joplin's onenote-converter has the same workaround at a
-// different layer; their TODO in `text_region.rs` says "look into why this
-// issue is happening" — they don't know either. We rewrite to the
-// self-consistent form here so all consumers get aligned data.
 fn fix_leading_vt_misalignment(
     text: &mut String,
     indices: &mut Vec<u32>,
