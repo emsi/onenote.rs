@@ -27,7 +27,10 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
     assert_property_set(object, PropertySetId::PageSeriesNode)?;
 
     let entity_guid = simple::parse_guid(PropertyType::NotebookManagementEntityGuid, object)?
-        .ok_or_else(|| ErrorKind::MalformedOneNoteFileData("page series has no guid".into()))?;
+        .unwrap_or_else(|| {
+            log::warn!("page series has no guid");
+            Guid::nil()
+        });
     let page_spaces =
         ObjectSpaceReference::parse_vec(PropertyType::ChildGraphSpaceElementNodes, object)?
             .unwrap_or_default();
