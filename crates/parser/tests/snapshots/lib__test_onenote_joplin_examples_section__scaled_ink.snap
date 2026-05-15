@@ -438,6 +438,10 @@ Section {
                         "Scaled",
                     ),
                     level: 1,
+                    created_at: 2026-04-15 7:36:10.177 +00,
+                    updated_at: Some(
+                        2026-04-15 7:37:14.0 +00,
+                    ),
                     author: Some(
                         "Henry Heino",
                     ),

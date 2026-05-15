@@ -7,6 +7,7 @@ use crate::onenote::ParserContext;
 use crate::onenote::outline::{Outline, parse_outline};
 use crate::onenote::page_content::{PageContent, parse_page_content};
 use crate::onestore::ObjectSpace;
+use time::macros::utc_datetime;
 
 /// A page.
 ///
@@ -20,6 +21,8 @@ pub struct Page {
     title: Option<Title>,
     title_text: Option<String>,
     level: i32,
+    created_at: time::UtcDateTime,
+    updated_at: Option<time::UtcDateTime>,
     author: Option<String>,
     height: Option<f32>,
     contents: Vec<PageContent>,
@@ -39,6 +42,17 @@ impl Page {
     /// [\[MS-ONE\] 2.2.64]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/00f0b68b-db49-4aea-9ad9-7c8e68e5c95d
     pub fn title(&self) -> Option<&Title> {
         self.title.as_ref()
+    }
+
+    /// The time at which the page was created.
+    pub fn created_time(&self) -> time::UtcDateTime {
+        self.created_at
+    }
+
+    /// The page's last-modified time, falling back to the creation time when
+    /// the page has never been edited.
+    pub fn updated_time(&self) -> time::UtcDateTime {
+        self.updated_at.unwrap_or_else(|| self.created_time())
     }
 
     /// The page's level in the section page tree.
@@ -173,6 +187,15 @@ pub(crate) fn parse_page(
 
     ctx.page = None;
 
+    let created_at = metadata.created_at.try_into().unwrap_or_else(|err| {
+        // FILETIME values outside the representable range fall back to the
+        // UNIX epoch. `last_modified` is less precise on disk so this only
+        // matters for `created_at`.
+        warn!(ctx, "invalid page creation timestamp: {err}");
+        utc_datetime!(1970-01-01 0:00)
+    });
+    let updated_at = data.last_modified.map(|time| time.into());
+
     Ok(Page {
         link_target_id,
         title,
@@ -184,6 +207,8 @@ pub(crate) fn parse_page(
                 .next()
         }),
         level,
+        created_at,
+        updated_at,
         author: data.author.map(|author| author.into_value()),
         height: data.page_height,
         contents,

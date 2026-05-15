@@ -434,6 +434,10 @@ Section {
                         "Section 2 - simple page 1 de test",
                     ),
                     level: 1,
+                    created_at: 2025-10-21 11:48:58.891 +00,
+                    updated_at: Some(
+                        2025-10-23 11:07:31.0 +00,
+                    ),
                     author: Some(
                         "BAYLES Hugo",
                     ),
@@ -2293,6 +2297,10 @@ Section {
                         "Section 2 - avec titre accentué et caractères spéciaux &é\"'(-è_çà)=~#{[|`\\^@]}",
                     ),
                     level: 1,
+                    created_at: 2025-10-21 11:55:31.742 +00,
+                    updated_at: Some(
+                        2025-10-23 11:07:31.0 +00,
+                    ),
                     author: Some(
                         "BAYLES Hugo",
                     ),
@@ -6234,6 +6242,10 @@ Section {
                         "Test niveau de titre et liens web",
                     ),
                     level: 1,
+                    created_at: 2025-10-23 7:17:06.049 +00,
+                    updated_at: Some(
+                        2025-10-23 11:07:31.0 +00,
+                    ),
                     author: Some(
                         "BAYLES Hugo",
                     ),
@@ -17002,6 +17014,10 @@ Section {
                         "Test Todo : cases à cocher lien vers doc sur partage",
                     ),
                     level: 1,
+                    created_at: 2025-10-23 7:24:30.401 +00,
+                    updated_at: Some(
+                        2025-10-23 11:07:31.0 +00,
+                    ),
                     author: Some(
                         "BAYLES Hugo",
                     ),

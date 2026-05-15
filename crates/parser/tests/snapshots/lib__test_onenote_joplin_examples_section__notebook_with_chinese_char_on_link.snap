@@ -390,6 +390,8 @@ Section {
                         "风景  (Web view)",
                     ),
                     level: 1,
+                    created_at: 2025-01-05 22:13:32.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -1067,6 +1069,8 @@ Section {
                         "wikipedia link",
                     ),
                     level: 1,
+                    created_at: 2025-01-06 1:15:31.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -1608,6 +1612,8 @@ Section {
                         "风景",
                     ),
                     level: 1,
+                    created_at: 2025-01-06 1:14:52.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [],
@@ -2047,6 +2053,10 @@ Section {
                         "Tips from a Pro: Using Trees for Dramatic Landscape Photography",
                     ),
                     level: 1,
+                    created_at: 2023-02-11 5:56:47.393 +00,
+                    updated_at: Some(
+                        2025-01-07 15:27:42.0 +00,
+                    ),
                     author: Some(
                         "Aaron Xiao",
                     ),

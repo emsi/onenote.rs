@@ -438,6 +438,10 @@ Section {
                         "Ink Missing - among other ink objects",
                     ),
                     level: 1,
+                    created_at: 2026-04-01 1:15:54.831 +00,
+                    updated_at: Some(
+                        2026-04-01 2:50:01.0 +00,
+                    ),
                     author: Some(
                         "Julius Godo",
                     ),
@@ -67841,6 +67845,10 @@ Section {
                         "Ink Missing - only one example missing part",
                     ),
                     level: 1,
+                    created_at: 2026-04-01 2:25:54.241 +00,
+                    updated_at: Some(
+                        2026-04-01 2:50:01.0 +00,
+                    ),
                     author: Some(
                         "Julius Godo",
                     ),

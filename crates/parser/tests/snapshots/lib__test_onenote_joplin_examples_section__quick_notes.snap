@@ -388,6 +388,10 @@ Section {
                         "A simple filename",
                     ),
                     level: 1,
+                    created_at: 2024-04-19 17:46:40.0 +00,
+                    updated_at: Some(
+                        2024-04-24 20:54:42.0 +00,
+                    ),
                     author: None,
                     height: None,
                     contents: [
@@ -2924,6 +2928,8 @@ Section {
                         "A page with a lot of svgs",
                     ),
                     level: 1,
+                    created_at: 2024-04-25 13:40:31.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -14799,6 +14805,8 @@ Section {
                         "A page can have any width it wants?",
                     ),
                     level: 1,
+                    created_at: 2024-04-25 18:01:47.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -16966,6 +16974,8 @@ Section {
                         "A page with text and drawing above it",
                     ),
                     level: 1,
+                    created_at: 2024-04-25 5:48:03.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -21760,6 +21770,8 @@ Section {
                         "text",
                     ),
                     level: 1,
+                    created_at: 2024-04-25 18:39:53.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [
@@ -24168,6 +24180,8 @@ Section {
                         "Page with more than one font size",
                     ),
                     level: 1,
+                    created_at: 2024-04-29 13:27:15.0 +00,
+                    updated_at: None,
                     author: None,
                     height: None,
                     contents: [

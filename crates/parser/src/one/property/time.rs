@@ -1,6 +1,7 @@
-use crate::errors::{ErrorKind, Result};
+use crate::errors::{Error, ErrorKind, Result};
 use crate::one::property::PropertyType;
 use crate::onestore::Object;
+use time::{Duration, macros::utc_datetime};
 
 /// A 32 bit date/time timestamp.
 ///
@@ -27,6 +28,12 @@ impl Time {
     }
 }
 
+impl From<Time> for time::UtcDateTime {
+    fn from(value: Time) -> Self {
+        utc_datetime!(1980-01-01 0:00) + Duration::seconds(value.0 as i64)
+    }
+}
+
 /// A 64 bit date/time timestamp.
 ///
 /// See [\[MS-DTYP\] 2.3.3]
@@ -50,5 +57,24 @@ impl Timestamp {
             .map(Timestamp);
 
         Ok(timestamp)
+    }
+}
+
+impl TryFrom<Timestamp> for time::UtcDateTime {
+    type Error = Error;
+
+    fn try_from(value: Timestamp) -> Result<Self> {
+        // FILETIME is 100-nanosecond intervals since 1601-01-01. Reduce to
+        // milliseconds since `time` can't represent the full FILETIME range
+        // and millisecond precision is sufficient for page timestamps.
+        let microseconds = value.0 / 10;
+        utc_datetime!(1601-01-01 0:00)
+            .checked_add(Duration::milliseconds((microseconds / 1000) as i64))
+            .ok_or_else(|| {
+                ErrorKind::MalformedOneNoteFileData(
+                    format!("timestamp out of range: {}", value.0).into(),
+                )
+                .into()
+            })
     }
 }
