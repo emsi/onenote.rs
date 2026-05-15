@@ -210,9 +210,13 @@ pub(crate) fn parse_ink_data(
     scale_y: Option<f32>,
     ctx: &mut ParserContext,
 ) -> Result<(Vec<InkStroke>, Option<InkBoundingBox>)> {
-    let ink_data_object = space
-        .get_object(ink_data_id)
-        .ok_or_else(|| ErrorKind::MalformedOneNoteData("ink data node is missing".into()))?;
+    let Some(ink_data_object) = space.get_object(ink_data_id) else {
+        warn!(
+            ctx,
+            "ink data object {:?} not found, skipping ink", ink_data_id
+        );
+        return Ok((vec![], None));
+    };
     let ink_data = ink_data_node::parse(ink_data_object, ctx)?;
 
     let strokes = ink_data
