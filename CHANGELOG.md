@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-05-15
+
+### Security
+
+- Reject absolute paths, parent-directory components, and other invalid path
+  characters when resolving section entries listed in a `.onetoc2` file. A
+  malicious notebook could previously cause the parser to open files outside
+  the notebook's base directory.
+
+### Fixed
+
+- Guard against underflow and overflow when computing transaction log offsets.
+- Avoid panicking when parsing malformed ink data.
+
+### Changed
+
+- Internal: use `bytes::try_*` for bounds-checked reads.
+- Docs: add `SECURITY.md`.
+- Infra: pin explicit permissions for GitHub Actions workflows.
+
 ## [1.1.0] - 2025-12-30
 
 ### Added
