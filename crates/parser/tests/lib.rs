@@ -63,7 +63,8 @@ fn test_onenote_2016_parse_notebook() {
     subsections_subpages = { "Notebook with subsections and subpages/Section 1.one" },
     notebook_with_chinese_char_on_link = { "notebook_with_chinese_char_on_link/Quick Notes.one" },
     simple_notebook = { "Simple notebook/Quick Notes.one" },
-    new_section = { "new_section.one" }
+    new_section = { "new_section.one" },
+    scaled_ink = { "scaled_ink.one" }
 )]
 fn test_onenote_joplin_examples_section(path: &str) {
     let parser = Parser::new();
