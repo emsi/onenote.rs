@@ -62,8 +62,8 @@ impl<'a> ParseWithRef<'a> for PointerToListFND {
 #[allow(dead_code)]
 pub(crate) struct RevisionRoleDeclarationFND {
     pub(crate) rid: ExGuid,
-    /// "should be 0x01"
-    revision_role: u32,
+    /// "should be 0x01" per MS-ONESTORE 2.1.12.
+    pub(crate) revision_role: u32,
 }
 
 #[derive(Debug, Clone, Parse)]

@@ -72,8 +72,8 @@ impl ObjectGroupList {
             if matches!(item, FileNodeData::ObjectGroupEndFND) {
                 break;
             } else if let FileNodeData::DataSignatureGroupDefinitionFND(_) = item {
-                log::debug!("Ignoring DataSignatureGroupDefinitionFND");
-
+                // Marks the end of a signature block. Ignored.
+                // See https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/0fa4c886-011a-4c19-9651-9a69e43a19c6
                 iterator.next();
             } else if let Some(object) = Object::try_parse(iterator, &parse_context)? {
                 let id = id_table.resolve_id(&object.compact_id)?;

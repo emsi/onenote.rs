@@ -14,7 +14,7 @@ pub mod desktop;
 pub mod fsshttpb;
 pub mod shared;
 
-pub(crate) trait OneStore {
+pub(crate) trait OneStore: fmt::Debug {
     fn get_type(&self) -> OneStoreType;
 
     fn data_root(&self) -> &dyn ObjectSpace;

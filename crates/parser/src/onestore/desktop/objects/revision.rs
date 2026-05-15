@@ -150,9 +150,8 @@ impl<'a> Revision {
                     .entry(object_reference.root_role.try_into()?)
                     .or_insert(oid_root);
             } else if let FileNodeData::DataSignatureGroupDefinitionFND(_) = current {
-                // .onetoc2
-                log::debug!("Ignoring DataSignatureGroupDefinitionFND");
-
+                // Marks the end of a signature block (.onetoc2). Ignored.
+                // See https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/0fa4c886-011a-4c19-9651-9a69e43a19c6
                 iterator.next();
             } else {
                 return Err(onestore_parse_error!(

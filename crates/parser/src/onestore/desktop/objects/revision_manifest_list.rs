@@ -56,8 +56,14 @@ impl<'a> RevisionManifestList {
                     let base_rid: ExGuid = data.base.rid.into();
                     if revisions_seen.contains(&base_rid) {
                         iterator.next();
-                        // TODO: Find a test .one file that uses this and implement:
-                        log::warn!("TO-DO: Apply the new role and context to the revision");
+                        // Per MS-ONESTORE 2.1.12, revision_role *should* always be 0x1.
+                        if data.base.revision_role != 0x1 {
+                            // TODO: Find a test .one file that uses this and implement.
+                            log::warn!(
+                                "TO-DO: Apply the new role and context to the revision (role {:x})",
+                                data.base.revision_role
+                            );
+                        }
                     } else {
                         return Err(
                             ErrorKind::MalformedOneStoreData("RevisionRoleAndContextDeclarationFND points to a non-existent revision".into()).into()

@@ -164,6 +164,19 @@ impl<FS: FileSystem> Parser<FS> {
         )
     }
 
+    /// Parse the raw OneStore layer from a buffer and return its `Debug`
+    /// representation.
+    ///
+    /// Intended for tooling (e.g. the `inspect` binary) that needs to dump
+    /// the low-level OneStore structures of a `.one` or `.onetoc2` file
+    /// without resolving them into the high-level [`Section`] / [`Notebook`]
+    /// types. The exact format of the returned string is unstable and should
+    /// not be parsed by scripts.
+    pub fn dump_onestore(&self, data: &[u8]) -> Result<String> {
+        let store = parse_store_auto(data)?;
+        Ok(format!("{:#?}", store))
+    }
+
     /// Parse a OneNote section file.
     ///
     /// The `path` argument must point to a `.one` file that contains a
@@ -241,6 +254,7 @@ impl<FS: FileSystem> Parser<FS> {
     }
 }
 
+#[derive(Debug)]
 enum ParsedStore {
     Desktop(RevisionStore),
     FssHttpB(crate::onestore::fsshttpb::PackagingStore),

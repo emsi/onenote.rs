@@ -95,6 +95,7 @@
 #[macro_use]
 mod macros;
 
+mod debug;
 pub mod errors;
 pub mod fs;
 mod fsshttpb;

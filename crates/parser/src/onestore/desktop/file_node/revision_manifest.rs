@@ -29,7 +29,7 @@ pub(crate) struct RevisionManifestStart4FND {
     pub(crate) rid: ExGuid,
     pub(crate) rid_dependent: ExGuid,
     reserved_time_creation: u64,
-    revision_role: u32,
+    pub(crate) revision_role: u32,
     odcs_default: u16,
 }
 
@@ -39,7 +39,7 @@ pub(crate) struct RevisionManifestStart6FND {
     pub(crate) rid: ExGuid,
     /// ID of a dependency revision
     pub(crate) rid_dependent: ExGuid,
-    revision_role: u32,
+    pub(crate) revision_role: u32,
     odcs_default: u16,
 }
 
