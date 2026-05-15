@@ -121,23 +121,41 @@ impl<FS: FileSystem> Parser<FS> {
             .iter()
             .map(|name| resolve_entry_path(base_dir, name))
             .collect::<Result<Vec<_>>>()?;
-        let sections = entries
+
+        let mut report = crate::warn::Report::new();
+        let mut sections = Vec::new();
+        for entry_path in entries
             .into_iter()
             .filter(|p| self.fs.exists(p).unwrap_or(false))
             .filter(|p| !p.ends_with("OneNote_RecycleBin"))
-            .map(|path| {
-                if self.fs.is_directory(&path)? {
-                    self.parse_section_group(&path)
-                        .map(SectionEntry::SectionGroup)
-                } else {
-                    self.parse_section(&path).map(SectionEntry::Section)
+        {
+            let result = if self.fs.is_directory(&entry_path).unwrap_or(false) {
+                self.parse_section_group(&entry_path)
+                    .map(SectionEntry::SectionGroup)
+            } else {
+                self.parse_section(&entry_path).map(SectionEntry::Section)
+            };
+
+            match result {
+                Ok(entry) => sections.push(entry),
+                Err(err) => {
+                    // A single bad section shouldn't take down the whole notebook;
+                    // skip it, surface the error on the notebook report.
+                    report.push_warning(crate::warn::Warning::new(
+                        None,
+                        format!(
+                            "failed to import section {}: {err}",
+                            entry_path.display()
+                        ),
+                    ));
                 }
-            })
-            .collect::<Result<_>>()?;
+            }
+        }
 
         Ok(Notebook {
             entries: sections,
             color,
+            report,
         })
     }
 

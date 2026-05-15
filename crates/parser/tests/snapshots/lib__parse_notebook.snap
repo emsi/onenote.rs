@@ -7631,4 +7631,7 @@ Notebook {
             b: 210,
         },
     ),
+    report: Report {
+        warnings: [],
+    },
 }

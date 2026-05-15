@@ -6545,4 +6545,7 @@ Notebook {
             b: 170,
         },
     ),
+    report: Report {
+        warnings: [],
+    },
 }

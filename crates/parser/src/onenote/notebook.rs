@@ -4,6 +4,7 @@ use crate::one::property_set::toc_container;
 use crate::onenote::section::SectionEntry;
 use crate::onestore::ObjectSpace;
 use crate::property::common::Color;
+use crate::warn::Report;
 use itertools::Itertools;
 
 /// A OneNote notebook.
@@ -11,6 +12,7 @@ use itertools::Itertools;
 pub struct Notebook {
     pub(crate) entries: Vec<SectionEntry>,
     pub(crate) color: Option<Color>,
+    pub(crate) report: Report,
 }
 
 impl Notebook {
@@ -22,6 +24,15 @@ impl Notebook {
     /// The color of this notebook.
     pub fn color(&self) -> Option<Color> {
         self.color
+    }
+
+    /// The notebook-level report of non-fatal issues.
+    ///
+    /// Currently captures one warning per section that failed to parse; the
+    /// failing section is omitted from [`Notebook::entries`] rather than
+    /// aborting the entire notebook.
+    pub fn report(&self) -> &Report {
+        &self.report
     }
 }
 
