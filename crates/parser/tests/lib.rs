@@ -64,7 +64,8 @@ fn test_onenote_2016_parse_notebook() {
     notebook_with_chinese_char_on_link = { "notebook_with_chinese_char_on_link/Quick Notes.one" },
     simple_notebook = { "Simple notebook/Quick Notes.one" },
     new_section = { "new_section.one" },
-    scaled_ink = { "scaled_ink.one" }
+    scaled_ink = { "scaled_ink.one" },
+    desktop_missing_ink = { "desktop_missing_ink.one" }
 )]
 fn test_onenote_joplin_examples_section(path: &str) {
     let parser = Parser::new();
