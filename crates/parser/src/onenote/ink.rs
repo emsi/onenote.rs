@@ -213,7 +213,7 @@ pub(crate) fn parse_ink_data(
     let ink_data_object = space
         .get_object(ink_data_id)
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("ink data node is missing".into()))?;
-    let ink_data = ink_data_node::parse(ink_data_object)?;
+    let ink_data = ink_data_node::parse(ink_data_object, ctx)?;
 
     let strokes = ink_data
         .strokes

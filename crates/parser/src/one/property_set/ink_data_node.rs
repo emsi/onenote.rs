@@ -1,8 +1,9 @@
-use crate::errors::{ErrorKind, Result};
+use crate::errors::Result;
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property::object_reference::ObjectReference;
 use crate::one::property::{PropertyType, simple};
 use crate::one::property_set::{PropertySetId, assert_property_set};
+use crate::onenote::ParserContext;
 use crate::onestore::Object;
 
 /// An ink data container.
@@ -12,13 +13,18 @@ pub(crate) struct Data {
     pub(crate) bounding_box: Option<[u32; 4]>,
 }
 
-pub(crate) fn parse(object: &Object) -> Result<Data> {
+pub(crate) fn parse(object: &Object, ctx: &mut ParserContext) -> Result<Data> {
     assert_property_set(object, PropertySetId::InkDataNode)?;
 
-    let strokes =
-        ObjectReference::parse_vec(PropertyType::InkStrokes, object)?.ok_or_else(|| {
-            ErrorKind::MalformedOneNoteFileData("ink data node has no strokes".into())
-        })?;
+    let strokes = ObjectReference::parse_vec(PropertyType::InkStrokes, object)?.unwrap_or_else(
+        || {
+            // An InkDataNode can have no associated InkStrokes object.
+            // See https://discourse.joplinapp.org/t/error-importing-notes-from-onenote/49671
+            warn!(ctx, "ink data node {:?} has no strokes", object.id());
+
+            vec![]
+        },
+    );
     let bounding_box = simple::parse_vec_u32(PropertyType::InkBoundingBox, object)?
         .filter(|values| values.len() == 4)
         .map(|values| [values[0], values[1], values[2], values[3]]);
