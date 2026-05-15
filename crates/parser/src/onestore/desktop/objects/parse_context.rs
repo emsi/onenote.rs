@@ -57,10 +57,7 @@ impl<'a> ParseContext<'a> {
         }
     }
 
-    pub(crate) fn find_file_data<'b>(
-        &'a self,
-        data_info: &'b AttachmentInfo,
-    ) -> Result<&'a FileBlob> {
+    pub(crate) fn find_file_data(&self, data_info: &AttachmentInfo) -> Result<FileBlob> {
         let file_data_store = self.file_data_store.ok_or_else(|| -> Error {
             parser_error!(ResolutionFailed, "file_data reference has not been loaded").into()
         })?;

@@ -234,6 +234,7 @@ pub(crate) struct AttachmentInfo {
 impl AttachmentInfo {
     pub(crate) fn load_data<T, F>(&self, file_blob_by_id: F) -> Result<T>
     where
+        T: Default,
         F: FnOnce(&str) -> Result<T>,
     {
         // See https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/da2bbc7d-0529-4bf4-a843-6f3f55c87e8f
@@ -250,16 +251,13 @@ impl AttachmentInfo {
             )
             .into())
         } else if self.data_ref.starts_with("<invfdo>") {
-            // "invalid"
-            log::warn!("Attempted to load an invalid {} file", self.extension);
-
-            Err(parser_error!(
-                ResolutionFailed,
-                "Unable to load invalid file reference: {} (ext: {})",
-                self.data_ref,
+            // "invalid" — import as an empty file rather than failing the whole page.
+            log::warn!(
+                "Attempted to load an invalid {} file. Importing an empty file.",
                 self.extension
-            )
-            .into())
+            );
+
+            Ok(T::default())
         } else {
             Err(parser_error!(
                 ResolutionFailed,

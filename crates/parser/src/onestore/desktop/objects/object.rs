@@ -73,7 +73,7 @@ impl Object {
             jc_id: declaration.id(),
             props,
             mapping: context.id_map.clone(),
-            file_data: file_data.cloned(),
+            file_data,
             context_id: context.context_id,
         };
         Ok(Self {

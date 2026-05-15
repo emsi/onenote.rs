@@ -50,8 +50,8 @@ impl FileDataStore {
         Ok(Self { files })
     }
 
-    pub(crate) fn find_file<'b>(&'b self, info: &AttachmentInfo) -> Result<&'b FileBlob> {
-        info.load_data(|id| -> Result<&'b FileBlob> {
+    pub(crate) fn find_file(&self, info: &AttachmentInfo) -> Result<FileBlob> {
+        info.load_data(|id| -> Result<FileBlob> {
             let guid = Guid::from_str(id)?;
             let file = self
                 .files
@@ -61,7 +61,7 @@ impl FileDataStore {
                     parser_error!(ResolutionFailed, "File not found with ID {}", id).into()
                 })?;
 
-            Ok(&file.file_data.0)
+            Ok(file.file_data.0.clone())
         })
     }
 }
