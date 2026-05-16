@@ -74,25 +74,26 @@
 //!
 //! # I/O behaviour
 //!
-//! With the default [`fs::NativeFs`] backend the notebook file is
-//! memory-mapped ([`memmap2`]) and attachments are exposed as
-//! refcount-shared views into the mapping. Notebooks larger than the
-//! process's resident memory still parse correctly because the kernel
-//! pages bytes in only as the parser touches them.
+//! With the default [`fs::NativeFs`] backend the notebook file is read
+//! on demand via positional reads (`pread` on Unix, overlapped
+//! `ReadFile` on Windows). The file's bytes never need to be resident
+//! in process memory in their entirety — multi-GB notebooks parse with
+//! a working set proportional to active reads, not file size. The
+//! kernel page cache fronts repeated reads cheaply.
+//!
+//! Attachments returned by [`contents::Image`] / [`contents::EmbeddedFile`]
+//! hold a refcount-shared reference to the underlying source and pull
+//! bytes through the same lazy path when their reader is consumed.
 //!
 //! Custom [`FileSystem`] implementations can override
-//! [`FileSystem::open_file`] with their own [`fs::FileSource`] (e.g.
-//! a WASM-side `Blob`-backed reader) to avoid loading the whole file
-//! into memory. Bytes are then fetched lazily on demand.
+//! [`FileSystem::open_file`] with their own [`fs::FileSource`] (e.g. a
+//! WASM-side `Blob`-backed reader) to avoid materialising the file in
+//! memory.
 //!
-//! **Callers MUST NOT mutate the notebook file while a parse is in
-//! progress** — and, with memory-mapped backings, for as long as any
-//! [`contents::Image`] or [`contents::EmbeddedFile`] derived from the
-//! parse is alive. Truncating or replacing the file under the mapping
-//! causes SIGBUS. The default [`FileSystem::open_file`] eagerly copies
-//! the file into an owned `Bytes` and is immune to this constraint.
-//!
-//! [`memmap2`]: https://docs.rs/memmap2
+//! Modifying the underlying file while a parse is in progress — or
+//! while any derived attachment is alive — is unsupported. The parse
+//! may fail with [`MalformedOneStoreData`](errors::ErrorKind::MalformedOneStoreData)
+//! or [`IO`](errors::ErrorKind::IO).
 //!
 //! # Stability
 //!

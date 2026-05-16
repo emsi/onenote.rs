@@ -134,17 +134,11 @@ pub trait FileSystem: Send + Sync + Copy {
     /// [`FileSystem::read_file`] and wraps the resulting buffer in a
     /// [`BytesSource`] — eager, simple, and suitable for any backend that
     /// can hand back a `Vec<u8>`. Implementations that can serve bytes
-    /// without materialising the whole file in process memory (native
-    /// memory-mapping; WASM-side `Blob`-chunked reads) should override
-    /// this.
+    /// without materialising the whole file in process memory (positional
+    /// disk reads, WASM-side `Blob`-chunked reads) should override this.
     ///
-    /// # I/O contract
-    ///
-    /// Callers MUST NOT mutate the underlying file while the returned
-    /// `FileSource` (or anything refcount-shared off it — attachments,
-    /// images, embedded files) is alive. With the default [`NativeFs`]
-    /// backend, files are memory-mapped; truncating or replacing the file
-    /// during parsing causes SIGBUS on access.
+    /// Callers must not mutate the underlying file while the returned
+    /// [`FileSource`], or any attachment refcount-shared off it, is alive.
     fn open_file(&self, path: &Path) -> Result<Arc<dyn FileSource>, Error> {
         let bytes = Bytes::from(self.read_file(path)?);
         Ok(Arc::new(BytesSource::new(bytes)))
@@ -189,8 +183,8 @@ pub trait FileSource: Send + Sync {
 ///
 /// `read_at` returns a refcount-shared slice into the buffer (zero-copy);
 /// `as_bytes` returns the full buffer. Used by the default
-/// [`FileSystem::open_file`] and as the wrapper around `Bytes::from_owner(mmap)`
-/// on native.
+/// [`FileSystem::open_file`] when the consumer only provides
+/// [`FileSystem::read_file`].
 pub struct BytesSource {
     bytes: Bytes,
 }
@@ -298,23 +292,79 @@ impl FileSystem for NativeFs {
         fs::exists(path)
     }
 
-    /// Opens the file using a memory-mapped backing.
+    /// Opens the file as an on-demand [`FileSource`].
     ///
-    /// The mapping is exposed through a [`BytesSource`] over
-    /// `Bytes::from_owner(mmap)`. Reads of the file's contents go through
-    /// the kernel's page cache and don't require resident allocation, so
-    /// `.one` files larger than the process's RAM still parse correctly.
+    /// Each [`FileSource::read_at`] call issues a positional read against
+    /// the open file handle (`pread` on Unix, overlapped `ReadFile` on
+    /// Windows), so the file's bytes never need to live in process memory
+    /// in their entirety — multi-GB notebooks parse with a working set
+    /// proportional to active reads, not file size. The kernel's page
+    /// cache fronts repeated reads cheaply.
     ///
-    /// # Safety
+    /// # File mutation during parsing
     ///
-    /// Memory-mapped I/O exposes the file's contents directly. If the
-    /// underlying file is truncated, replaced, or resized while the parser
-    /// holds the mapping, accessing the mapped region produces SIGBUS.
-    /// Callers MUST NOT mutate the file while a parse is in progress.
+    /// Reads are positional and recoverable: a truncated or replaced file
+    /// surfaces as an [`std::io::Error`] (or short read) from `read_at`,
+    /// not a signal. The parse may still produce garbage or
+    /// `MalformedData` if a concurrent writer mutates bytes the parser
+    /// has yet to read — there's no way to make that consistent — but the
+    /// process won't be aborted.
     fn open_file(&self, path: &Path) -> Result<Arc<dyn FileSource>, Error> {
         let file = File::open(path)?;
-        // SAFETY: see method docs — caller must not mutate the file during parse.
-        let mmap = unsafe { memmap2::Mmap::map(&file)? };
-        Ok(Arc::new(BytesSource::new(Bytes::from_owner(mmap))))
+        let byte_length = file.metadata()?.len();
+        Ok(Arc::new(FileBackedSource { file, byte_length }))
     }
+}
+
+/// A [`FileSource`] backed by an open [`std::fs::File`] handle.
+///
+/// Used by [`NativeFs::open_file`]. Each [`FileSource::read_at`] call
+/// issues a positional read via `FileExt::read_exact_at` (Unix) or
+/// `FileExt::seek_read` (Windows) — no shared cursor, no mutex, no
+/// allocation up front. The kernel page cache makes repeated reads of
+/// the same region cheap.
+#[cfg(feature = "native-fs")]
+struct FileBackedSource {
+    file: File,
+    byte_length: u64,
+}
+
+#[cfg(feature = "native-fs")]
+impl FileSource for FileBackedSource {
+    fn byte_length(&self) -> u64 {
+        self.byte_length
+    }
+
+    fn read_at(&self, offset: u64, len: usize) -> Result<Bytes, Error> {
+        let mut buf = vec![0u8; len];
+        read_exact_at(&self.file, offset, &mut buf)?;
+
+        Ok(Bytes::from(buf))
+    }
+
+    // `as_bytes` deliberately returns `None` — the file isn't resident in
+    // process memory, so the parser exercises the lazy `read_at` path.
+}
+
+#[cfg(all(feature = "native-fs", unix))]
+fn read_exact_at(file: &File, offset: u64, buf: &mut [u8]) -> Result<(), Error> {
+    use std::os::unix::fs::FileExt;
+    file.read_exact_at(buf, offset)
+}
+
+#[cfg(all(feature = "native-fs", windows))]
+fn read_exact_at(file: &File, offset: u64, buf: &mut [u8]) -> Result<(), Error> {
+    use std::os::windows::fs::FileExt;
+    let mut total = 0;
+    while total < buf.len() {
+        let n = file.seek_read(&mut buf[total..], offset + total as u64)?;
+        if n == 0 {
+            return Err(Error::new(
+                std::io::ErrorKind::UnexpectedEof,
+                "FileBackedSource::read_at hit end of file before satisfying request",
+            ));
+        }
+        total += n;
+    }
+    Ok(())
 }

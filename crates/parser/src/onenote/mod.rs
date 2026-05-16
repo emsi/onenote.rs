@@ -106,15 +106,10 @@ impl<FS: FileSystem> Parser<FS> {
     /// Returns [`ErrorKind::NotATocFile`] if the file is not a notebook table of
     /// contents.
     ///
-    /// # I/O contract
-    ///
-    /// With the default [`crate::fs::NativeFs`] backend the notebook files
-    /// are memory-mapped. The caller MUST NOT mutate any of the involved
-    /// files while a parse is in progress, and (because attachments are
-    /// served from refcount-shared views into the mapping) for as long as
-    /// any [`crate::contents::Image`] / [`crate::contents::EmbeddedFile`]
-    /// derived from the parse is alive. See the crate-level docs for
-    /// details.
+    /// The notebook files are read on demand; mutating any of them while
+    /// a parse is in progress, or while a derived
+    /// [`crate::contents::Image`] / [`crate::contents::EmbeddedFile`]
+    /// is alive, is unsupported.
     pub fn parse_notebook(&self, path: &Path) -> Result<Notebook> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
@@ -216,11 +211,8 @@ impl<FS: FileSystem> Parser<FS> {
     /// Returns [`ErrorKind::NotASectionFile`] if the file does not contain a
     /// section.
     ///
-    /// # I/O contract
-    ///
-    /// Same as [`Parser::parse_notebook`]: with [`crate::fs::NativeFs`] the
-    /// file is memory-mapped and must not be modified while the parse is
-    /// in progress or while any derived attachment objects are alive.
+    /// The file is read on demand; mutating it while a parse is in
+    /// progress, or while a derived attachment is alive, is unsupported.
     pub fn parse_section(&self, path: &Path) -> Result<Section> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
