@@ -147,15 +147,8 @@ impl Reader {
     /// the sub-reader don't affect this reader's position.
     pub(crate) fn slice(&self, range: Range<usize>) -> Result<Reader> {
         let total = self.source.byte_length();
-        if range.start as u64 > total {
-            return Err(
-                ErrorKind::MalformedData("Reader::slice: start is out of bounds".into()).into(),
-            );
-        }
-        if range.end as u64 > total {
-            return Err(
-                ErrorKind::MalformedData("Reader::slice: end is out of bounds".into()).into(),
-            );
+        if range.start as u64 > total || range.end as u64 > total {
+            return Err(ErrorKind::UnexpectedEof.into());
         }
         Ok(Reader {
             source: self.source.clone(),
