@@ -3,7 +3,6 @@ use crate::debug::DebugOutput;
 use crate::errors::Result;
 use crate::onestore::shared::property::{PropertyId, PropertyValue};
 use crate::utils::Utf16ToString;
-use std::collections::HashMap;
 use std::fmt;
 
 /// A property set.
@@ -11,15 +10,15 @@ use std::fmt;
 /// See [\[MS-ONESTORE\] 2.6.7].
 ///
 /// [\[MS-ONESTORE\] 2.6.7]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/88a64c18-f815-4ebc-8590-ddd432024ab9
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub(crate) struct PropertySet {
-    values: HashMap<u32, (usize, PropertyValue)>,
+    values: Vec<(u32, PropertyValue)>,
 }
 
 impl fmt::Debug for PropertySet {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut map = f.debug_map();
-        for (key, (_, value)) in &self.values {
+        for (key, value) in &self.values {
             let key = format!("{:#x}", key);
             let value = format_property_value(value);
             map.entry(
@@ -60,34 +59,31 @@ impl PropertySet {
 
         let values = property_ids
             .into_iter()
-            .enumerate()
-            .map(|(idx, id)| Ok((id.id(), (idx, PropertyValue::parse(id, reader)?))))
+            .map(|id| Ok((id.id(), PropertyValue::parse(id, reader)?)))
             .collect::<Result<_>>()?;
 
         Ok(PropertySet { values })
     }
 
     pub(crate) fn get(&self, id: PropertyId) -> Option<&PropertyValue> {
-        self.values.get(&id.id()).map(|(_, value)| value)
+        self.values
+            .iter()
+            .find(|(key, _)| *key == id.id())
+            .map(|(_, value)| value)
     }
 
     pub(crate) fn index(&self, id: PropertyId) -> Option<usize> {
-        self.values.get(&id.id()).map(|(index, _)| index).copied()
+        self.values.iter().position(|(key, _)| *key == id.id())
     }
 
     pub(crate) fn values(&self) -> impl Iterator<Item = &PropertyValue> {
-        self.values.values().map(|(_, value)| value)
+        self.values.iter().map(|(_, value)| value)
     }
 
-    pub(crate) fn values_with_index(&self) -> impl Iterator<Item = &(usize, PropertyValue)> {
-        self.values.values()
-    }
-}
-
-impl Default for PropertySet {
-    fn default() -> Self {
-        PropertySet {
-            values: HashMap::from([]),
-        }
+    pub(crate) fn values_with_index(&self) -> impl Iterator<Item = (usize, &PropertyValue)> {
+        self.values
+            .iter()
+            .enumerate()
+            .map(|(idx, (_, value))| (idx, value))
     }
 }
