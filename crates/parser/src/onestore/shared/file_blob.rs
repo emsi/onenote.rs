@@ -35,12 +35,11 @@ impl FileBlob {
     /// Construct a `FileBlob` from a stand-alone [`Bytes`] buffer (e.g.
     /// FSSHTTPB wire data that was decoded from the network rather than
     /// pulled from a file).
-    pub(crate) fn from_bytes(bytes: Bytes) -> Self {
-        let size = bytes.len() as u64;
+    pub(crate) fn empty() -> Self {
         Self {
-            source: Arc::new(BytesSource::new(bytes)),
+            source: Arc::new(BytesSource::new(Bytes::new())),
             offset: 0,
-            size,
+            size: 0,
         }
     }
 
@@ -115,13 +114,7 @@ impl Eq for FileBlob {}
 
 impl Default for FileBlob {
     fn default() -> Self {
-        Self::from_bytes(Bytes::new())
-    }
-}
-
-impl From<Vec<u8>> for FileBlob {
-    fn from(value: Vec<u8>) -> Self {
-        Self::from_bytes(Bytes::from(value))
+        Self::empty()
     }
 }
 

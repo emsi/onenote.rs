@@ -1,6 +1,6 @@
 use crate::Reader;
 use crate::errors::Result;
-use crate::fsshttpb::data::binary_item::BinaryItem;
+use crate::fsshttpb::data::compact_u64::CompactU64;
 use crate::fsshttpb::data::object_types::ObjectType;
 use crate::fsshttpb::data::stream_object::ObjectHeader;
 use crate::fsshttpb::data_element::DataElement;
@@ -30,10 +30,17 @@ impl DataElement {
     pub(crate) fn parse_object_data_blob(reader: Reader) -> Result<ObjectDataBlob> {
         ObjectHeader::try_parse(reader, ObjectType::ObjectDataBlob)?;
 
-        let data = BinaryItem::parse(reader)?;
+        // Inlined BinaryItem so the blob's bytes stay as a FileSource-backed
+        // reference instead of being copied into a Vec. Embedded files /
+        // images downstream see the same FileSource the parser is reading
+        // from; `EmbeddedFile::read()` then pulls bytes on demand without
+        // ever materialising the full payload.
+        let size = CompactU64::parse(reader)?.value();
+        let blob = FileBlob::from_source(reader.source(), reader.position(), size);
+        reader.advance(size as usize)?;
 
         ObjectHeader::try_parse_end_8(reader, ObjectType::DataElement)?;
 
-        Ok(ObjectDataBlob(data.into()))
+        Ok(ObjectDataBlob(blob))
     }
 }
