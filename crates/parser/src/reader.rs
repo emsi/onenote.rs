@@ -7,12 +7,12 @@ use std::sync::Arc;
 /// A random-access cursor over a [`FileSource`].
 ///
 /// Owns its position within the source and tracks a half-open
-/// `[start, end)` view. Sub-readers from [`Reader::with_updated_bounds`]
-/// share the source via [`Arc`] but have independent positions.
+/// `[start, end)` view. Sub-readers from [`Reader::slice`] share the
+/// source via [`Arc`] but have independent positions.
 ///
 /// When the source returns `Some` from [`FileSource::as_bytes`] (the
 /// common case), the reader caches the buffer and hot-path operations
-/// index it directly. Otherwise reads go through
+/// index it directly. Otherwise, reads go through
 /// [`FileSource::read_at`].
 pub(crate) struct Reader {
     source: Arc<dyn FileSource>,
@@ -59,22 +59,6 @@ impl Reader {
         self.end.saturating_sub(self.position) as usize
     }
 
-    /// Borrow the remaining bytes from the current position to the end of
-    /// the view.
-    ///
-    /// Only available when the source supports in-memory access (i.e.
-    /// [`FileSource::as_bytes`] returned `Some`). Otherwise returns an
-    /// empty slice.
-    pub(crate) fn bytes(&self) -> &[u8] {
-        if let Some(buf) = &self.cached {
-            let start = self.position as usize;
-            let end = self.end as usize;
-            &buf[start..end]
-        } else {
-            &[]
-        }
-    }
-
     pub(crate) fn advance(&mut self, count: usize) -> Result<()> {
         if self.remaining() < count {
             return Err(ErrorKind::UnexpectedEof.into());
@@ -94,6 +78,17 @@ impl Reader {
         let bytes = self.fetch(self.position, count)?;
         self.position += count as u64;
         Ok(bytes)
+    }
+
+    /// Read `count` bytes without advancing the cursor.
+    ///
+    /// Refcount-shared view of the source when the backing is in-memory; a
+    /// single `read_at` call against a lazy backing.
+    pub(crate) fn peek_bytes(&self, count: usize) -> Result<Bytes> {
+        if self.remaining() < count {
+            return Err(ErrorKind::UnexpectedEof.into());
+        }
+        self.fetch(self.position, count)
     }
 
     fn fetch(&self, offset: u64, len: usize) -> Result<Bytes> {
@@ -153,16 +148,14 @@ impl Reader {
     pub(crate) fn slice(&self, range: Range<usize>) -> Result<Reader> {
         let total = self.source.byte_length();
         if range.start as u64 > total {
-            return Err(ErrorKind::MalformedData(
-                "Reader::slice: start is out of bounds".into(),
-            )
-            .into());
+            return Err(
+                ErrorKind::MalformedData("Reader::slice: start is out of bounds".into()).into(),
+            );
         }
         if range.end as u64 > total {
-            return Err(ErrorKind::MalformedData(
-                "Reader::slice: end is out of bounds".into(),
-            )
-            .into());
+            return Err(
+                ErrorKind::MalformedData("Reader::slice: end is out of bounds".into()).into(),
+            );
         }
         Ok(Reader {
             source: self.source.clone(),

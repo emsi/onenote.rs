@@ -1,5 +1,6 @@
 use crate::Reader;
 use crate::errors::{ErrorKind, Result};
+use crate::fs::FileSource;
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::fsshttpb::data::object_types::ObjectType;
 use crate::fsshttpb::data::stream_object::ObjectHeader;
@@ -7,6 +8,7 @@ use crate::fsshttpb::data_element::DataElementPackage;
 use crate::onestore::desktop::file_structure::OneStoreHeader;
 use crate::onestore::desktop::parse::Parse;
 use crate::shared::guid::Guid;
+use std::sync::Arc;
 
 /// A OneNote file containing a FSSHTTPB package.
 ///
@@ -76,8 +78,9 @@ impl OneStorePackaging {
 ///   a package store file before returning the offset.
 /// - Using the transaction-log end as the packaging start appears undocumented in the spec;
 ///   we rely on observed file layouts.
-pub(crate) fn embedded_packaging_offset(data: &[u8]) -> Option<usize> {
-    let mut reader = crate::reader::Reader::new(data);
+pub(crate) fn embedded_packaging_offset(source: &Arc<dyn FileSource>) -> Option<usize> {
+    let total = source.byte_length() as usize;
+    let mut reader = crate::reader::Reader::from_source(source.clone());
     let start = reader.remaining();
 
     let (header, end) = parse_header_log_end(&mut reader, start as u64).ok()?;
@@ -86,12 +89,12 @@ pub(crate) fn embedded_packaging_offset(data: &[u8]) -> Option<usize> {
     }
     let offset = usize::try_from(end).ok()?;
 
-    if offset + 16 * 4 > data.len() {
+    if offset + 16 * 4 > total {
         return None;
     }
 
-    let mut reader = crate::reader::Reader::new(data)
-        .slice(offset..data.len())
+    let mut reader = crate::reader::Reader::from_source(source.clone())
+        .slice(offset..total)
         .ok()?;
 
     let _file_type = Guid::parse(&mut reader).ok()?;

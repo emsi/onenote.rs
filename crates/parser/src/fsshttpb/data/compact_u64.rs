@@ -21,9 +21,7 @@ impl CompactU64 {
     }
 
     pub(crate) fn parse(reader: Reader) -> Result<CompactU64> {
-        let bytes = reader.bytes();
-
-        let first_byte = bytes.first().copied().ok_or(ErrorKind::UnexpectedEof)?;
+        let first_byte = reader.peek_bytes(1)?[0];
 
         if first_byte == 0 {
             reader.advance(1)?;
@@ -40,10 +38,7 @@ impl CompactU64 {
         }
 
         if first_byte & 4 != 0 {
-            if reader.remaining() < 3 {
-                return Err(ErrorKind::UnexpectedEof.into());
-            }
-
+            let bytes = reader.peek_bytes(3)?;
             let value = u32::from_le_bytes([bytes[0], bytes[1], bytes[2], 0]);
 
             reader.advance(3)?;
@@ -52,10 +47,7 @@ impl CompactU64 {
         }
 
         if first_byte & 8 != 0 {
-            if reader.remaining() < 4 {
-                return Err(ErrorKind::UnexpectedEof.into());
-            }
-
+            let bytes = reader.peek_bytes(4)?;
             let value = u32::from_le_bytes([bytes[0], bytes[1], bytes[2], bytes[3]]);
 
             reader.advance(4)?;
@@ -64,10 +56,7 @@ impl CompactU64 {
         }
 
         if first_byte & 16 != 0 {
-            if reader.remaining() < 5 {
-                return Err(ErrorKind::UnexpectedEof.into());
-            }
-
+            let bytes = reader.peek_bytes(5)?;
             let value =
                 u64::from_le_bytes([bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], 0, 0, 0]);
 
@@ -77,10 +66,7 @@ impl CompactU64 {
         }
 
         if first_byte & 32 != 0 {
-            if reader.remaining() < 6 {
-                return Err(ErrorKind::UnexpectedEof.into());
-            }
-
+            let bytes = reader.peek_bytes(6)?;
             let value = u64::from_le_bytes([
                 first_byte, bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], 0, 0,
             ]);
@@ -91,10 +77,7 @@ impl CompactU64 {
         }
 
         if first_byte & 64 != 0 {
-            if reader.remaining() < 7 {
-                return Err(ErrorKind::UnexpectedEof.into());
-            }
-
+            let bytes = reader.peek_bytes(7)?;
             let value = u64::from_le_bytes([
                 first_byte, bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], 0,
             ]);

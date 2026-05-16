@@ -377,13 +377,7 @@ fn sniff_store_format(source: &Arc<dyn FileSource>) -> Option<StoreFormat> {
 
     if file_format == revision_store_format {
         if legacy_file_version.is_nil() {
-            // The embedded-packaging check needs a contiguous byte slice.
-            // We use `as_bytes()` when the source is in-memory; lazy-read
-            // sources skip this optimisation and fall back to the desktop
-            // format, which the parser will re-attempt if needed.
-            if let Some(bytes) = source.as_bytes()
-                && let Some(packaging_offset) = embedded_packaging_offset(&bytes)
-            {
+            if let Some(packaging_offset) = embedded_packaging_offset(source) {
                 return Some(StoreFormat::FssHttpB { packaging_offset });
             }
 

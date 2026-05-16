@@ -70,31 +70,30 @@ impl FileBlob {
 
 impl Debug for FileBlob {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        if let Some(buf) = self.source.as_bytes() {
-            let start = self.offset as usize;
-            let end = start + self.size as usize;
-            let slice = &buf[start..end];
-            let first_32 = slice
-                .iter()
-                .take(32)
-                .map(|b| format!("{:02x}", b))
-                .collect::<String>();
-            let last_32 = slice
-                .iter()
-                .rev()
-                .take(32)
-                .rev()
-                .map(|b| format!("{:02x}", b))
-                .collect::<String>();
-            write!(
-                f,
-                "FileBlob [ {} ... {}; {:?} KiB ]",
-                first_32,
-                last_32,
-                slice.len() / 1024
-            )
-        } else {
-            write!(f, "FileBlob [ <lazy>; {:?} KiB ]", self.size / 1024)
+        // Read up to 32 bytes from each end via `read_at` so the preview is
+        // identical regardless of whether the source is in-memory or
+        // lazy-backed. Errors fall back to a size-only line.
+        let len = self.size as usize;
+        let head_len = len.min(32);
+        let tail_offset = len.saturating_sub(32);
+        let tail_len = len - tail_offset;
+
+        let head = self.source.read_at(self.offset, head_len);
+        let tail = self.source.read_at(self.offset + tail_offset as u64, tail_len);
+
+        match (head, tail) {
+            (Ok(head), Ok(tail)) => {
+                let first_32: String = head.iter().map(|b| format!("{:02x}", b)).collect();
+                let last_32: String = tail.iter().map(|b| format!("{:02x}", b)).collect();
+                write!(
+                    f,
+                    "FileBlob [ {} ... {}; {:?} KiB ]",
+                    first_32,
+                    last_32,
+                    len / 1024
+                )
+            }
+            _ => write!(f, "FileBlob [ <read error>; {:?} KiB ]", len / 1024),
         }
     }
 }

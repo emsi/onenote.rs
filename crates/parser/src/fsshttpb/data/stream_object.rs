@@ -24,7 +24,7 @@ impl ObjectHeader {
 
     /// Parse a 16-bit or 32-bit stream object header.
     pub(crate) fn parse(reader: Reader) -> Result<ObjectHeader> {
-        let header_type = reader.bytes().first().ok_or(ErrorKind::UnexpectedEof)?;
+        let header_type = reader.peek_bytes(1)?[0];
 
         match header_type & 0b11 {
             0x0 => Self::parse_16(reader),
@@ -197,7 +197,7 @@ impl ObjectHeader {
     }
 
     pub(crate) fn has_end_8(reader: Reader, object_type: ObjectType) -> Result<bool> {
-        let data = reader.bytes().first().ok_or(ErrorKind::UnexpectedEof)?;
+        let data = reader.peek_bytes(1)?[0];
         let expected = object_type.to_u8().ok_or_else(|| {
             ErrorKind::MalformedFssHttpBData(format!("invalid object type: {object_type:?}").into())
         })?;
