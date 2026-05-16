@@ -72,6 +72,28 @@
 //! - **OneNote for Windows 10/11** (via `.one` export)
 //! - **OneNote for Mac** (as backup files)
 //!
+//! # I/O behaviour
+//!
+//! With the default [`fs::NativeFs`] backend the notebook file is
+//! memory-mapped ([`memmap2`]) and attachments are exposed as
+//! refcount-shared views into the mapping. Notebooks larger than the
+//! process's resident memory still parse correctly because the kernel
+//! pages bytes in only as the parser touches them.
+//!
+//! Custom [`FileSystem`] implementations can override
+//! [`FileSystem::open_file`] with their own [`fs::FileSource`] (e.g.
+//! a WASM-side `Blob`-backed reader) to avoid loading the whole file
+//! into memory. Bytes are then fetched lazily on demand.
+//!
+//! **Callers MUST NOT mutate the notebook file while a parse is in
+//! progress** — and, with memory-mapped backings, for as long as any
+//! [`contents::Image`] or [`contents::EmbeddedFile`] derived from the
+//! parse is alive. Truncating or replacing the file under the mapping
+//! causes SIGBUS. The default [`FileSystem::open_file`] eagerly copies
+//! the file into an owned `Bytes` and is immune to this constraint.
+//!
+//! [`memmap2`]: https://docs.rs/memmap2
+//!
 //! # Stability
 //!
 //! The public API follows semantic versioning and is intended to be stable.
@@ -101,15 +123,15 @@ pub mod fs;
 mod fsshttpb;
 mod one;
 pub(crate) mod onenote;
-mod onestore;
 #[cfg(feature = "onepkg")]
 mod onepkg;
+mod onestore;
 mod reader;
 mod shared;
 mod utils;
 pub mod warn;
 
-pub(crate) type Reader<'a, 'b> = &'b mut reader::Reader<'a>;
+pub(crate) type Reader<'b> = &'b mut reader::Reader;
 
 pub use crate::fs::FileSystem;
 pub use crate::onenote::Parser;

@@ -91,7 +91,7 @@ pub(crate) fn embedded_packaging_offset(data: &[u8]) -> Option<usize> {
     }
 
     let mut reader = crate::reader::Reader::new(data)
-        .with_updated_bounds(offset, data.len())
+        .slice(offset..data.len())
         .ok()?;
 
     let _file_type = Guid::parse(&mut reader).ok()?;

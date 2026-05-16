@@ -14,7 +14,7 @@ categories = ["parser-implementations"]
 [features]
 default = ["native-fs"]
 backtrace = []
-native-fs = []
+native-fs = ["dep:memmap2"]
 onepkg = ["dep:cab"]
 
 [dependencies]
@@ -32,6 +32,7 @@ widestring = "1.2"
 
 parser-macros = { workspace = true }
 cab = { version = "0.6", optional = true }
+memmap2 = { version = "0.9", optional = true }
 
 [dev-dependencies]
 insta = "1.45"

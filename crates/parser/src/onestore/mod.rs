@@ -77,7 +77,7 @@ impl fmt::Debug for Object {
         }
 
         if let Some(info) = &self.file_data {
-            debug.field("file_data", &info.as_ref());
+            debug.field("file_data", info);
         }
 
         debug.field("props", self.props.properties());

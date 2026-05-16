@@ -8,10 +8,10 @@ pub(crate) trait FileChunkReference {
     fn data_location(&self) -> usize;
     fn data_size(&self) -> usize;
 
-    fn resolve_to_reader<'a>(
+    fn resolve_to_reader(
         &self,
-        original_reader: &crate::reader::Reader<'a>,
-    ) -> Result<crate::reader::Reader<'a>> {
+        original_reader: &crate::reader::Reader,
+    ) -> Result<crate::reader::Reader> {
         if self.is_fcr_nil() {
             return Err(ErrorKind::ResolutionFailed(
                 "Failed to resolve node reference -- is nil".into(),
@@ -19,10 +19,7 @@ pub(crate) trait FileChunkReference {
             .into());
         }
 
-        original_reader.with_updated_bounds(
-            self.data_location(),
-            self.data_location() + self.data_size(),
-        )
+        original_reader.slice(self.data_location()..self.data_location() + self.data_size())
     }
 }
 

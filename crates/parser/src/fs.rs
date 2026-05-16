@@ -1,5 +1,6 @@
 //! File system abstraction used by the OneNote parser.
 
+use bytes::Bytes;
 #[cfg(feature = "native-fs")]
 use std::fs;
 #[cfg(feature = "native-fs")]
@@ -9,6 +10,7 @@ use std::io::Error;
 #[cfg(feature = "native-fs")]
 use std::io::{BufReader, Error, Read};
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 /// Abstraction over file system operations.
 ///
@@ -110,6 +112,106 @@ pub trait FileSystem: Send + Sync + Copy {
     /// Used to filter out non-existent section entries and verify paths before
     /// attempting to parse them.
     fn exists(&self, path: &Path) -> Result<bool, Error>;
+
+    /// Opens a file as a [`FileSource`] for parsing.
+    ///
+    /// The default implementation reads the entire file via
+    /// [`FileSystem::read_file`] and wraps the resulting buffer in a
+    /// [`BytesSource`] — eager, simple, and suitable for any backend that
+    /// can hand back a `Vec<u8>`. Implementations that can serve bytes
+    /// without materialising the whole file in process memory (native
+    /// memory-mapping; WASM-side `Blob`-chunked reads) should override
+    /// this.
+    ///
+    /// # I/O contract
+    ///
+    /// Callers MUST NOT mutate the underlying file while the returned
+    /// `FileSource` (or anything refcount-shared off it — attachments,
+    /// images, embedded files) is alive. With the default [`NativeFs`]
+    /// backend, files are memory-mapped; truncating or replacing the file
+    /// during parsing causes SIGBUS on access.
+    fn open_file(&self, path: &Path) -> Result<Arc<dyn FileSource>, Error> {
+        let bytes = Bytes::from(self.read_file(path)?);
+        Ok(Arc::new(BytesSource::new(bytes)))
+    }
+}
+
+/// A random-access byte source backing a parse.
+///
+/// The parser reads notebook data through this trait. Reads take an
+/// absolute `offset` and may happen in any order; the trait holds no
+/// position of its own.
+///
+/// If you can hand the parser an in-memory `Bytes`, you almost certainly
+/// don't need to implement this trait — use [`BytesSource`] (or the
+/// default [`FileSystem::open_file`] impl). Implement `FileSource`
+/// directly when you want to serve bytes without materialising the whole
+/// file in memory (e.g. a WASM `Blob` you read chunks from on demand).
+///
+/// Implementations are `Send + Sync` and the returned [`Bytes`] are too.
+pub trait FileSource: Send + Sync {
+    /// Total length of the underlying source in bytes.
+    fn byte_length(&self) -> u64;
+
+    /// Read `len` bytes starting at absolute `offset`.
+    ///
+    /// For in-memory backings, return a refcount-shared slice
+    /// (`Bytes::slice`); for backings that fetch on demand, allocate.
+    fn read_at(&self, offset: u64, len: usize) -> Result<Bytes, Error>;
+
+    /// Return the entire source as a refcount-shared buffer when it is
+    /// fully held in memory.
+    ///
+    /// The parser uses this as a fast path for hot per-byte indexing.
+    /// Return `None` if the bytes aren't all resident; the parser will
+    /// fall back to [`read_at`](FileSource::read_at).
+    fn as_bytes(&self) -> Option<Bytes> {
+        None
+    }
+}
+
+/// A [`FileSource`] backed by an in-memory [`Bytes`] buffer.
+///
+/// `read_at` returns a refcount-shared slice into the buffer (zero-copy);
+/// `as_bytes` returns the full buffer. Used by the default
+/// [`FileSystem::open_file`] and as the wrapper around `Bytes::from_owner(mmap)`
+/// on native.
+pub struct BytesSource {
+    bytes: Bytes,
+}
+
+impl BytesSource {
+    /// Wrap a [`Bytes`] buffer as a [`FileSource`].
+    pub fn new(bytes: Bytes) -> Self {
+        Self { bytes }
+    }
+}
+
+impl FileSource for BytesSource {
+    fn byte_length(&self) -> u64 {
+        self.bytes.len() as u64
+    }
+
+    fn read_at(&self, offset: u64, len: usize) -> Result<Bytes, Error> {
+        let start = offset as usize;
+        let end = start
+            .checked_add(len)
+            .filter(|&e| e <= self.bytes.len())
+            .ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::UnexpectedEof,
+                    format!(
+                        "BytesSource::read_at out of bounds: offset={offset} len={len} byte_length={}",
+                        self.bytes.len()
+                    ),
+                )
+            })?;
+        Ok(self.bytes.slice(start..end))
+    }
+
+    fn as_bytes(&self) -> Option<Bytes> {
+        Some(self.bytes.clone())
+    }
 }
 
 /// Native file system implementation using standard library I/O operations.
@@ -161,10 +263,34 @@ impl FileSystem for NativeFs {
 
         // Don't fail if it already existed as a directory; surface other errors
         // (e.g. path exists as a file).
-        if self.is_directory(path)? { Ok(()) } else { result }
+        if self.is_directory(path)? {
+            Ok(())
+        } else {
+            result
+        }
     }
 
     fn exists(&self, path: &Path) -> Result<bool, Error> {
         fs::exists(path)
+    }
+
+    /// Opens the file using a memory-mapped backing.
+    ///
+    /// The mapping is exposed through a [`BytesSource`] over
+    /// `Bytes::from_owner(mmap)`. Reads of the file's contents go through
+    /// the kernel's page cache and don't require resident allocation, so
+    /// `.one` files larger than the process's RAM still parse correctly.
+    ///
+    /// # Safety
+    ///
+    /// Memory-mapped I/O exposes the file's contents directly. If the
+    /// underlying file is truncated, replaced, or resized while the parser
+    /// holds the mapping, accessing the mapped region produces SIGBUS.
+    /// Callers MUST NOT mutate the file while a parse is in progress.
+    fn open_file(&self, path: &Path) -> Result<Arc<dyn FileSource>, Error> {
+        let file = File::open(path)?;
+        // SAFETY: see method docs — caller must not mutate the file during parse.
+        let mmap = unsafe { memmap2::Mmap::map(&file)? };
+        Ok(Arc::new(BytesSource::new(Bytes::from_owner(mmap))))
     }
 }

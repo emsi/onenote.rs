@@ -4,6 +4,7 @@ use crate::FileSystem;
 use crate::errors::{ErrorKind, Result};
 #[cfg(feature = "native-fs")]
 use crate::fs::NativeFs;
+use crate::fs::{BytesSource, FileSource};
 use crate::fsshttpb::packaging::{OneStorePackaging, embedded_packaging_offset};
 use crate::onenote::notebook::Notebook;
 use crate::onenote::section::{Section, SectionEntry, SectionGroup};
@@ -14,9 +15,11 @@ use crate::onestore::{ObjectSpace, OneStore, OneStoreType};
 use crate::reader::Reader;
 use crate::shared::guid::Guid;
 use crate::warn::Report;
+use bytes::Bytes;
 use sanitise_file_name::sanitise;
 use std::ffi::OsStr;
 use std::path::{Component, Path, PathBuf};
+use std::sync::Arc;
 use uuid::Uuid;
 
 pub(crate) mod content;
@@ -102,9 +105,19 @@ impl<FS: FileSystem> Parser<FS> {
     ///
     /// Returns [`ErrorKind::NotATocFile`] if the file is not a notebook table of
     /// contents.
+    ///
+    /// # I/O contract
+    ///
+    /// With the default [`crate::fs::NativeFs`] backend the notebook files
+    /// are memory-mapped. The caller MUST NOT mutate any of the involved
+    /// files while a parse is in progress, and (because attachments are
+    /// served from refcount-shared views into the mapping) for as long as
+    /// any [`crate::contents::Image`] / [`crate::contents::EmbeddedFile`]
+    /// derived from the parse is alive. See the crate-level docs for
+    /// details.
     pub fn parse_notebook(&self, path: &Path) -> Result<Notebook> {
-        let data = self.fs.read_file(path)?;
-        let store = parse_store_auto(&data)?;
+        let source = self.fs.open_file(path)?;
+        let store = parse_store_auto(source)?;
 
         if store.get_type() != OneStoreType::TableOfContents {
             return Err(ErrorKind::NotATocFile {
@@ -143,10 +156,7 @@ impl<FS: FileSystem> Parser<FS> {
                     // skip it, surface the error on the notebook report.
                     report.push_warning(crate::warn::Warning::new(
                         None,
-                        format!(
-                            "failed to import section {}: {err}",
-                            entry_path.display()
-                        ),
+                        format!("failed to import section {}: {err}", entry_path.display()),
                     ));
                 }
             }
@@ -167,7 +177,8 @@ impl<FS: FileSystem> Parser<FS> {
     /// Returns [`ErrorKind::NotASectionFile`] if the buffer does not contain a
     /// section file.
     pub fn parse_section_buffer(self, data: &[u8], file_name: &Path) -> Result<Section> {
-        let store = parse_store_auto(data)?;
+        let source: Arc<dyn FileSource> = Arc::new(BytesSource::new(Bytes::copy_from_slice(data)));
+        let store = parse_store_auto(source)?;
 
         if store.get_type() != OneStoreType::Section {
             return Err(ErrorKind::NotASectionFile {
@@ -191,7 +202,8 @@ impl<FS: FileSystem> Parser<FS> {
     /// types. The exact format of the returned string is unstable and should
     /// not be parsed by scripts.
     pub fn dump_onestore(&self, data: &[u8]) -> Result<String> {
-        let store = parse_store_auto(data)?;
+        let source: Arc<dyn FileSource> = Arc::new(BytesSource::new(Bytes::copy_from_slice(data)));
+        let store = parse_store_auto(source)?;
         Ok(format!("{:#?}", store))
     }
 
@@ -203,9 +215,15 @@ impl<FS: FileSystem> Parser<FS> {
     ///
     /// Returns [`ErrorKind::NotASectionFile`] if the file does not contain a
     /// section.
+    ///
+    /// # I/O contract
+    ///
+    /// Same as [`Parser::parse_notebook`]: with [`crate::fs::NativeFs`] the
+    /// file is memory-mapped and must not be modified while the parse is
+    /// in progress or while any derived attachment objects are alive.
     pub fn parse_section(&self, path: &Path) -> Result<Section> {
-        let data = self.fs.read_file(path)?;
-        let store = parse_store_auto(&data)?;
+        let source = self.fs.open_file(path)?;
+        let store = parse_store_auto(source)?;
 
         if store.get_type() != OneStoreType::Section {
             return Err(ErrorKind::NotASectionFile {
@@ -307,10 +325,11 @@ enum StoreFormat {
     FssHttpB { packaging_offset: usize },
 }
 
-fn parse_store_auto(data: &[u8]) -> Result<ParsedStore> {
-    match sniff_store_format(data) {
+fn parse_store_auto(source: Arc<dyn FileSource>) -> Result<ParsedStore> {
+    let new_reader = || Reader::from_source(source.clone());
+    match sniff_store_format(&source) {
         Some(StoreFormat::FssHttpB { packaging_offset }) => {
-            let mut reader = Reader::new(data);
+            let mut reader = new_reader();
             reader.advance(packaging_offset)?;
 
             let packaging = OneStorePackaging::parse(&mut reader)?;
@@ -319,19 +338,19 @@ fn parse_store_auto(data: &[u8]) -> Result<ParsedStore> {
             Ok(ParsedStore::FssHttpB(store))
         }
         Some(StoreFormat::Desktop) => {
-            let mut reader = Reader::new(data);
+            let mut reader = new_reader();
             let store = RevisionStore::parse(&mut reader)?;
             Ok(ParsedStore::Desktop(store))
         }
         None => {
-            let fss_err = match OneStorePackaging::parse(&mut Reader::new(data))
+            let fss_err = match OneStorePackaging::parse(&mut new_reader())
                 .and_then(|packaging| parse_store(&packaging))
             {
                 Ok(store) => return Ok(ParsedStore::FssHttpB(store)),
                 Err(err) => err,
             };
 
-            let mut reader = Reader::new(data);
+            let mut reader = new_reader();
             match RevisionStore::parse(&mut reader) {
                 Ok(store) => Ok(ParsedStore::Desktop(store)),
                 Err(_) => Err(fss_err),
@@ -340,10 +359,8 @@ fn parse_store_auto(data: &[u8]) -> Result<ParsedStore> {
     }
 }
 
-fn sniff_store_format(data: &[u8]) -> Option<StoreFormat> {
-    // TODO: Read header directly?
-
-    let mut reader = Reader::new(data);
+fn sniff_store_format(source: &Arc<dyn FileSource>) -> Option<StoreFormat> {
+    let mut reader = Reader::from_source(source.clone());
     let _file_type = Guid::parse(&mut reader).ok()?;
     let _file = Guid::parse(&mut reader).ok()?;
     let legacy_file_version = Guid::parse(&mut reader).ok()?;
@@ -360,7 +377,13 @@ fn sniff_store_format(data: &[u8]) -> Option<StoreFormat> {
 
     if file_format == revision_store_format {
         if legacy_file_version.is_nil() {
-            if let Some(packaging_offset) = embedded_packaging_offset(data) {
+            // The embedded-packaging check needs a contiguous byte slice.
+            // We use `as_bytes()` when the source is in-memory; lazy-read
+            // sources skip this optimisation and fall back to the desktop
+            // format, which the parser will re-attempt if needed.
+            if let Some(bytes) = source.as_bytes()
+                && let Some(packaging_offset) = embedded_packaging_offset(&bytes)
+            {
                 return Some(StoreFormat::FssHttpB { packaging_offset });
             }
 

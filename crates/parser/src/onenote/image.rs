@@ -12,7 +12,7 @@ use crate::onestore::shared::file_blob::FileBlob;
 /// See [\[MS-ONE\] 2.2.24].
 ///
 /// [\[MS-ONE\] 2.2.24]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/b7bb4d1a-2a57-4819-9eb4-5a2ce8cf210f
-#[derive(Clone, PartialEq, PartialOrd, Debug)]
+#[derive(Clone, PartialEq, Debug)]
 pub struct Image {
     pub(crate) data: Option<FileBlob>,
     pub(crate) extension: Option<String>,
@@ -51,9 +51,13 @@ pub struct Image {
 impl Image {
     /// The image's binary data.
     ///
-    /// If `None` this means that the image data hasn't been uploaded yet.
-    pub fn data(&self) -> Option<&[u8]> {
-        self.data.as_ref().map(|blob| blob.as_ref())
+    /// Materialises the image into a fresh `Vec<u8>`. Returns `None` if the
+    /// image data hasn't been uploaded yet.
+    pub fn data(&self) -> Result<Option<Vec<u8>>> {
+        self.data
+            .as_ref()
+            .map(|blob| Ok(blob.to_bytes()?.to_vec()))
+            .transpose()
     }
 
     /// The image's file extension.

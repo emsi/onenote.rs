@@ -88,7 +88,7 @@ impl Parse for StringInStorageBuffer {
         let characer_count = reader.get_u32()? as usize;
         let string_size = characer_count * 2; // 2 bytes per character
         let data = reader.read(string_size)?;
-        let data = data.utf16_to_string()?;
+        let data = data.as_ref().utf16_to_string()?;
         Ok(Self {
             cch: characer_count,
             data,
@@ -189,14 +189,20 @@ pub(crate) struct FileData(pub(crate) FileBlob);
 
 impl Debug for FileData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "FileData(size={:} KiB)", self.0.as_ref().len() / 1024)
+        write!(f, "FileData(size={:} KiB)", self.0.size() / 1024)
     }
 }
 
 impl ParseWithCount for FileData {
     fn parse(reader: Reader, size: usize) -> Result<Self> {
-        let data = reader.read(size)?.to_vec();
-        Ok(FileData(data.into()))
+        // Capture a refcount-shared reference into the underlying source
+        // instead of copying the bytes out. For a memory-mapped notebook
+        // this means attachments don't duplicate the file's contents in
+        // process memory.
+        let source = reader.source();
+        let offset = reader.position();
+        reader.advance(size)?;
+        Ok(FileData(FileBlob::from_source(source, offset, size as u64)))
     }
 }
 
