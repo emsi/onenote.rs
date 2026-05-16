@@ -230,10 +230,9 @@ fn parse_ink_rec(
     depth: u32,
 ) -> Result<Ink> {
     if depth > MAX_INK_NESTING_DEPTH {
-        return Err(ErrorKind::MalformedOneNoteData(
-            "maximum ink nesting depth exceeded".into(),
-        )
-        .into());
+        return Err(
+            ErrorKind::MalformedOneNoteData("maximum ink nesting depth exceeded".into()).into(),
+        );
     }
 
     let container_object = space

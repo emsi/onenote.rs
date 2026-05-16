@@ -22,7 +22,10 @@ impl fmt::Debug for PropertySet {
         for (key, (_, value)) in &self.values {
             let key = format!("{:#x}", key);
             let value = format_property_value(value);
-            map.entry(&DebugOutput::from(key.as_str()), &DebugOutput::from(value.as_str()));
+            map.entry(
+                &DebugOutput::from(key.as_str()),
+                &DebugOutput::from(value.as_str()),
+            );
         }
         map.finish()
     }

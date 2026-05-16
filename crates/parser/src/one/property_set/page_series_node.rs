@@ -27,10 +27,7 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
     assert_property_set(object, PropertySetId::PageSeriesNode)?;
 
     let entity_guid = simple::parse_guid(PropertyType::NotebookManagementEntityGuid, object)?
-        .unwrap_or_else(|| {
-            log::warn!("page series has no guid");
-            Guid::nil()
-        });
+        .unwrap_or_else(warn_missing_guid);
     let page_spaces =
         ObjectSpaceReference::parse_vec(PropertyType::ChildGraphSpaceElementNodes, object)?
             .unwrap_or_default();
@@ -54,4 +51,12 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
     };
 
     Ok(data)
+}
+
+// TODO: thread a `ParserContext` through `parse` and switch this to the
+// crate-level `warn!(ctx, ...)` macro.
+#[allow(clippy::disallowed_macros)]
+fn warn_missing_guid() -> Guid {
+    log::warn!("page series has no guid");
+    Guid::nil()
 }

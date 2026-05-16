@@ -5,9 +5,9 @@ use bytes::Bytes;
 use std::fs;
 #[cfg(feature = "native-fs")]
 use std::fs::File;
-use std::io::{Error, Read};
 #[cfg(feature = "native-fs")]
 use std::io::BufReader;
+use std::io::{Error, Read};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 

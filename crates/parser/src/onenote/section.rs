@@ -69,10 +69,7 @@ impl SectionGroup {
     }
 }
 
-pub(crate) fn parse_section(
-    store: &(impl OneStore + ?Sized),
-    filename: String,
-) -> Result<Section> {
+pub(crate) fn parse_section(store: &(impl OneStore + ?Sized), filename: String) -> Result<Section> {
     let mut ctx = ParserContext {
         page: None,
         report: Report::new(),

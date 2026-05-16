@@ -228,8 +228,8 @@ mod test {
 
     #[test]
     fn test_property_bool() {
-        assert_eq!(PropertyId::new(0x08001C04).bool(), false);
-        assert_eq!(PropertyId::new(0x88001C04).bool(), true);
+        assert!(!PropertyId::new(0x08001C04).bool());
+        assert!(PropertyId::new(0x88001C04).bool());
         assert_eq!(PropertyId::new(0x88001C04).id(), 0x1C04);
         assert_eq!(PropertyId::new(0x88001C04).prop_type(), 0x2);
     }

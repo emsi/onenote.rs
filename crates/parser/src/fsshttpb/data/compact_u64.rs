@@ -164,7 +164,7 @@ mod test {
 
     #[test]
     fn test_35_bit() {
-        let value = 0x1ABCD_EF01u64;
+        let value = 0x1_ABCD_EF01u64;
         let encoded = (value << 5) | 0x10;
         let bytes = encoded.to_le_bytes();
         let input = [bytes[0], bytes[1], bytes[2], bytes[3], bytes[4]];
@@ -177,7 +177,7 @@ mod test {
 
     #[test]
     fn test_42_bit() {
-        let value = 0x1234_5678_9Au64;
+        let value = 0x12_3456_789Au64;
         let encoded = (value << 6) | 0x20;
         let bytes = encoded.to_le_bytes();
         let input = [bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5]];
@@ -190,7 +190,7 @@ mod test {
 
     #[test]
     fn test_49_bit() {
-        let value = 0x1234_5678_9ABu64;
+        let value = 0x123_4567_89ABu64;
         let encoded = (value << 7) | 0x40;
         let bytes = encoded.to_le_bytes();
         let input = [

@@ -28,11 +28,10 @@ pub(crate) struct PackageStore {
 impl PackageStore {
     /// Decompress a `.onepkg` cabinet from raw bytes.
     pub(crate) fn from_bytes(data: &[u8]) -> Result<Self> {
-        let mut cabinet = cab::Cabinet::new(Cursor::new(data)).map_err(|err| {
-            ErrorKind::MalformedPackage {
+        let mut cabinet =
+            cab::Cabinet::new(Cursor::new(data)).map_err(|err| ErrorKind::MalformedPackage {
                 message: format!("failed to read cabinet: {err}").into(),
-            }
-        })?;
+            })?;
 
         let names: Vec<String> = cabinet
             .folder_entries()
@@ -50,11 +49,12 @@ impl PackageStore {
                 continue;
             }
 
-            let mut reader = cabinet.read_file(&name).map_err(|err| {
-                ErrorKind::MalformedPackage {
-                    message: format!("failed to read cabinet entry {name}: {err}").into(),
-                }
-            })?;
+            let mut reader =
+                cabinet
+                    .read_file(&name)
+                    .map_err(|err| ErrorKind::MalformedPackage {
+                        message: format!("failed to read cabinet entry {name}: {err}").into(),
+                    })?;
             let mut buf = Vec::new();
             reader.read_to_end(&mut buf)?;
 

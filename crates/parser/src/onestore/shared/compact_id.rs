@@ -34,6 +34,6 @@ mod tests {
         let compact = CompactId::parse(&mut Reader::new(&data)).unwrap();
 
         assert_eq!(compact.n, 0xDD);
-        assert_eq!(compact.guid_index, 0xAABB_CC);
+        assert_eq!(compact.guid_index, 0xAA_BBCC);
     }
 }

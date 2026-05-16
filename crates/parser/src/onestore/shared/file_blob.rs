@@ -79,7 +79,9 @@ impl Debug for FileBlob {
         let tail_len = len - tail_offset;
 
         let head = self.source.read_at(self.offset, head_len);
-        let tail = self.source.read_at(self.offset + tail_offset as u64, tail_len);
+        let tail = self
+            .source
+            .read_at(self.offset + tail_offset as u64, tail_len);
 
         match (head, tail) {
             (Ok(head), Ok(tail)) => {

@@ -16,7 +16,10 @@ fn main() -> ExitCode {
     let data = match std::fs::read(&config.input_file) {
         Ok(data) => data,
         Err(err) => {
-            print_usage(&config.program_name, Some(&format!("file read error: {err}")));
+            print_usage(
+                &config.program_name,
+                Some(&format!("file read error: {err}")),
+            );
             return ExitCode::from(2);
         }
     };
