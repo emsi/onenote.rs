@@ -1,4 +1,3 @@
-use crate::errors::Result;
 use crate::fs::{BytesSource, FileSource};
 use bytes::Bytes;
 use std::fmt::Debug;
@@ -17,7 +16,7 @@ use std::sync::Arc;
 /// materialising it; [`FileBlob::to_bytes`] returns an owned `Bytes`
 /// (zero-copy when the backing is in-memory).
 #[derive(Clone)]
-pub struct FileBlob {
+pub(crate) struct FileBlob {
     source: Arc<dyn FileSource>,
     offset: u64,
     size: u64,
@@ -25,7 +24,7 @@ pub struct FileBlob {
 
 impl FileBlob {
     /// Construct a `FileBlob` over a slice of a [`FileSource`].
-    pub fn from_source(source: Arc<dyn FileSource>, offset: u64, size: u64) -> Self {
+    pub(crate) fn from_source(source: Arc<dyn FileSource>, offset: u64, size: u64) -> Self {
         Self {
             source,
             offset,
@@ -36,7 +35,7 @@ impl FileBlob {
     /// Construct a `FileBlob` from a stand-alone [`Bytes`] buffer (e.g.
     /// FSSHTTPB wire data that was decoded from the network rather than
     /// pulled from a file).
-    pub fn from_bytes(bytes: Bytes) -> Self {
+    pub(crate) fn from_bytes(bytes: Bytes) -> Self {
         let size = bytes.len() as u64;
         Self {
             source: Arc::new(BytesSource::new(bytes)),
@@ -46,15 +45,8 @@ impl FileBlob {
     }
 
     /// The size of the blob in bytes.
-    pub fn size(&self) -> u64 {
+    pub(crate) fn size(&self) -> u64 {
         self.size
-    }
-
-    /// Materialise the blob as a [`Bytes`] buffer.
-    ///
-    /// Zero-copy when the backing is in-memory; one allocation otherwise.
-    pub fn to_bytes(&self) -> Result<Bytes> {
-        Ok(self.source.read_at(self.offset, self.size as usize)?)
     }
 
     /// A [`Read`] over the blob.
@@ -62,8 +54,7 @@ impl FileBlob {
     /// For in-memory backings the read cursor is over a refcount-shared
     /// slice; for lazy-read backings the bytes are fetched on demand in
     /// chunks sized by the caller's read buffer.
-    #[allow(dead_code)] // used by Image::read / EmbeddedFile::read in #15195
-    pub fn read(&self) -> Box<dyn Read> {
+    pub(crate) fn read(&self) -> Box<dyn Read> {
         if let Some(buf) = self.source.as_bytes() {
             let start = self.offset as usize;
             let end = start + self.size as usize;
@@ -127,21 +118,9 @@ impl Default for FileBlob {
     }
 }
 
-impl From<Bytes> for FileBlob {
-    fn from(value: Bytes) -> Self {
-        Self::from_bytes(value)
-    }
-}
-
 impl From<Vec<u8>> for FileBlob {
     fn from(value: Vec<u8>) -> Self {
         Self::from_bytes(Bytes::from(value))
-    }
-}
-
-impl<'a> From<&'a [u8]> for FileBlob {
-    fn from(value: &'a [u8]) -> Self {
-        Self::from_bytes(Bytes::copy_from_slice(value))
     }
 }
 

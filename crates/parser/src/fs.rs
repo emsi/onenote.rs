@@ -5,10 +5,9 @@ use bytes::Bytes;
 use std::fs;
 #[cfg(feature = "native-fs")]
 use std::fs::File;
-#[cfg(not(feature = "native-fs"))]
-use std::io::Error;
+use std::io::{Error, Read};
 #[cfg(feature = "native-fs")]
-use std::io::{BufReader, Error, Read};
+use std::io::BufReader;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
@@ -81,6 +80,22 @@ pub trait FileSystem: Send + Sync + Copy {
     /// # Usage
     /// May be used for extracting embedded content or creating output files.
     fn write_file(&self, path: &Path, data: &[u8]) -> Result<(), Error>;
+
+    /// Stream the contents of `reader` to a file, replacing any existing
+    /// content.
+    ///
+    /// Intended for writing large attachment payloads out without
+    /// materialising them in memory. Implementations should write in
+    /// fixed-size chunks (`std::io::copy` on native, chunked
+    /// `appendFileSync`-style writes on WASM) rather than buffering the
+    /// whole stream — for that you can call [`FileSystem::write_file`]
+    /// directly.
+    ///
+    /// # Errors
+    ///
+    /// On failure mid-stream the destination file may be left in a
+    /// partially-written state.
+    fn stream_to_file(&self, path: &Path, reader: &mut dyn Read) -> Result<(), Error>;
 
     /// Creates a directory, including any missing parent directories.
     ///
@@ -256,6 +271,15 @@ impl FileSystem for NativeFs {
 
     fn write_file(&self, path: &Path, data: &[u8]) -> Result<(), Error> {
         fs::write(path, data)
+    }
+
+    /// Streams `reader` directly into the destination file via
+    /// `std::io::copy`, so large payloads never need to be materialised
+    /// in process memory.
+    fn stream_to_file(&self, path: &Path, reader: &mut dyn Read) -> Result<(), Error> {
+        let mut file = File::create(path)?;
+        std::io::copy(reader, &mut file)?;
+        Ok(())
     }
 
     fn make_dir(&self, path: &Path) -> Result<(), Error> {

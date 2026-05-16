@@ -49,15 +49,17 @@ pub struct Image {
 }
 
 impl Image {
-    /// The image's binary data.
+    /// A [`Read`] over the image's binary data.
     ///
-    /// Materialises the image into a fresh `Vec<u8>`. Returns `None` if the
-    /// image data hasn't been uploaded yet.
-    pub fn data(&self) -> Result<Option<Vec<u8>>> {
-        self.data
-            .as_ref()
-            .map(|blob| Ok(blob.to_bytes()?.to_vec()))
-            .transpose()
+    /// Bytes are pulled lazily from the underlying [`crate::fs::FileSource`].
+    /// Returns `None` if the image data hasn't been uploaded yet.
+    pub fn read(&self) -> Option<Box<dyn std::io::Read>> {
+        self.data.as_ref().map(|blob| blob.read())
+    }
+
+    /// The size of the image in bytes, or `None` if not yet uploaded.
+    pub fn size(&self) -> Option<u64> {
+        self.data.as_ref().map(|blob| blob.size())
     }
 
     /// The image's file extension.

@@ -45,12 +45,20 @@ impl EmbeddedFile {
         &self.file_type
     }
 
-    /// The file's binary data.
+    /// A [`Read`] over the file's binary data.
     ///
-    /// Materialises the embedded file into a fresh `Vec<u8>` by reading
-    /// from the underlying [`crate::fs::FileSource`].
-    pub fn data(&self) -> Result<Vec<u8>> {
-        Ok(self.data.to_bytes()?.to_vec())
+    /// Bytes are pulled lazily from the underlying [`crate::fs::FileSource`],
+    /// so the file is not materialised in memory just because you obtained
+    /// the reader. With a memory-mapped backing the read is zero-copy; with
+    /// a lazy backing each call to `read` triggers a fetch sized by the
+    /// caller's buffer.
+    pub fn read(&self) -> Box<dyn std::io::Read> {
+        self.data.read()
+    }
+
+    /// The size of the embedded file in bytes.
+    pub fn size(&self) -> u64 {
+        self.data.size()
     }
 
     /// The max width of the embedded file's icon in half-inch increments.

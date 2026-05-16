@@ -64,8 +64,7 @@ impl Reader {
     ///
     /// Only available when the source supports in-memory access (i.e.
     /// [`FileSource::as_bytes`] returned `Some`). Otherwise returns an
-    /// empty slice — use [`Reader::peek_bytes`] when reading ahead may
-    /// need to work against a lazy backing.
+    /// empty slice.
     pub(crate) fn bytes(&self) -> &[u8] {
         if let Some(buf) = &self.cached {
             let start = self.position as usize;
@@ -95,15 +94,6 @@ impl Reader {
         let bytes = self.fetch(self.position, count)?;
         self.position += count as u64;
         Ok(bytes)
-    }
-
-    /// Read `count` bytes without advancing the cursor.
-    #[allow(dead_code)] // useful for parser variants that look ahead; kept for symmetry with `read_bytes`
-    pub(crate) fn peek_bytes(&self, count: usize) -> Result<Bytes> {
-        if self.remaining() < count {
-            return Err(ErrorKind::UnexpectedEof.into());
-        }
-        self.fetch(self.position, count)
     }
 
     fn fetch(&self, offset: u64, len: usize) -> Result<Bytes> {

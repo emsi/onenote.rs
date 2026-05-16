@@ -157,6 +157,13 @@ impl FileSystem for PackageFs<'_> {
         ))
     }
 
+    fn stream_to_file(&self, _path: &Path, _reader: &mut dyn Read) -> std::io::Result<()> {
+        Err(IoError::new(
+            IoErrorKind::Unsupported,
+            "package file system is read-only",
+        ))
+    }
+
     fn make_dir(&self, _path: &Path) -> std::io::Result<()> {
         Err(IoError::new(
             IoErrorKind::Unsupported,
