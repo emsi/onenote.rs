@@ -31,6 +31,18 @@ impl EmbeddedFile {
     ///
     /// See [\[MS-ONE\] 2.2.71].
     ///
+    /// # Untrusted input
+    ///
+    /// This string is metadata from the parsed OneNote file and is
+    /// fully controlled by whoever authored that file. It may contain
+    /// path separators (`/`, `\`), parent-directory components (`..`),
+    /// NUL bytes, Windows reserved device names (`CON`, `COM1`, ...),
+    /// extremely long sequences, or arbitrary Unicode. **Consumers
+    /// that use this value as part of a write path on disk must
+    /// sanitise it themselves** — typically with `sanitize_filename`
+    /// or equivalent. Passing it unmodified to `std::fs::File::create`
+    /// is a path-traversal / device-handle vulnerability.
+    ///
     /// [\[MS-ONE\] 2.2.71]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/9c3409c0-0d81-42a8-bd97-d02a5b130b7d
     pub fn filename(&self) -> &str {
         &self.filename

@@ -399,13 +399,22 @@ fn resolve_entry_path(base_dir: &Path, entry: &str) -> Result<PathBuf> {
                 let name = name.to_str().ok_or_else(|| ErrorKind::InvalidPath {
                     message: "section entry contains non-utf8 characters".into(),
                 })?;
-                if !sanitize_filename::is_sanitized(name) {
-                    return Err(ErrorKind::InvalidPath {
-                        message: format!("section entry contains invalid characters: {name}")
-                            .into(),
-                    }
-                    .into());
-                }
+                // windows: false on every host so behaviour is deterministic
+                // across native/WASM/CI; we only strip path-traversal characters
+                // and control codes here. Defence against Windows reserved
+                // device names (CON, COM1, NUL, ...) is the FileSystem impl's
+                // responsibility — see the security contract on the trait.
+                // OneNote (Mac, and Windows via \\?\) legitimately writes
+                // section files with such names and we want to be able to
+                // parse them.
+                let name = sanitize_filename::sanitize_with_options(
+                    name,
+                    sanitize_filename::Options {
+                        windows: false,
+                        ..Default::default()
+                    },
+                );
+
                 sanitized.push(name);
             }
             Component::CurDir => {}
@@ -458,6 +467,7 @@ impl Default for Parser<NativeFs> {
 #[cfg(test)]
 mod tests {
     use super::resolve_entry_path;
+    use crate::fs::NativeFs;
     use std::path::Path;
     use tempfile::tempdir;
 

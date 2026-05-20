@@ -21,6 +21,46 @@ use std::sync::Arc;
 ///
 /// Implementations must also be `Copy` so callers can pass the filesystem handle
 /// by value.
+///
+/// # Security contract for path-taking methods
+///
+/// Paths handed to this trait by the parser come from two sources:
+///
+/// 1. Paths supplied directly by the caller via [`crate::Parser::parse_notebook`]
+///    or [`crate::Parser::parse_section`]. These are trusted.
+/// 2. Paths derived from `.onetoc2` section entries. These are
+///    **attacker-controlled** — a malicious notebook can put anything
+///    in there. The parser strips path-traversal structure (absolute
+///    paths, `..`, drive prefixes) and runs character-level
+///    sanitisation before calling into the implementation, but it
+///    **cannot** defend against host-specific filesystem quirks because
+///    it doesn't know which host the implementation runs on.
+///
+/// Implementations are therefore responsible for ensuring that opening,
+/// stat-ing, listing, or existence-checking a path cannot have
+/// unintended side effects on the host. The known failure mode is
+/// **Windows reserved device names** (`CON`, `PRN`, `AUX`, `NUL`,
+/// `COM0`–`COM9`, `LPT0`–`LPT9`): on a Windows host, standard Win32
+/// file APIs interpret a path whose basename matches one of these
+/// (with or without an extension) as a handle to the corresponding
+/// device — `std::fs::File::open("COM1")` opens the COM1 serial port,
+/// not a file. Implementations that may run on Windows must either:
+///
+/// - reject such paths upfront, or
+/// - prepend `\\?\` (Windows verbatim namespace) to an absolute,
+///   backslash-form path before invoking the underlying open. This
+///   applies to native Windows builds and to WASM builds whose
+///   JS shim ultimately invokes `fs.openSync` on Windows Node.js.
+///
+/// The bundled [`NativeFs`] impl handles this. External impls
+/// (WASM / JS shims / custom storage) must do the equivalent
+/// themselves.
+///
+/// Write methods ([`Self::write_file`], [`Self::stream_to_file`],
+/// [`Self::make_dir`]) are out of scope for this contract: write paths
+/// originate with the caller, not with parsed input, and consumers
+/// (e.g. one2html) are expected to sanitise output filenames before
+/// handing them to this trait.
 pub trait FileSystem: Send + Sync + Copy {
     /// Checks if the given path points to a directory.
     ///
@@ -143,6 +183,15 @@ pub trait FileSystem: Send + Sync + Copy {
         let bytes = Bytes::from(self.read_file(path)?);
         Ok(Arc::new(BytesSource::new(bytes)))
     }
+
+    /// Checks if the current operating system is Windows.
+    ///
+    /// # Returns
+    /// * `true` if the code is being compiled and run on a Windows operating system.
+    /// * `false` otherwise.
+    fn is_windows(&self) -> bool {
+        cfg!(windows)
+    }
 }
 
 /// A random-access byte source backing a parse.
@@ -207,7 +256,7 @@ impl FileSource for BytesSource {
             .checked_add(len)
             .filter(|&e| e <= self.bytes.len())
             .ok_or_else(|| {
-                std::io::Error::new(
+                Error::new(
                     std::io::ErrorKind::UnexpectedEof,
                     format!(
                         "BytesSource::read_at out of bounds: offset={offset} len={len} byte_length={}",
@@ -231,10 +280,51 @@ impl FileSource for BytesSource {
 #[derive(Clone, Copy)]
 pub struct NativeFs {}
 
+/// On Windows, rewrite `path` into the verbatim namespace (`\\?\…`).
+///
+/// Standard Win32 file APIs (which back `std::fs`) interpret a path
+/// whose basename matches a reserved DOS device name — `CON`, `PRN`,
+/// `AUX`, `NUL`, `COM0`–`COM9`, `LPT0`–`LPT9`, with or without an
+/// extension — as a handle to the corresponding device, not as a
+/// filename. A `.onetoc2` entry of `COM1` would therefore cause
+/// `File::open` to grab the serial port. Routing through `\\?\`
+/// disables that parsing and treats the path literally.
+///
+/// On non-Windows hosts this is a no-op identity passthrough; on
+/// Windows it produces an absolute, backslash-form path with the
+/// appropriate `\\?\` (drive) or `\\?\UNC\` (UNC share) prefix.
+#[cfg(feature = "native-fs")]
+fn nt_path(path: &Path) -> Result<std::borrow::Cow<'_, Path>, Error> {
+    #[cfg(windows)]
+    {
+        use std::ffi::OsString;
+        let abs = std::path::absolute(path)?;
+        let s = abs.to_string_lossy().replace('/', "\\");
+        if s.starts_with(r"\\?\") {
+            return Ok(std::borrow::Cow::Owned(PathBuf::from(s)));
+        }
+        let mut out = OsString::new();
+        if s.starts_with(r"\\") {
+            // UNC share path → \\?\UNC\server\share\...
+            out.push(r"\\?\UNC\");
+            out.push(&s[2..]);
+        } else {
+            out.push(r"\\?\");
+            out.push(&s);
+        }
+        Ok(std::borrow::Cow::Owned(PathBuf::from(out)))
+    }
+    #[cfg(not(windows))]
+    {
+        Ok(std::borrow::Cow::Borrowed(path))
+    }
+}
+
 #[cfg(feature = "native-fs")]
 impl FileSystem for NativeFs {
     fn is_directory(&self, path: &Path) -> Result<bool, Error> {
-        match fs::metadata(path) {
+        let path = nt_path(path)?;
+        match fs::metadata(&*path) {
             Ok(meta) => Ok(meta.is_dir()),
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
             Err(err) => Err(err),
@@ -242,9 +332,10 @@ impl FileSystem for NativeFs {
     }
 
     fn read_dir(&self, path: &Path) -> Result<Vec<PathBuf>, Error> {
+        let path = nt_path(path)?;
         let mut result = Vec::new();
 
-        for item in fs::read_dir(path)? {
+        for item in fs::read_dir(&*path)? {
             let item = item?.path();
             result.push(item)
         }
@@ -253,7 +344,8 @@ impl FileSystem for NativeFs {
     }
 
     fn read_file(&self, path: &Path) -> Result<Vec<u8>, Error> {
-        let file = File::open(path)?;
+        let path = nt_path(path)?;
+        let file = File::open(&*path)?;
         let size = file.metadata()?.len();
         let mut data = Vec::with_capacity(size as usize);
 
@@ -289,7 +381,8 @@ impl FileSystem for NativeFs {
     }
 
     fn exists(&self, path: &Path) -> Result<bool, Error> {
-        fs::exists(path)
+        let path = nt_path(path)?;
+        fs::exists(&*path)
     }
 
     /// Opens the file as an on-demand [`FileSource`].
@@ -310,7 +403,8 @@ impl FileSystem for NativeFs {
     /// has yet to read — there's no way to make that consistent — but the
     /// process won't be aborted.
     fn open_file(&self, path: &Path) -> Result<Arc<dyn FileSource>, Error> {
-        let file = File::open(path)?;
+        let path = nt_path(path)?;
+        let file = File::open(&*path)?;
         let byte_length = file.metadata()?.len();
         let raw = FileBackedSource { file, byte_length };
         Ok(Arc::new(CachedFileSource::new(raw)))
@@ -411,7 +505,7 @@ impl<S: FileSource> CachedFileSource<S> {
             if let Some(page) = cache.get(&page_start) {
                 page.clone()
             } else {
-                let len = ((self.inner.byte_length() - page_start).min(PAGE_SIZE)) as usize;
+                let len = (self.inner.byte_length() - page_start).min(PAGE_SIZE) as usize;
                 let p = self.inner.read_at(page_start, len)?;
                 cache.put(page_start, p.clone());
                 p
