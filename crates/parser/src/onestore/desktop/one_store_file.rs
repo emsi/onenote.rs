@@ -40,13 +40,13 @@ impl fmt::Debug for RevisionStore {
 }
 
 impl OneStore for RevisionStore {
-    fn get_type(&self) -> OneStoreType {
+    fn get_type(&self) -> Result<OneStoreType> {
         if self.header.file_type == guid!("{7B5C52E4-D88C-4DA7-AEB1-5378D02996D3}") {
-            OneStoreType::Section
+            Ok(OneStoreType::Section)
         } else if self.header.file_type == guid!("{43FF2FA1-EFD9-4C76-9EE2-10EA5722765F}") {
-            OneStoreType::TableOfContents
+            Ok(OneStoreType::TableOfContents)
         } else {
-            panic!("Invalid GUID on OneStoreFile")
+            Err(onestore_parse_error!("Invalid GUID on OneStoreFile").into())
         }
     }
 

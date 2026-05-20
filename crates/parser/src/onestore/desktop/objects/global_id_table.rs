@@ -53,7 +53,10 @@ impl GlobalIdTable {
                         .insert(entry.i_index_map_from, entry.i_index_map_to);
                 }
                 FileNodeData::GlobalIdTableEntry3FNDX(_entry) => {
-                    todo!("Not implemented");
+                    return Err(onestore_parse_error!(
+                        "FileNodeData::GlobalIdTableEntry3FNDX has not been implemented yet",
+                    )
+                    .into());
                 }
                 FileNodeData::UnknownNode(_node) => {
                     log::warn!(

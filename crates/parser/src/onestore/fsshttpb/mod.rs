@@ -42,11 +42,11 @@ impl PackagingStore {
 }
 
 impl OneStore for PackagingStore {
-    fn get_type(&self) -> OneStoreType {
+    fn get_type(&self) -> Result<OneStoreType> {
         if self.is_onestore() {
-            OneStoreType::Section
+            Ok(OneStoreType::Section)
         } else {
-            OneStoreType::TableOfContents
+            Ok(OneStoreType::TableOfContents)
         }
     }
 

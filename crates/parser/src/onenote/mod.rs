@@ -113,7 +113,7 @@ impl<FS: FileSystem> Parser<FS> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
 
-        if store.get_type() != OneStoreType::TableOfContents {
+        if store.get_type()? != OneStoreType::TableOfContents {
             return Err(ErrorKind::NotATocFile {
                 file: path.to_string_lossy().to_string(),
             }
@@ -174,7 +174,7 @@ impl<FS: FileSystem> Parser<FS> {
         let source: Arc<dyn FileSource> = Arc::new(BytesSource::new(Bytes::copy_from_slice(data)));
         let store = parse_store_auto(source)?;
 
-        if store.get_type() != OneStoreType::Section {
+        if store.get_type()? != OneStoreType::Section {
             return Err(ErrorKind::NotASectionFile {
                 file: file_name.to_string_lossy().into_owned(),
             }
@@ -216,7 +216,7 @@ impl<FS: FileSystem> Parser<FS> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
 
-        if store.get_type() != OneStoreType::Section {
+        if store.get_type()? != OneStoreType::Section {
             return Err(ErrorKind::NotASectionFile {
                 file: path.to_string_lossy().to_string(),
             }
@@ -288,7 +288,7 @@ enum ParsedStore {
 }
 
 impl ParsedStore {
-    fn get_type(&self) -> OneStoreType {
+    fn get_type(&self) -> Result<OneStoreType> {
         match self {
             ParsedStore::Desktop(store) => store.get_type(),
             ParsedStore::FssHttpB(store) => store.get_type(),

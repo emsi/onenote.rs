@@ -1,5 +1,6 @@
 #![allow(clippy::disallowed_macros)]
 
+use crate::errors::Result;
 use crate::fsshttpb::data::cell_id::CellId;
 use crate::fsshttpb::data::exguid::ExGuid;
 use crate::one::property_set::PropertySetId;
@@ -15,7 +16,7 @@ pub mod fsshttpb;
 pub mod shared;
 
 pub(crate) trait OneStore: fmt::Debug {
-    fn get_type(&self) -> OneStoreType;
+    fn get_type(&self) -> Result<OneStoreType>;
 
     fn data_root(&self) -> &dyn ObjectSpace;
 
