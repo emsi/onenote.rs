@@ -496,11 +496,12 @@ pub(crate) fn parse_rich_text(
             // In the first case, the object reference is skipped automatically.
             // In the second, we adjust so references for subsequent objects aren't
             // shifted.
-            if let Some(object_type) = object_type
-                && is_valid_ref
-                && (object_type == INK_END_OF_LINE_BLOB || object_type == INK_SPACE_BLOB)
-            {
-                objects_without_ref += 1;
+            if let Some(object_type) = object_type {
+                if is_valid_ref
+                    && (object_type == INK_END_OF_LINE_BLOB || object_type == INK_SPACE_BLOB)
+                {
+                    objects_without_ref += 1;
+                }
             }
 
             match object_type {

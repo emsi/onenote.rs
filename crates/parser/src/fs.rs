@@ -400,10 +400,10 @@ impl<S: FileSource> CachedFileSource<S> {
     /// the last-access cache, then the LRU, then the inner source.
     fn page(&self, page_start: u64) -> Result<Bytes, Error> {
         // Fast path: same page as the previous call.
-        if let Some((p, b)) = &*self.last.lock().unwrap()
-            && *p == page_start
-        {
-            return Ok(b.clone());
+        if let Some((p, b)) = &*self.last.lock().unwrap() {
+            if *p == page_start {
+                return Ok(b.clone());
+            }
         }
 
         let page = {

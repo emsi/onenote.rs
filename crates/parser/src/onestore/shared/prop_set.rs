@@ -35,13 +35,14 @@ fn format_property_value(value: &PropertyValue) -> String {
         // OneNote strings are commonly stored as UTF-16-encoded byte vecs.
         // Try decoding; if the result contains any ASCII letter/space treat
         // it as a string for readability while still showing the raw bytes.
-        if let Ok(decoded) = bytes.as_slice().utf16_to_string()
-            && !decoded.is_empty()
-            && decoded
-                .chars()
-                .any(|c| c.is_ascii_whitespace() || c.is_ascii_alphanumeric())
-        {
-            return format!("{:?} ({:?})", decoded, bytes);
+        if let Ok(decoded) = bytes.as_slice().utf16_to_string() {
+            if !decoded.is_empty()
+                && decoded
+                    .chars()
+                    .any(|c| c.is_ascii_whitespace() || c.is_ascii_alphanumeric())
+            {
+                return format!("{:?} ({:?})", decoded, bytes);
+            }
         }
         return format!("{:?}", bytes);
     }
