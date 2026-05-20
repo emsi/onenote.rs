@@ -1,5 +1,6 @@
 use super::file_data_store::FileDataStore;
 use crate::errors::Result;
+use crate::fsshttpb::data::exguid::ExGuid;
 use crate::onestore::desktop::file_node::FileNodeData;
 use crate::onestore::desktop::file_structure::FileNodeList;
 use crate::onestore::desktop::objects::object_space::ObjectSpace;
@@ -24,13 +25,33 @@ impl<'a> RootFileNodeList {
         node_list: &'a FileNodeList,
         context: &'a ParseContext<'a>,
     ) -> Result<Self> {
-        let mut file_data_store = None;
+        let file_data_store = Self::find_file_data_store(node_list)?;
 
+        let context = if let Some(file_data_store) = &file_data_store {
+            context.with_file_data_store(file_data_store)
+        } else {
+            context.clone()
+        };
+        let (object_spaces, root_object_space_id) = Self::parse_object_spaces(node_list, &context)?;
+
+        let root_object_space_id = root_object_space_id.ok_or_else(|| {
+            onestore_parse_error!("Root file node list did not contain a node with the root ID")
+        })?;
+        let root_object_space_index =
+            Self::find_root_object_space_index(&object_spaces, root_object_space_id)?;
+
+        Ok(Self {
+            root_object_space_index,
+            // file_data_store,
+            object_spaces,
+        })
+    }
+
+    fn find_file_data_store(node_list: &'a FileNodeList) -> Result<Option<FileDataStore>> {
+        let mut file_data_store = None;
         let mut iterator = node_list.iter_data();
-        loop {
-            if iterator.peek().is_none() {
-                break;
-            }
+
+        while iterator.peek().is_some() {
             if let Some(data_store) = FileDataStore::try_parse(&mut iterator)? {
                 if file_data_store.is_some() {
                     return Err(onestore_parse_error!(
@@ -44,60 +65,58 @@ impl<'a> RootFileNodeList {
             }
         }
 
-        let (object_spaces, root_object_space_id) = {
-            let context = if let Some(file_data_store) = &file_data_store {
-                context.with_file_data_store(file_data_store)
+        Ok(file_data_store)
+    }
+
+    fn parse_object_spaces(
+        node_list: &'a FileNodeList,
+        context: &ParseContext<'a>,
+    ) -> Result<(Vec<ObjectSpace>, Option<ExGuid>)> {
+        let mut object_spaces = Vec::new();
+        let mut root_object_space_id = None;
+
+        let mut iterator = node_list.iter_data();
+        let mut last_index = iterator.get_index();
+
+        while let Some(current) = iterator.peek() {
+            if let Some(object_space) = ObjectSpace::try_parse(&mut iterator, context)? {
+                object_spaces.push(object_space);
+            } else if FileDataStore::try_parse(&mut iterator)?.is_some() {
+                // FileDataStore can only appear in the root file node list. It may be
+                // located anywhere in this list, so skip it in this pass.
+            } else if let FileNodeData::ObjectSpaceManifestRootFND(data) = current {
+                root_object_space_id = Some(data.gosid_root.into());
+
+                iterator.next();
             } else {
-                context.clone()
-            };
-
-            let mut object_spaces = Vec::new();
-            let mut root_object_space_id = None;
-
-            let mut iterator = node_list.iter_data();
-            let mut last_index: usize = iterator.get_index();
-            while let Some(current) = iterator.peek() {
-                if let Some(object_space) = ObjectSpace::try_parse(&mut iterator, &context)? {
-                    object_spaces.push(object_space);
-                } else if FileDataStore::try_parse(&mut iterator)?.is_some() {
-                    // File data stores may appear anywhere in the list; skip in this pass.
-                } else if let FileNodeData::ObjectSpaceManifestRootFND(data) = current {
-                    iterator.next();
-                    root_object_space_id = Some(data.gosid_root.into());
-                } else {
-                    return Err(onestore_parse_error!(
-                        "Unexpected entry in the root file node list: {:?}",
-                        current
-                    )
-                    .into());
-                }
-
-                let index = iterator.get_index();
-                if index == last_index {
-                    println!(
-                        "Indexes equal: {} = {}. Parsing: {:?}",
-                        index, index, current
-                    )
-                }
-                assert_ne!(index, last_index);
-                last_index = index;
+                return Err(onestore_parse_error!(
+                    "Unexpected entry in the root file node list: {:?}",
+                    current
+                )
+                .into());
             }
 
-            (object_spaces, root_object_space_id)
-        };
+            let index = iterator.get_index();
+            if index == last_index {
+                return Err(onestore_parse_error!(
+                    "Parser did not advance while parsing root file node list entry: {:?}",
+                    current
+                )
+                .into());
+            }
+            last_index = index;
+        }
 
-        let root_object_space_id = root_object_space_id.ok_or_else(|| {
-            onestore_parse_error!("Root file node list did not contain a node with the root ID")
-        })?;
-        let root_object_space_index = object_spaces
+        Ok((object_spaces, root_object_space_id))
+    }
+
+    fn find_root_object_space_index(
+        object_spaces: &[ObjectSpace],
+        root_id: ExGuid,
+    ) -> Result<usize> {
+        object_spaces
             .iter()
-            .position(|space| space.id == root_object_space_id)
-            .ok_or_else(|| onestore_parse_error!("Should have a default object space"))?;
-
-        Ok(Self {
-            root_object_space_index,
-            // file_data_store,
-            object_spaces,
-        })
+            .position(|space| space.id == root_id)
+            .ok_or_else(|| onestore_parse_error!("Should have a default object space").into())
     }
 }
