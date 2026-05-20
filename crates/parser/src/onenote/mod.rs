@@ -16,7 +16,6 @@ use crate::reader::Reader;
 use crate::shared::guid::Guid;
 use crate::warn::Report;
 use bytes::Bytes;
-use sanitise_file_name::sanitise;
 use std::ffi::OsStr;
 use std::path::{Component, Path, PathBuf};
 use std::sync::Arc;
@@ -400,8 +399,7 @@ fn resolve_entry_path(base_dir: &Path, entry: &str) -> Result<PathBuf> {
                 let name = name.to_str().ok_or_else(|| ErrorKind::InvalidPath {
                     message: "section entry contains non-utf8 characters".into(),
                 })?;
-                let clean = sanitise(name);
-                if clean != name {
+                if !sanitize_filename::is_sanitized(name) {
                     return Err(ErrorKind::InvalidPath {
                         message: format!("section entry contains invalid characters: {name}")
                             .into(),
