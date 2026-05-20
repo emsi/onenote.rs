@@ -47,7 +47,16 @@ impl FileNodeListFragment {
                 file_nodes.push(file_node);
             }
 
-            assert_eq!(remaining_0 - reader.remaining(), file_node_size);
+            let consumed = remaining_0 - reader.remaining();
+            if consumed != file_node_size {
+                return Err(ErrorKind::MalformedOneNoteFileData(
+                    format!(
+                        "FileNodeListFragment size accounting mismatch: reader consumed {consumed} bytes, declared sizes summed to {file_node_size}"
+                    )
+                    .into(),
+                )
+                .into());
+            }
         }
 
         context.update_remaining_nodes_in_fragment(&header, maximum_node_count);
