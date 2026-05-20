@@ -1,6 +1,9 @@
 [advisories]
 unmaintained = "workspace"
 yanked = "warn"
+ignore = [
+    { id = "RUSTSEC-2026-0009", reason = "time 0.3 RFC 2822 stack-exhaustion DoS; this crate only uses time::UtcDateTime/Duration arithmetic on numeric OneNote timestamps and never parses RFC 2822 input. Fix requires time >= 0.3.47, which needs Rust 1.88 (workspace MSRV is 1.85)." },
+]
 
 [licenses]
 allow = [
@@ -9,6 +12,7 @@ allow = [
     "MIT",
     "MPL-2.0",
     "Unicode-3.0",
+    "Zlib",
 ]
 
 [bans]
