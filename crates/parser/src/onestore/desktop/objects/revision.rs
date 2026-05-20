@@ -163,7 +163,13 @@ impl<'a> Revision {
 
             // Prevent infinite loops
             let current_index = iterator.get_index();
-            assert_ne!(last_index, current_index);
+            if current_index == last_index {
+                return Err(onestore_parse_error!(
+                    "Parser did not advance while parsing Revision entry: {:?}",
+                    current
+                )
+                .into());
+            }
             last_index = current_index;
         }
 

@@ -15,8 +15,8 @@
 //! # Supported attributes
 //! - `#[validate(expr)]` (struct-level): Runs after field parsing and returns
 //!   `ParseValidationFailed` when `expr` evaluates to `false`.
-//! - `#[assert_offset(n)]` (field-level): Debug helper that asserts a field
-//!   starts at byte offset `n` from the start of the struct.
+//! - `#[assert_offset(n)]` (field-level): Validates that a field starts at byte
+//!   offset `n` from the start of the struct.
 //! - `#[pad_to_alignment(n)]` (field-level): Advances the reader by up to
 //!   `n - 1` bytes after parsing a field to align subsequent parsing.
 //! - `#[parse_additional_args(args)]` (field-level): Passes extra arguments to
@@ -36,7 +36,7 @@ use syn::{DeriveInput, Expr, parse_macro_input, spanned::Spanned};
 /// Auto-implements the `Parse` trait. Can be applied using `#[derive(Parse)]`.
 /// Attributes:
 /// - #[validate(callback)]: Extra validation logic. This should go at the beginning of the struct declaration.
-/// - #[assert_offset(n)]: For debugging. Assert that some struct field has offset `n` from the beginning of the struct.
+/// - #[assert_offset(n)]: Ensures a struct field has offset `n` from the beginning of the struct.
 /// - #[pad_to_alignment(n)]: Attaches to a struct field to add up to n bytes of padding.
 /// - #[parse_additional_args(arg1, arg2)]: Attaches to a struct field. Includes additional arguments to be provided to that field's `::parse` method.
 #[proc_macro_derive(
@@ -136,7 +136,14 @@ fn process_fields(data: &syn::Data, attrs: &Vec<syn::Attribute>) -> TokenStream 
                                         let remaining_1 = reader.remaining();
                                         let actual_offset = _parse_remaining_0 - remaining_1;
                                         let expected_offset = #offset;
-                                        assert_eq!(actual_offset, expected_offset);
+                                        if actual_offset != expected_offset {
+                                            return Err(crate::errors::ErrorKind::ParseValidationFailed(
+                                                format!(
+                                                    "Field offset mismatch: expected {}, got {}",
+                                                    expected_offset, actual_offset
+                                                ).into()
+                                            ).into());
+                                        }
                                     }
                                 })
                             } else {

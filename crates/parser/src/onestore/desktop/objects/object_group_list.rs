@@ -87,7 +87,13 @@ impl ObjectGroupList {
             }
 
             let index = iterator.get_index();
-            assert_ne!(index, last_index);
+            if index == last_index {
+                return Err(onestore_parse_error!(
+                    "Parser did not advance while parsing ObjectGroupList entry: {:?}",
+                    item
+                )
+                .into());
+            }
             last_index = index;
         }
 

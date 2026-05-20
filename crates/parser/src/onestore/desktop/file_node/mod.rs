@@ -239,7 +239,17 @@ impl FileNode {
             other => {
                 log::warn!("Unknown node type: {:#0x}, size {}", other, size);
                 let size_used = remaining_0 - remaining_1;
-                assert!(size_used <= size);
+                if size_used > size {
+                    return Err(ErrorKind::MalformedOneNoteFileData(
+                        format!(
+                            "Unknown node consumed more bytes than declared size. Node type: {:#0x}, consumed: {}, declared: {}",
+                            other, size_used, size
+                        )
+                        .into(),
+                    )
+                    .into());
+                }
+
                 let remaining_size = size - size_used;
                 FileNodeData::UnknownNode(UnknownNode::parse(reader, remaining_size)?)
             }
