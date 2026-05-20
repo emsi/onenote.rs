@@ -12,7 +12,7 @@ use crate::onestore::shared::jcid::JcId;
 use crate::onestore::shared::object_prop_set::ObjectPropSet;
 use crate::shared::guid::Guid;
 use crate::utils::Utf16ToString;
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 use std::fmt::Debug;
 
 pub(crate) trait ParseWithRef<'a>

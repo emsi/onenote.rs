@@ -4,7 +4,7 @@ use crate::onestore::desktop::ExGuid;
 use crate::onestore::desktop::file_node::revision_manifest::RevisionManifestListReferenceFND;
 use crate::onestore::desktop::file_node::shared::ParseWithRef;
 use crate::onestore::desktop::file_node::{FileNodeData, FileNodeDataRef};
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 #[derive(Debug, Clone, Parse)]
 pub(crate) struct ObjectSpaceManifestRootFND {

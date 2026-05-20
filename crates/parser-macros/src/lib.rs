@@ -1,6 +1,30 @@
-//! Adds support for #[derive(Parse)]. In many cases, this allows the `Parse`
-//! trait for binary->struct parsing to be auto-implemented based on a struct
-//! definition.
+//! Internal proc-macro support crate for `onenote_parser`.
+//!
+//! This crate provides `#[derive(Parse)]`, which is used by the parser's
+//! low-level OneStore/OneNote decoding types to reduce handwritten binary
+//! parsing boilerplate.
+//!
+//! It is intended for internal use inside this workspace. Most users should use
+//! the high-level `onenote_parser` crate API instead of depending on this crate
+//! directly.
+//!
+//! The derive generates an implementation of
+//! `crate::onestore::desktop::parse::Parse` for a struct by parsing each field
+//! in declaration order from a shared reader.
+//!
+//! # Supported attributes
+//! - `#[validate(expr)]` (struct-level): Runs after field parsing and returns
+//!   `ParseValidationFailed` when `expr` evaluates to `false`.
+//! - `#[assert_offset(n)]` (field-level): Debug helper that asserts a field
+//!   starts at byte offset `n` from the start of the struct.
+//! - `#[pad_to_alignment(n)]` (field-level): Advances the reader by up to
+//!   `n - 1` bytes after parsing a field to align subsequent parsing.
+//! - `#[parse_additional_args(args)]` (field-level): Passes extra arguments to
+//!   a field type's `::parse(...)` call.
+//!
+//! # Scope and limitations
+//! - Only named-field structs are currently implemented.
+//! - Tuple structs, unit structs, enums, and unions are not yet supported.
 
 // Development ref: See the relevant syn example: https://github.com/dtolnay/syn/blob/master/examples/heapsize/heapsize_derive/src/lib.rs
 

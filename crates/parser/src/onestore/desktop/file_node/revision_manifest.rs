@@ -2,7 +2,7 @@ use crate::Reader;
 use crate::onestore::desktop::ExGuid;
 use crate::onestore::desktop::file_node::shared::PointerToListFND;
 use crate::onestore::desktop::parse::Parse;
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 /// See [MS-ONESTORE 2.1.10](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/14af4d81-c2d6-43e6-8bd4-508d4123fb22)
 pub(crate) type RevisionManifestListReferenceFND = PointerToListFND;

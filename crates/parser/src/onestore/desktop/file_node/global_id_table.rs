@@ -1,5 +1,5 @@
 use crate::shared::guid::Guid;
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 #[derive(Debug, Clone, Parse)]
 #[allow(dead_code)]

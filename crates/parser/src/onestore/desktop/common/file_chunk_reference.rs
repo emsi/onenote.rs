@@ -1,5 +1,5 @@
 use crate::{errors::ErrorKind, errors::Result};
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 /// See [\[MS-ONESTORE\] 2.2.4](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/0d86b13d-d58c-44e8-b931-4728b9d39a4b)
 pub(crate) trait FileChunkReference {

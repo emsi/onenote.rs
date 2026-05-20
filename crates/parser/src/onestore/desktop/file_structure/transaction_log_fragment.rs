@@ -2,7 +2,7 @@ use super::super::common::FileChunkReference64x32;
 use crate::Reader;
 use crate::errors::{ErrorKind, Result};
 use crate::onestore::desktop::parse::{Parse, ParseWithCount};
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 /// See [\[MS-ONESTORE\] 2.3.3.1](https://learn.microsoft.com/en-us/openspecs/office_file_formats/ms-onestore/158030a2-dbf0-4b92-bf6e-1a91a403aebd)
 #[derive(Debug)]

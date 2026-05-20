@@ -3,7 +3,7 @@ use crate::Reader;
 use crate::errors::{ErrorKind, Result};
 use crate::onestore::desktop::parse::Parse;
 use crate::shared::guid::Guid;
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 /// A OneNote file header in the standard OneNote 2016 format.
 ///

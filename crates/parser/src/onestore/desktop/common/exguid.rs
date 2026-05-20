@@ -2,7 +2,7 @@ use crate::errors::Result;
 use crate::onestore::desktop::parse::Parse;
 use crate::shared::guid::Guid;
 use crate::{Reader, fsshttpb};
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Parse)]
 pub(crate) struct ExGuid {

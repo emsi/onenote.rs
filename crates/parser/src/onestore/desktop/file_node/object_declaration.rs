@@ -9,7 +9,7 @@ use crate::onestore::desktop::parse::Parse;
 use crate::onestore::shared::compact_id::CompactId;
 use crate::onestore::shared::jcid::JcId;
 use crate::onestore::shared::object_prop_set::ObjectPropSet;
-use parser_macros::Parse;
+use onenote_parser_macros::Parse;
 
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
