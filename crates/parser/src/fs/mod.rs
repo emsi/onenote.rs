@@ -24,6 +24,11 @@ pub mod native_fs;
 ///
 /// # Security contract for path-taking methods
 ///
+/// See the crate-level [Path handling](crate#path-handling) section for
+/// how callers construct the `TypedPath`s that reach this trait. This
+/// section covers the *outbound* half — what an implementation must
+/// guarantee when translating those paths to the underlying storage.
+///
 /// Paths handed to this trait by the parser come from two sources:
 ///
 /// 1. Paths supplied directly by the caller via [`crate::Parser::parse_notebook`]
@@ -58,9 +63,10 @@ pub mod native_fs;
 ///
 /// Write methods ([`Self::write_file`], [`Self::stream_to_file`],
 /// [`Self::make_dir`]) are out of scope for this contract: write paths
-/// originate with the caller, not with parsed input, and consumers
-/// (e.g. one2html) are expected to sanitise output filenames before
-/// handing them to this trait.
+/// originate with the user, not with parsed input (we don't write files
+/// during parsing), and users of this library (e.g. one2html) are
+/// expected to sanitise output filenames before handing them to this
+/// trait.
 pub trait FileSystem: Send + Sync + Copy {
     /// Checks if the given path points to a directory.
     ///
@@ -156,11 +162,7 @@ pub trait FileSystem: Send + Sync + Copy {
     /// Resolve `path` to a canonical, symlink-followed form.
     ///
     /// Used to verify that resolved section-entry paths do not escape the
-    /// notebook base directory through symlinks. The default
-    /// implementation is a textual passthrough — appropriate for
-    /// in-memory and WASM backends that don't model symlinks. Backends
-    /// that talk to a real filesystem (e.g. [`NativeFs`]) should override
-    /// this to perform proper canonicalization.
+    /// notebook base directory through symlinks.
     fn canonicalize(&self, path: TypedPath) -> Result<TypedPathBuf, Error>;
 
     /// Checks if a path exists in the file system.

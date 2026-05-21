@@ -26,6 +26,7 @@ use onenote_parser::fs::native_fs::NativeFs;
 use onenote_parser::fs::{FileSource, FileSystem};
 use std::hint::black_box;
 use std::io;
+use std::io::Error;
 use std::sync::Arc;
 use typed_path::{TypedPath, TypedPathBuf};
 
@@ -71,6 +72,11 @@ impl<'a> FileSystem for InMemFs<'a> {
     fn make_dir(&self, _: TypedPath) -> io::Result<()> {
         unimplemented!("bench fs is read-only")
     }
+
+    fn canonicalize(&self, path: TypedPath) -> Result<TypedPathBuf, Error> {
+        Ok(path.to_path_buf())
+    }
+
     fn exists(&self, _: TypedPath) -> io::Result<bool> {
         Ok(true)
     }

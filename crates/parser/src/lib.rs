@@ -95,6 +95,36 @@
 //! may fail with [`MalformedOneStoreData`](errors::ErrorKind::MalformedOneStoreData)
 //! or [`IO`](errors::ErrorKind::IO).
 //!
+//! # Path handling
+//!
+//! Paths cross two boundaries in this crate.
+//!
+//! **Inbound: caller → parser.** [`Parser::parse_notebook`] /
+//! [`Parser::parse_section`] / [`Parser::parse_package`] take a
+//! [`typed_path::TypedPath`], which carries a runtime
+//! [`PathType`](typed_path::PathType) tag selecting Unix or Windows
+//! parsing rules. Pick the encoding that matches your byte source:
+//!
+//! - From a host-shaped source (argv, `std::env`, `std::fs::read_dir`):
+//!   match the host. On Unix bridge via
+//!   [`OsStrExt::as_bytes`](std::os::unix::ffi::OsStrExt::as_bytes); on
+//!   Windows go through `to_str()`. `TypedPath::derive` is a convenience
+//!   for this case — it picks Windows iff the string starts with `\`,
+//!   otherwise Unix.
+//! - From bytes of unknown provenance: prefer
+//!   `TypedPath::new(_, PathType::Windows)`. Windows parsing treats both
+//!   `/` and `\` as separators, so component-level validation can't be
+//!   bypassed by switching separators. Do **not** use `derive` here.
+//!
+//! **Outbound: parser → host.** The parser hands `TypedPath`s back to
+//! the [`FileSystem`] impl, which is responsible for translating them
+//! into whatever the underlying storage expects. The bundled
+//! [`fs::NativeFs`] does an encoding-checked conversion (rejecting paths
+//! with the wrong encoding at the boundary) and routes Windows opens
+//! through the `\\?\` verbatim namespace to neutralise the DOS device-
+//! name trap (`CON`, `COM1`, …). Custom impls own the equivalent
+//! defence, see the security contract on the [`FileSystem`] trait.
+//!
 //! # Stability
 //!
 //! The public API follows semantic versioning and is intended to be stable.

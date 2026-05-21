@@ -347,6 +347,17 @@ impl<FS: FileSystem> Parser<FS> {
             .into());
         }
 
+        // `TypedPath::join` and `starts_with` take `impl AsRef<[u8]>` and
+        // reinterpret the argument under *self*'s encoding — the argument's
+        // own encoding tag is discarded. We therefore have to know, at every
+        // byte-level call below, why the two sides agree.
+        //
+        // `sanitized` is `PathType::Windows` but each component went through
+        // `sanitize_filename` (which strips `/`, `\`, and other separators)
+        // and we only `push`ed `Normal`/`CurDir` components. So its byte form
+        // is a separator-free leaf-or-leaves sequence that parses identically
+        // under any encoding — reinterpreting it under `base_dir`'s encoding
+        // is a no-op.
         let candidate = base_dir.join(sanitized.as_bytes());
         if self.fs.exists(candidate.to_path()).unwrap_or(false) {
             let base_canon =
@@ -360,6 +371,13 @@ impl<FS: FileSystem> Parser<FS> {
                     message: format!("failed to resolve entry path: {err}").into(),
                 }
             })?;
+
+            // Both paths come from the same `FileSystem::canonicalize` impl
+            // on the same call, so they share an encoding by construction
+            // (host-native for `NativeFs`, Unix for `PackageFs`). That makes
+            // the byte-level `starts_with` a valid component-prefix check —
+            // the encoding tag dropped by `AsRef<[u8]>` would have matched
+            // self's anyway.
             if !candidate_canon.starts_with(base_canon.as_bytes()) {
                 return Err(ErrorKind::InvalidPath {
                     message: "section entry escapes base directory".into(),
