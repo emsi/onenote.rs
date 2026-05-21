@@ -6,7 +6,7 @@ use crate::onestore::desktop::file_node::FileNodeData;
 use crate::onestore::desktop::file_node::revision_manifest::RevisionManifestListStartFND;
 use crate::onestore::desktop::file_structure::FileNodeDataIterator;
 use crate::onestore::desktop::objects::parse_context::ParseContext;
-use crate::onestore::desktop::objects::revision::Revision;
+use crate::onestore::desktop::objects::revision;
 
 #[derive(Debug)]
 pub(crate) struct RevisionManifestList {}
@@ -71,7 +71,7 @@ impl<'a> RevisionManifestList {
                     }
                 }
                 node => {
-                    let revision_id = Revision::try_parse_into(iterator, context, roots, objects)?
+                    let revision_id = revision::try_parse_into(iterator, context, roots, objects)?
                         .ok_or_else(|| {
                             onestore_parse_error!(
                                 "Unexpected node encountered in RevisionManifestList: {:?}",
