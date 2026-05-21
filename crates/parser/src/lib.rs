@@ -13,11 +13,11 @@
 //!
 //! ```no_run
 //! use onenote_parser::Parser;
-//! use std::path::Path;
+//! use typed_path::TypedPath;
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! let mut parser = Parser::new();
-//! let notebook = parser.parse_notebook(Path::new("My Notebook.onetoc2"))?;
+//! let notebook = parser.parse_notebook(TypedPath::derive("My Notebook.onetoc2"))?;
 //! println!("sections: {}", notebook.entries().len());
 //! # Ok(())
 //! # }

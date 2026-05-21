@@ -16,13 +16,13 @@ use crate::FileSystem;
 use crate::errors::{ErrorKind, Result};
 use std::collections::{HashMap, HashSet};
 use std::io::{Cursor, Error as IoError, ErrorKind as IoErrorKind, Read};
-use std::path::{Path, PathBuf};
+use typed_path::{TypedPath, TypedPathBuf};
 
 /// In-memory snapshot of the files contained in a `.onepkg` cabinet.
 pub(crate) struct PackageStore {
-    files: HashMap<PathBuf, Vec<u8>>,
-    dirs: HashSet<PathBuf>,
-    toc_path: PathBuf,
+    files: HashMap<TypedPathBuf, Vec<u8>>,
+    dirs: HashSet<TypedPathBuf>,
+    toc_path: TypedPathBuf,
 }
 
 impl PackageStore {
@@ -39,13 +39,13 @@ impl PackageStore {
             .map(|entry| entry.name().to_string())
             .collect();
 
-        let mut files: HashMap<PathBuf, Vec<u8>> = HashMap::new();
-        let mut dirs: HashSet<PathBuf> = HashSet::new();
-        let mut toc_path: Option<PathBuf> = None;
+        let mut files: HashMap<TypedPathBuf, Vec<u8>> = HashMap::new();
+        let mut dirs: HashSet<TypedPathBuf> = HashSet::new();
+        let mut toc_path: Option<TypedPathBuf> = None;
 
         for name in names {
             let normalized = normalize_path(&name);
-            if normalized.as_os_str().is_empty() {
+            if normalized.as_bytes().is_empty() {
                 continue;
             }
 
@@ -59,13 +59,13 @@ impl PackageStore {
             reader.read_to_end(&mut buf)?;
 
             for ancestor in normalized.ancestors().skip(1) {
-                if ancestor.as_os_str().is_empty() {
+                if ancestor.as_bytes().is_empty() {
                     continue;
                 }
                 dirs.insert(ancestor.to_path_buf());
             }
 
-            if normalized.extension().is_some_and(|ext| ext == "onetoc2") {
+            if normalized.extension().is_some_and(|ext| ext == b"onetoc2") {
                 let depth = normalized.components().count();
                 let prefer = toc_path
                     .as_ref()
@@ -90,8 +90,8 @@ impl PackageStore {
         })
     }
 
-    pub(crate) fn toc_path(&self) -> &Path {
-        &self.toc_path
+    pub(crate) fn toc_path(&self) -> TypedPath<'_> {
+        self.toc_path.to_path()
     }
 }
 
@@ -108,79 +108,89 @@ impl<'a> PackageFs<'a> {
 }
 
 impl FileSystem for PackageFs<'_> {
-    fn is_directory(&self, path: &Path) -> std::io::Result<bool> {
-        Ok(self.store.dirs.contains(path))
+    fn is_directory(&self, path: TypedPath) -> std::io::Result<bool> {
+        Ok(self.store.dirs.contains(&path.to_path_buf()))
     }
 
-    fn read_dir(&self, path: &Path) -> std::io::Result<Vec<PathBuf>> {
-        let parent = if path.as_os_str().is_empty() {
-            None
-        } else {
-            Some(path)
-        };
+    fn read_dir(&self, path: TypedPath) -> std::io::Result<Vec<TypedPathBuf>> {
+        let parent_is_root = path.as_bytes().is_empty();
 
-        let matches = |child: &Path| -> bool {
-            match (child.parent(), parent) {
-                (Some(p), Some(target)) => p == target,
-                (Some(p), None) => p.as_os_str().is_empty(),
+        let matches = |child: TypedPath| -> bool {
+            match (child.parent(), parent_is_root) {
+                (Some(p), false) => p == path,
+                (Some(p), true) => p.as_bytes().is_empty(),
                 _ => false,
             }
         };
 
         let mut entries = Vec::new();
         for file_path in self.store.files.keys() {
-            if matches(file_path) {
+            if matches(file_path.to_path()) {
                 entries.push(file_path.clone());
             }
         }
         for dir_path in &self.store.dirs {
-            if matches(dir_path) {
+            if matches(dir_path.to_path()) {
                 entries.push(dir_path.clone());
             }
         }
         Ok(entries)
     }
 
-    fn read_file(&self, path: &Path) -> std::io::Result<Vec<u8>> {
-        self.store.files.get(path).cloned().ok_or_else(|| {
-            IoError::new(
-                IoErrorKind::NotFound,
-                format!("not found in package: {}", path.display()),
-            )
-        })
+    fn read_file(&self, path: TypedPath) -> std::io::Result<Vec<u8>> {
+        self.store
+            .files
+            .get(&path.to_path_buf())
+            .cloned()
+            .ok_or_else(|| {
+                IoError::new(
+                    IoErrorKind::NotFound,
+                    format!("not found in package: {}", path.to_string_lossy()),
+                )
+            })
     }
 
-    fn write_file(&self, _path: &Path, _data: &[u8]) -> std::io::Result<()> {
+    fn write_file(&self, _path: TypedPath, _data: &[u8]) -> std::io::Result<()> {
         Err(IoError::new(
             IoErrorKind::Unsupported,
             "package file system is read-only",
         ))
     }
 
-    fn stream_to_file(&self, _path: &Path, _reader: &mut dyn Read) -> std::io::Result<()> {
+    fn stream_to_file(&self, _path: TypedPath, _reader: &mut dyn Read) -> std::io::Result<()> {
         Err(IoError::new(
             IoErrorKind::Unsupported,
             "package file system is read-only",
         ))
     }
 
-    fn make_dir(&self, _path: &Path) -> std::io::Result<()> {
+    fn make_dir(&self, _path: TypedPath) -> std::io::Result<()> {
         Err(IoError::new(
             IoErrorKind::Unsupported,
             "package file system is read-only",
         ))
     }
 
-    fn exists(&self, path: &Path) -> std::io::Result<bool> {
-        Ok(self.store.files.contains_key(path) || self.store.dirs.contains(path))
+    fn canonicalize(&self, path: TypedPath) -> std::result::Result<TypedPathBuf, IoError> {
+        // PackageFs has no symlinks and no devices; `PackageFs::from_bytes` already normalised
+        // every key via `normalize_path`. Lexical identity is canonical here.
+        Ok(path.to_path_buf())
+    }
+
+    fn exists(&self, path: TypedPath) -> std::io::Result<bool> {
+        let buf = path.to_path_buf();
+        Ok(self.store.files.contains_key(&buf) || self.store.dirs.contains(&buf))
     }
 }
 
 /// Convert a CAB entry name (Windows-style, with `/` or `\` separators) into a
-/// normalized relative [`PathBuf`]. `.` is dropped, `..` pops the previous
+/// normalized relative [`TypedPathBuf`]. `.` is dropped, `..` pops the previous
 /// component, and any attempt to ascend above the root is clamped so nothing in
 /// the cabinet can escape its own namespace.
-fn normalize_path(name: &str) -> PathBuf {
+///
+/// The returned path uses Unix-style encoding so its byte form is stable across
+/// hosts — `PackageFs` keys must match regardless of where the parser runs.
+fn normalize_path(name: &str) -> TypedPathBuf {
     let mut parts: Vec<&str> = Vec::new();
     for part in name.split(['/', '\\']) {
         match part {
@@ -191,7 +201,7 @@ fn normalize_path(name: &str) -> PathBuf {
             _ => parts.push(part),
         }
     }
-    parts.iter().collect()
+    TypedPathBuf::from_unix(parts.join("/"))
 }
 
 #[cfg(test)]
@@ -200,9 +210,18 @@ mod tests {
 
     #[test]
     fn normalize_strips_separators_and_traversal() {
-        assert_eq!(normalize_path("a/b/c.one"), PathBuf::from("a/b/c.one"));
-        assert_eq!(normalize_path("a\\b\\c.one"), PathBuf::from("a/b/c.one"));
-        assert_eq!(normalize_path("./a/../b.one"), PathBuf::from("b.one"));
-        assert_eq!(normalize_path(""), PathBuf::from(""));
+        assert_eq!(
+            normalize_path("a/b/c.one"),
+            TypedPathBuf::from_unix("a/b/c.one")
+        );
+        assert_eq!(
+            normalize_path("a\\b\\c.one"),
+            TypedPathBuf::from_unix("a/b/c.one")
+        );
+        assert_eq!(
+            normalize_path("./a/../b.one"),
+            TypedPathBuf::from_unix("b.one")
+        );
+        assert_eq!(normalize_path(""), TypedPathBuf::from_unix(""));
     }
 }

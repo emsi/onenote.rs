@@ -39,8 +39,8 @@ impl From<ErrorKind> for Error {
     }
 }
 
-impl From<std::io::Error> for Error {
-    fn from(err: std::io::Error) -> Self {
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
         ErrorKind::from(err).into()
     }
 }

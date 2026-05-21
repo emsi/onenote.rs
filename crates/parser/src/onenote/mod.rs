@@ -2,9 +2,10 @@
 
 use crate::FileSystem;
 use crate::errors::{ErrorKind, Result};
+use crate::fs::FileSource;
+use crate::fs::file_source::BytesSource;
 #[cfg(feature = "native-fs")]
-use crate::fs::NativeFs;
-use crate::fs::{BytesSource, FileSource};
+use crate::fs::native_fs::NativeFs;
 use crate::fsshttpb::packaging::{OneStorePackaging, embedded_packaging_offset};
 use crate::onenote::notebook::Notebook;
 use crate::onenote::section::{Section, SectionEntry, SectionGroup};
@@ -16,9 +17,10 @@ use crate::reader::Reader;
 use crate::shared::guid::Guid;
 use crate::warn::Report;
 use bytes::Bytes;
-use std::ffi::OsStr;
-use std::path::{Component, Path, PathBuf};
 use std::sync::Arc;
+use typed_path::{
+    PathType, TypedComponent, TypedPath, TypedPathBuf, UnixComponent, WindowsComponent,
+};
 use uuid::Uuid;
 
 pub(crate) mod content;
@@ -109,7 +111,7 @@ impl<FS: FileSystem> Parser<FS> {
     /// a parse is in progress, or while a derived
     /// [`crate::contents::Image`] / [`crate::contents::EmbeddedFile`]
     /// is alive, is unsupported.
-    pub fn parse_notebook(&self, path: &Path) -> Result<Notebook> {
+    pub fn parse_notebook(&self, path: TypedPath) -> Result<Notebook> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
 
@@ -126,21 +128,22 @@ impl<FS: FileSystem> Parser<FS> {
         let (entries, color) = notebook::parse_toc(store.data_root())?;
         let entries = entries
             .iter()
-            .map(|name| resolve_entry_path(base_dir, name))
+            .map(|name| self.resolve_entry_path(base_dir, name))
             .collect::<Result<Vec<_>>>()?;
 
-        let mut report = crate::warn::Report::new();
+        let mut report = Report::new();
         let mut sections = Vec::new();
         for entry_path in entries
             .into_iter()
-            .filter(|p| self.fs.exists(p).unwrap_or(false))
-            .filter(|p| !p.ends_with("OneNote_RecycleBin"))
+            .filter(|p| self.fs.exists(p.to_path()).unwrap_or(false))
+            .filter(|p| !p.ends_with(b"OneNote_RecycleBin"))
         {
-            let result = if self.fs.is_directory(&entry_path).unwrap_or(false) {
-                self.parse_section_group(&entry_path)
+            let entry_ref = entry_path.to_path();
+            let result = if self.fs.is_directory(entry_ref).unwrap_or(false) {
+                self.parse_section_group(entry_ref)
                     .map(SectionEntry::SectionGroup)
             } else {
-                self.parse_section(&entry_path).map(SectionEntry::Section)
+                self.parse_section(entry_ref).map(SectionEntry::Section)
             };
 
             match result {
@@ -150,7 +153,10 @@ impl<FS: FileSystem> Parser<FS> {
                     // skip it, surface the error on the notebook report.
                     report.push_warning(crate::warn::Warning::new(
                         None,
-                        format!("failed to import section {}: {err}", entry_path.display()),
+                        format!(
+                            "failed to import section {}: {err}",
+                            entry_path.to_string_lossy()
+                        ),
                     ));
                 }
             }
@@ -170,21 +176,16 @@ impl<FS: FileSystem> Parser<FS> {
     ///
     /// Returns [`ErrorKind::NotASectionFile`] if the buffer does not contain a
     /// section file.
-    pub fn parse_section_buffer(self, data: &[u8], file_name: &Path) -> Result<Section> {
+    pub fn parse_section_buffer(self, data: &[u8], file_name: TypedPath) -> Result<Section> {
         let source: Arc<dyn FileSource> = Arc::new(BytesSource::new(Bytes::copy_from_slice(data)));
         let store = parse_store_auto(source)?;
+        let file_name = file_name.to_string_lossy().into_owned();
 
         if store.get_type()? != OneStoreType::Section {
-            return Err(ErrorKind::NotASectionFile {
-                file: file_name.to_string_lossy().into_owned(),
-            }
-            .into());
+            return Err(ErrorKind::NotASectionFile { file: file_name }.into());
         }
 
-        section::parse_section(
-            store.as_onestore(),
-            file_name.to_string_lossy().into_owned(),
-        )
+        section::parse_section(store.as_onestore(), file_name)
     }
 
     /// Parse the raw OneStore layer from a buffer and return its `Debug`
@@ -212,7 +213,7 @@ impl<FS: FileSystem> Parser<FS> {
     ///
     /// The file is read on demand; mutating it while a parse is in
     /// progress, or while a derived attachment is alive, is unsupported.
-    pub fn parse_section(&self, path: &Path) -> Result<Section> {
+    pub fn parse_section(&self, path: TypedPath) -> Result<Section> {
         let source = self.fs.open_file(path)?;
         let store = parse_store_auto(source)?;
 
@@ -223,15 +224,7 @@ impl<FS: FileSystem> Parser<FS> {
             .into());
         }
 
-        let filename = path
-            .file_name()
-            .ok_or_else(|| ErrorKind::InvalidPath {
-                message: "path has no file name".into(),
-            })?
-            .to_string_lossy()
-            .to_string();
-
-        section::parse_section(store.as_onestore(), filename)
+        section::parse_section(store.as_onestore(), file_name_string(path)?)
     }
 
     /// Parse a OneNote package (`.onepkg`) file.
@@ -243,41 +236,139 @@ impl<FS: FileSystem> Parser<FS> {
     /// Returns [`ErrorKind::MalformedPackage`] if the file is not a valid
     /// cabinet or does not contain a `.onetoc2` table of contents.
     #[cfg(feature = "onepkg")]
-    pub fn parse_package(&self, path: &Path) -> Result<Notebook> {
+    pub fn parse_package(&self, path: TypedPath) -> Result<Notebook> {
         let data = self.fs.read_file(path)?;
         let store = crate::onepkg::PackageStore::from_bytes(&data)?;
         let inner_fs = crate::onepkg::PackageFs::new(&store);
         let toc_path = store.toc_path().to_path_buf();
-        Parser::new_with_fs(inner_fs).parse_notebook(&toc_path)
+        Parser::new_with_fs(inner_fs).parse_notebook(toc_path.to_path())
     }
 
-    fn parse_section_group(&self, path: &Path) -> Result<SectionGroup> {
-        let display_name = path
-            .file_name()
-            .ok_or_else(|| ErrorKind::InvalidPath {
-                message: "path has no file name".into(),
-            })?
-            .to_string_lossy()
-            .to_string();
+    fn parse_section_group(&self, path: TypedPath) -> Result<SectionGroup> {
+        let display_name = file_name_string(path)?;
 
         for entry in self.fs.read_dir(path)? {
             let is_toc = entry
                 .extension()
-                .map(|ext| ext == OsStr::new("onetoc2"))
+                .map(|ext| ext == b"onetoc2")
                 .unwrap_or_default();
 
             if is_toc {
-                return self.parse_notebook(&entry).map(|group| SectionGroup {
-                    display_name,
-                    entries: group.entries,
-                });
+                return self
+                    .parse_notebook(entry.to_path())
+                    .map(|group| SectionGroup {
+                        display_name,
+                        entries: group.entries,
+                    });
             }
         }
 
         Err(ErrorKind::TocFileMissing {
-            dir: path.as_os_str().to_string_lossy().into_owned(),
+            dir: path.to_string_lossy().into_owned(),
         }
         .into())
+    }
+
+    fn resolve_entry_path(&self, base_dir: TypedPath, entry: &str) -> Result<TypedPathBuf> {
+        // Parse the entry as a Windows path on every host.
+        //
+        // The string comes from the `.onetoc2` `FolderChildFilename` property,
+        // which is **attacker-controlled**: a malicious notebook can put
+        // anything here, including separators, `..`, drive letters or
+        // reserved device names. In practice OneNote only ever writes a
+        // bare leaf name (e.g. "Section 1.one"), so the encoding doesn't
+        // affect any real fixture.
+        //
+        // We pick `PathType::Windows` (not `Unix`, not host-derived, not
+        // `TypedPath::derive`) for two reasons:
+        //
+        // 1. Determinism. Host-derived encoding made the security check
+        //    behave differently on Unix vs Windows CI — `"foo\\bar"` was a
+        //    single literal component on Unix and a two-component path on
+        //    Windows. With a fixed encoding the audit holds on every host.
+        // 2. Strictness. Windows encoding treats **both** `/` and `\` as
+        //    separators, so an attacker can't bypass the
+        //    `Normal`/`CurDir` component whitelist by picking the
+        //    separator the host doesn't recognise. (`Unix` would let `\`
+        //    sneak through as a literal byte in a filename;
+        //    `TypedPath::derive` falls back to `Unix` unless the string
+        //    starts with `\` — also bypassable.)
+        let entry_path = TypedPath::new(entry, PathType::Windows);
+        if entry_path.is_absolute() {
+            return Err(ErrorKind::InvalidPath {
+                message: "section entry must be a relative path".into(),
+            }
+            .into());
+        }
+
+        let mut sanitized = TypedPathBuf::new(PathType::Windows);
+        for component in entry_path.components() {
+            match component {
+                TypedComponent::Windows(WindowsComponent::Normal(name))
+                | TypedComponent::Unix(UnixComponent::Normal(name)) => {
+                    let name = std::str::from_utf8(name).map_err(|_| ErrorKind::InvalidPath {
+                        message: "section entry contains non-UTF-8 bytes".into(),
+                    })?;
+                    // windows: false on every host so behaviour is deterministic
+                    // across native/WASM/CI; we only strip path-traversal characters
+                    // and control codes here. Defence against Windows reserved
+                    // device names (CON, COM1, NUL, ...) is the FileSystem impl's
+                    // responsibility — see the security contract on the trait.
+                    // OneNote (Mac, and Windows via \\?\) legitimately writes
+                    // section files with such names and we want to be able to
+                    // parse them.
+                    let name = sanitize_filename::sanitize_with_options(
+                        name,
+                        sanitize_filename::Options {
+                            windows: false,
+                            ..Default::default()
+                        },
+                    );
+
+                    sanitized.push(name);
+                }
+
+                TypedComponent::Windows(WindowsComponent::CurDir)
+                | TypedComponent::Unix(UnixComponent::CurDir) => {}
+
+                _ => {
+                    return Err(ErrorKind::InvalidPath {
+                        message: "section entry contains invalid path components".into(),
+                    }
+                    .into());
+                }
+            }
+        }
+
+        if sanitized.as_bytes().is_empty() {
+            return Err(ErrorKind::InvalidPath {
+                message: "section entry is empty".into(),
+            }
+            .into());
+        }
+
+        let candidate = base_dir.join(sanitized.as_bytes());
+        if self.fs.exists(candidate.to_path()).unwrap_or(false) {
+            let base_canon =
+                self.fs
+                    .canonicalize(base_dir)
+                    .map_err(|err| ErrorKind::InvalidPath {
+                        message: format!("failed to resolve base directory: {err}").into(),
+                    })?;
+            let candidate_canon = self.fs.canonicalize(candidate.to_path()).map_err(|err| {
+                ErrorKind::InvalidPath {
+                    message: format!("failed to resolve entry path: {err}").into(),
+                }
+            })?;
+            if !candidate_canon.starts_with(base_canon.as_bytes()) {
+                return Err(ErrorKind::InvalidPath {
+                    message: "section entry escapes base directory".into(),
+                }
+                .into());
+            }
+        }
+
+        Ok(candidate)
     }
 }
 
@@ -383,78 +474,11 @@ fn sniff_store_format(source: &Arc<dyn FileSource>) -> Option<StoreFormat> {
     None
 }
 
-fn resolve_entry_path(base_dir: &Path, entry: &str) -> Result<PathBuf> {
-    let entry_path = Path::new(entry);
-    if entry_path.is_absolute() {
-        return Err(ErrorKind::InvalidPath {
-            message: "section entry must be a relative path".into(),
-        }
-        .into());
-    }
-
-    let mut sanitized = PathBuf::new();
-    for component in entry_path.components() {
-        match component {
-            Component::Normal(name) => {
-                let name = name.to_str().ok_or_else(|| ErrorKind::InvalidPath {
-                    message: "section entry contains non-utf8 characters".into(),
-                })?;
-                // windows: false on every host so behaviour is deterministic
-                // across native/WASM/CI; we only strip path-traversal characters
-                // and control codes here. Defence against Windows reserved
-                // device names (CON, COM1, NUL, ...) is the FileSystem impl's
-                // responsibility — see the security contract on the trait.
-                // OneNote (Mac, and Windows via \\?\) legitimately writes
-                // section files with such names and we want to be able to
-                // parse them.
-                let name = sanitize_filename::sanitize_with_options(
-                    name,
-                    sanitize_filename::Options {
-                        windows: false,
-                        ..Default::default()
-                    },
-                );
-
-                sanitized.push(name);
-            }
-            Component::CurDir => {}
-            Component::ParentDir | Component::RootDir | Component::Prefix(_) => {
-                return Err(ErrorKind::InvalidPath {
-                    message: "section entry contains invalid path components".into(),
-                }
-                .into());
-            }
-        }
-    }
-
-    if sanitized.as_os_str().is_empty() {
-        return Err(ErrorKind::InvalidPath {
-            message: "section entry is empty".into(),
-        }
-        .into());
-    }
-
-    let candidate = base_dir.join(&sanitized);
-    if candidate.exists() {
-        let base_canon = base_dir
-            .canonicalize()
-            .map_err(|err| ErrorKind::InvalidPath {
-                message: format!("failed to resolve base directory: {err}").into(),
-            })?;
-        let candidate_canon = candidate
-            .canonicalize()
-            .map_err(|err| ErrorKind::InvalidPath {
-                message: format!("failed to resolve entry path: {err}").into(),
-            })?;
-        if !candidate_canon.starts_with(&base_canon) {
-            return Err(ErrorKind::InvalidPath {
-                message: "section entry escapes base directory".into(),
-            }
-            .into());
-        }
-    }
-
-    Ok(candidate)
+fn file_name_string(path: TypedPath) -> Result<String> {
+    let name = path.file_name().ok_or_else(|| ErrorKind::InvalidPath {
+        message: "path has no file name".into(),
+    })?;
+    Ok(String::from_utf8_lossy(name).into_owned())
 }
 
 #[cfg(feature = "native-fs")]
@@ -466,17 +490,24 @@ impl Default for Parser<NativeFs> {
 
 #[cfg(test)]
 mod tests {
-    use super::resolve_entry_path;
-    use crate::fs::NativeFs;
-    use std::path::Path;
+    use super::Parser;
+    use crate::fs::native_fs::NativeFs;
     use tempfile::tempdir;
+    use typed_path::TypedPath;
+
+    fn base_path(dir: &std::path::Path) -> typed_path::TypedPathBuf {
+        TypedPath::derive(dir.to_str().expect("tempdir path is UTF-8")).to_path_buf()
+    }
 
     #[test]
     fn test_resolve_entry_path_rejects_traversal() {
         let dir = tempdir().unwrap();
-        let base = dir.path();
+        let base = base_path(dir.path());
+        let parser = Parser::new_with_fs(NativeFs {});
 
-        let err = resolve_entry_path(base, "../secret.one").unwrap_err();
+        let err = parser
+            .resolve_entry_path(base.to_path(), "../secret.one")
+            .unwrap_err();
         let err = format!("{err}");
         assert!(err.contains("invalid path components"));
     }
@@ -484,24 +515,37 @@ mod tests {
     #[test]
     fn test_resolve_entry_path_rejects_absolute() {
         let dir = tempdir().unwrap();
-        let base = dir.path();
+        let base = base_path(dir.path());
+        let parser = Parser::new_with_fs(NativeFs {});
 
-        let candidate = if cfg!(windows) {
-            r"C:\secret.one"
-        } else {
-            "/etc/passwd"
-        };
-        let err = resolve_entry_path(base, candidate).unwrap_err();
-        let err = format!("{err}");
-        assert!(err.contains("relative path"));
+        // Entries are parsed with `PathType::Windows` on every host (see
+        // the security comment on `resolve_entry_path`). A leading drive
+        // letter is rejected as absolute; a leading `/` or `\` without
+        // drive is "rooted" but technically relative on Windows, so it
+        // falls through to component validation and is rejected as a
+        // `RootDir` component. Both rejections are correct — assert
+        // either error message.
+        for candidate in [r"C:\secret.one", "/etc/passwd", r"\windows\secret"] {
+            let err = parser
+                .resolve_entry_path(base.to_path(), candidate)
+                .unwrap_err();
+            let err = format!("{err}");
+            assert!(
+                err.contains("relative path") || err.contains("invalid path components"),
+                "unexpected error for {candidate:?}: {err}"
+            );
+        }
     }
 
     #[test]
     fn test_resolve_entry_path_accepts_relative() {
         let dir = tempdir().unwrap();
-        let base = dir.path();
+        let base = base_path(dir.path());
+        let parser = Parser::new_with_fs(NativeFs {});
 
-        let resolved = resolve_entry_path(base, "Section 1.one").unwrap();
-        assert_eq!(resolved, Path::new(base).join("Section 1.one"));
+        let resolved = parser
+            .resolve_entry_path(base.to_path(), "Section 1.one")
+            .unwrap();
+        assert_eq!(resolved, base.join("Section 1.one"));
     }
 }

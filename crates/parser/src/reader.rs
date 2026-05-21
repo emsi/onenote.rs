@@ -1,5 +1,6 @@
 use crate::errors::{ErrorKind, Result};
-use crate::fs::{BytesSource, FileSource};
+use crate::fs::FileSource;
+use crate::fs::file_source::BytesSource;
 use bytes::Bytes;
 use std::ops::Range;
 use std::sync::Arc;

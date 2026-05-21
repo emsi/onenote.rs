@@ -1,4 +1,5 @@
-use crate::fs::{BytesSource, FileSource};
+use crate::fs::FileSource;
+use crate::fs::file_source::BytesSource;
 use bytes::Bytes;
 use std::fmt::Debug;
 use std::io::{Cursor, Read};

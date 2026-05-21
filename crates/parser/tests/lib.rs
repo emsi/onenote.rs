@@ -1,49 +1,54 @@
 use bytes::Bytes;
 use insta::assert_debug_snapshot;
 use onenote_parser::Parser;
-use onenote_parser::fs::{FileSource, FileSystem, NativeFs};
+use onenote_parser::fs::native_fs::NativeFs;
+use onenote_parser::fs::{FileSource, FileSystem};
 use std::io;
-use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use typed_path::{TypedPath, TypedPathBuf};
 use yare::parameterized;
+
+fn tp(s: &str) -> TypedPath<'_> {
+    TypedPath::derive(s)
+}
 
 #[test]
 fn test_parse_section() {
-    let path = PathBuf::from("tests/samples/New Section 1.one");
+    let path = tp("tests/samples/New Section 1.one");
 
     let parser = Parser::new();
-    assert_debug_snapshot!(parser.parse_section(&path).unwrap());
+    assert_debug_snapshot!(parser.parse_section(path).unwrap());
 }
 
 #[test]
 fn test_parse_notebook() {
-    let path = PathBuf::from("tests/samples/Open Notebook.onetoc2");
+    let path = tp("tests/samples/Open Notebook.onetoc2");
 
     let parser = Parser::new();
-    assert_debug_snapshot!(parser.parse_notebook(&path).unwrap());
+    assert_debug_snapshot!(parser.parse_notebook(path).unwrap());
 }
 
 #[test]
 fn test_parse_notebook_new() {
-    let path = PathBuf::from("tests/samples/non-legacy/Open Notebook.onetoc2");
+    let path = tp("tests/samples/non-legacy/Open Notebook.onetoc2");
 
     let parser = Parser::new();
-    assert_debug_snapshot!(parser.parse_notebook(&path).unwrap());
+    assert_debug_snapshot!(parser.parse_notebook(path).unwrap());
 }
 
 #[test]
 fn test_parse_section_with_image_missing_last_modified() {
-    let path = PathBuf::from("tests/samples/Schnelle Notizen.one");
+    let path = tp("tests/samples/Schnelle Notizen.one");
 
     let parser = Parser::new();
-    assert_debug_snapshot!(parser.parse_section(&path).unwrap());
+    assert_debug_snapshot!(parser.parse_section(path).unwrap());
 }
 
 #[test]
 fn test_readme_example_parse_notebook() {
     let parser = Parser::new();
     let notebook = parser
-        .parse_notebook(Path::new("tests/samples/Open Notebook.onetoc2"))
+        .parse_notebook(tp("tests/samples/Open Notebook.onetoc2"))
         .unwrap();
 
     assert!(!notebook.entries().is_empty());
@@ -51,7 +56,7 @@ fn test_readme_example_parse_notebook() {
 
 #[test]
 fn test_onenote_2016_parse_notebook() {
-    let path = Path::new("tests/samples/onenote-2016/OneWithFileData.one");
+    let path = tp("tests/samples/onenote-2016/OneWithFileData.one");
     let parser = Parser::new();
 
     assert_debug_snapshot!(parser.parse_section(path).unwrap())
@@ -73,11 +78,8 @@ fn test_onenote_2016_parse_notebook() {
 )]
 fn test_onenote_joplin_examples_section(path: &str) {
     let parser = Parser::new();
-    assert_debug_snapshot!(
-        parser
-            .parse_section(Path::new(&*format!("tests/samples/joplin/{path}")))
-            .unwrap()
-    );
+    let full = format!("tests/samples/joplin/{path}");
+    assert_debug_snapshot!(parser.parse_section(tp(&full)).unwrap());
 }
 
 #[parameterized(
@@ -86,11 +88,8 @@ fn test_onenote_joplin_examples_section(path: &str) {
 )]
 fn test_onenote_joplin_examples_notebook(path: &str) {
     let parser = Parser::new();
-    assert_debug_snapshot!(
-        parser
-            .parse_notebook(Path::new(&*format!("tests/samples/joplin/{path}")))
-            .unwrap()
-    );
+    let full = format!("tests/samples/joplin/{path}");
+    assert_debug_snapshot!(parser.parse_notebook(tp(&full)).unwrap());
 }
 
 // ---------------------------------------------------------------------------
@@ -134,28 +133,31 @@ impl FileSource for LazyBytesSource {
 struct LazyFs;
 
 impl FileSystem for LazyFs {
-    fn is_directory(&self, path: &Path) -> io::Result<bool> {
+    fn is_directory(&self, path: TypedPath) -> io::Result<bool> {
         NativeFs {}.is_directory(path)
     }
-    fn read_dir(&self, path: &Path) -> io::Result<Vec<PathBuf>> {
+    fn read_dir(&self, path: TypedPath) -> io::Result<Vec<TypedPathBuf>> {
         NativeFs {}.read_dir(path)
     }
-    fn read_file(&self, path: &Path) -> io::Result<Vec<u8>> {
+    fn read_file(&self, path: TypedPath) -> io::Result<Vec<u8>> {
         NativeFs {}.read_file(path)
     }
-    fn write_file(&self, path: &Path, data: &[u8]) -> io::Result<()> {
+    fn write_file(&self, path: TypedPath, data: &[u8]) -> io::Result<()> {
         NativeFs {}.write_file(path, data)
     }
-    fn stream_to_file(&self, path: &Path, reader: &mut dyn io::Read) -> io::Result<()> {
+    fn stream_to_file(&self, path: TypedPath, reader: &mut dyn io::Read) -> io::Result<()> {
         NativeFs {}.stream_to_file(path, reader)
     }
-    fn make_dir(&self, path: &Path) -> io::Result<()> {
+    fn make_dir(&self, path: TypedPath) -> io::Result<()> {
         NativeFs {}.make_dir(path)
     }
-    fn exists(&self, path: &Path) -> io::Result<bool> {
+    fn canonicalize(&self, path: TypedPath) -> io::Result<TypedPathBuf> {
+        NativeFs {}.canonicalize(path)
+    }
+    fn exists(&self, path: TypedPath) -> io::Result<bool> {
         NativeFs {}.exists(path)
     }
-    fn open_file(&self, path: &Path) -> io::Result<Arc<dyn FileSource>> {
+    fn open_file(&self, path: TypedPath) -> io::Result<Arc<dyn FileSource>> {
         let bytes = Bytes::from(self.read_file(path)?);
         Ok(Arc::new(LazyBytesSource(bytes)))
     }
@@ -177,9 +179,9 @@ impl FileSystem for LazyFs {
 )]
 fn test_lazy_source_section_matches_eager(path: &str) {
     let full = format!("tests/samples/joplin/{path}");
-    let eager = Parser::new().parse_section(Path::new(&full)).unwrap();
+    let eager = Parser::new().parse_section(tp(&full)).unwrap();
     let lazy = Parser::new_with_fs(LazyFs)
-        .parse_section(Path::new(&full))
+        .parse_section(tp(&full))
         .unwrap();
     assert_eq!(format!("{:#?}", eager), format!("{:#?}", lazy));
 }
@@ -190,9 +192,9 @@ fn test_lazy_source_section_matches_eager(path: &str) {
 )]
 fn test_lazy_source_notebook_matches_eager(path: &str) {
     let full = format!("tests/samples/joplin/{path}");
-    let eager = Parser::new().parse_notebook(Path::new(&full)).unwrap();
+    let eager = Parser::new().parse_notebook(tp(&full)).unwrap();
     let lazy = Parser::new_with_fs(LazyFs)
-        .parse_notebook(Path::new(&full))
+        .parse_notebook(tp(&full))
         .unwrap();
     assert_eq!(format!("{:#?}", eager), format!("{:#?}", lazy));
 }

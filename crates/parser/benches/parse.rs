@@ -21,11 +21,13 @@
 use bytes::Bytes;
 use criterion::{Criterion, criterion_group, criterion_main};
 use onenote_parser::Parser;
-use onenote_parser::fs::{BytesSource, FileSource, FileSystem, NativeFs};
+use onenote_parser::fs::file_source::BytesSource;
+use onenote_parser::fs::native_fs::NativeFs;
+use onenote_parser::fs::{FileSource, FileSystem};
 use std::hint::black_box;
 use std::io;
-use std::path::{Path, PathBuf};
 use std::sync::Arc;
+use typed_path::{TypedPath, TypedPathBuf};
 
 const SECTION_FIXTURES: &[(&str, &str)] = &[
     ("math_tiny_fsshttpb", "tests/samples/joplin/Math.one"),
@@ -51,28 +53,28 @@ struct InMemFs<'a> {
 }
 
 impl<'a> FileSystem for InMemFs<'a> {
-    fn is_directory(&self, _: &Path) -> io::Result<bool> {
+    fn is_directory(&self, _: TypedPath) -> io::Result<bool> {
         Ok(false)
     }
-    fn read_dir(&self, _: &Path) -> io::Result<Vec<PathBuf>> {
+    fn read_dir(&self, _: TypedPath) -> io::Result<Vec<TypedPathBuf>> {
         Ok(Vec::new())
     }
-    fn read_file(&self, _: &Path) -> io::Result<Vec<u8>> {
+    fn read_file(&self, _: TypedPath) -> io::Result<Vec<u8>> {
         Ok(self.bytes.to_vec())
     }
-    fn write_file(&self, _: &Path, _: &[u8]) -> io::Result<()> {
+    fn write_file(&self, _: TypedPath, _: &[u8]) -> io::Result<()> {
         unimplemented!("bench fs is read-only")
     }
-    fn stream_to_file(&self, _: &Path, _: &mut dyn io::Read) -> io::Result<()> {
+    fn stream_to_file(&self, _: TypedPath, _: &mut dyn io::Read) -> io::Result<()> {
         unimplemented!("bench fs is read-only")
     }
-    fn make_dir(&self, _: &Path) -> io::Result<()> {
+    fn make_dir(&self, _: TypedPath) -> io::Result<()> {
         unimplemented!("bench fs is read-only")
     }
-    fn exists(&self, _: &Path) -> io::Result<bool> {
+    fn exists(&self, _: TypedPath) -> io::Result<bool> {
         Ok(true)
     }
-    fn open_file(&self, _: &Path) -> io::Result<Arc<dyn FileSource>> {
+    fn open_file(&self, _: TypedPath) -> io::Result<Arc<dyn FileSource>> {
         Ok(Arc::new(BytesSource::new(self.bytes.clone())))
     }
 }
@@ -84,12 +86,12 @@ fn parse_section_in_memory(c: &mut Criterion) {
         // zero-copy ownership transfer; `clone` inside the loop is a
         // refcount bump.
         let bytes = Bytes::from(std::fs::read(path).expect("fixture not found"));
-        let path_buf = PathBuf::from(path);
+        let typed_path = TypedPath::derive(path).to_path_buf();
         group.bench_function(*name, |b| {
             b.iter(|| {
                 let fs = InMemFs { bytes: &bytes };
                 let parser = Parser::new_with_fs(fs);
-                let _ = black_box(parser.parse_section(black_box(&path_buf)));
+                let _ = black_box(parser.parse_section(black_box(typed_path.to_path())));
             });
         });
     }
@@ -99,11 +101,11 @@ fn parse_section_in_memory(c: &mut Criterion) {
 fn parse_section_file_backed(c: &mut Criterion) {
     let mut group = c.benchmark_group("parse_section/file_backed");
     for (name, path) in SECTION_FIXTURES {
-        let path = Path::new(path);
+        let path = TypedPath::derive(path).to_path_buf();
         group.bench_function(*name, |b| {
             b.iter(|| {
                 let parser = Parser::new_with_fs(NativeFs {});
-                let _ = black_box(parser.parse_section(black_box(path)));
+                let _ = black_box(parser.parse_section(black_box(path.to_path())));
             });
         });
     }
@@ -111,11 +113,11 @@ fn parse_section_file_backed(c: &mut Criterion) {
 }
 
 fn parse_notebook(c: &mut Criterion) {
-    let path = Path::new(NOTEBOOK_FIXTURE);
+    let path = TypedPath::derive(NOTEBOOK_FIXTURE).to_path_buf();
     c.bench_function("parse_notebook/open_notebook", |b| {
         b.iter(|| {
             let parser = Parser::new();
-            let _ = black_box(parser.parse_notebook(black_box(path)));
+            let _ = black_box(parser.parse_notebook(black_box(path.to_path())));
         });
     });
 }

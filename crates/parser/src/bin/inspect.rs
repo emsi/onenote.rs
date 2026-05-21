@@ -25,9 +25,13 @@ fn main() -> ExitCode {
     };
 
     let parser = Parser::new();
+    let input_typed_path = {
+        let s = config.input_file.to_string_lossy();
+        typed_path::TypedPath::derive(s.as_ref()).to_path_buf()
+    };
     let output = match config.mode {
         OutputMode::Section => parser
-            .parse_section_buffer(&data, &config.input_file)
+            .parse_section_buffer(&data, input_typed_path.to_path())
             .map(|section| format!("{:#?}", section)),
         OutputMode::OneStore => parser.dump_onestore(&data),
     };
