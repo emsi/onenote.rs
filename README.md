@@ -2,16 +2,33 @@
 
 <p align="center">A parser for Microsoft OneNote® files implemented in Rust.</p>
 
-The project supports reading OneNote files in the FSSHTTP packaging format
-([\[MS-ONESTORE\] 2.3] and [\[MS-ONESTORE\] 2.8]) as used by OneDrive and the
-modern OneNote apps. Feature contributions are welcome, but otherwise the
-project focuses on bugfixes and compatibility.
+The project supports reading OneNote files in the OneNote desktop format
+([\[MS-ONESTORE\] 2.3]), plus files downloaded from OneDrive (using the
+FSSHTTP packaging format, [\[MS-ONESTORE\] 2.8]).
 
 In addition to the publicly documented contents, this project also allows
 reading ink/handwriting content as well as math/equation content.
 
+Feature contributions are welcome, but otherwise the project focuses on
+bugfixes and compatibility.
+
+## Supported File Types
+
+The parser supports the following OneNote file formats:
+
+- **`.one`** – Section files containing the actual notes and content.
+- **`.onetoc2`** – Table of contents files used to organize sections within a notebook.
+
+These files can be obtained from:
+
+- **OneNote Desktop** (2016, 2019, LTSC, etc.)
+- **OneDrive** (by downloading a notebook directory)
+- **OneNote for Windows 10/11** (via `.one` export)
+- **OneNote for Mac** (as backup files)
+
 ## Goals
 
+- Read OneNote desktop files
 - Read OneNote notebooks and sections obtained via OneDrive download
 - Provide a Rust API for inspecting notebook, section, and page data
 - Support HTML conversion via the [one2html] project
@@ -19,7 +36,6 @@ reading ink/handwriting content as well as math/equation content.
 ## Non-Goals
 
 - The ability to write OneNote files
-- Support for legacy OneNote 2016 desktop files
 
 ## Usage
 
@@ -42,6 +58,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 ```
+
+## Logging
+
+The parser uses the `log` crate for diagnostics. By default, log output is
+disabled unless the consuming application installs a logger. This keeps the
+library quiet while allowing callers to enable logging using any compatible
+logger (for example `env_logger`, `tracing` via `tracing-log`, or similar).
 
 ## Backtraces
 
@@ -89,6 +112,14 @@ built from several layers of encodings:
 - [\[MS-FSSHTTPB\]: Binary Requests for File Synchronization via SOAP Protocol]
 - [LibMsON]: A work in progress OneNote® revision store file parser in C++
 - [FSSHTTP - parser tools for protocol FSSHTTP/B/D]: A FSSHTTPB data parser
+
+## License
+
+This project is licensed under the [Mozilla Public License 2.0](LICENSE).
+
+Test fixtures in `crates/parser/tests/samples/` include files from third-party
+sources under their respective licenses (MIT, AGPL-3.0-or-later). See the
+LICENSE files in those directories for details.
 
 ## Disclaimer
 
