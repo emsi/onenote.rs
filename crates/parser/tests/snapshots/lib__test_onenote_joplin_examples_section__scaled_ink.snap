@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 90
+expression: parser.parse_section(tp(&full)).unwrap()
 ---
 Section {
     display_name: "scaled_ink",
@@ -1051,6 +1052,7 @@ Section {
                                             color: Some(
                                                 2429671,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -2171,6 +2173,7 @@ Section {
                                             height: 100.00002,
                                             width: 100.00002,
                                             color: None,
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -2184,6 +2187,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

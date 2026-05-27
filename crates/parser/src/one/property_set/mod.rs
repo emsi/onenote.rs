@@ -38,6 +38,7 @@ pub(crate) mod page_node;
 pub(crate) mod page_series_node;
 pub(crate) mod paragraph_style_object;
 pub(crate) mod picture_container;
+pub(crate) mod recognized_text_node;
 pub(crate) mod rich_text_node;
 pub(crate) mod section_metadata_node;
 pub(crate) mod section_node;
@@ -85,6 +86,12 @@ pub(crate) enum PropertySetId {
     InkStrokeNode = 0x00020047,
     StrokePropertiesNode = 0x00120048,
     IFrameNode = 0x00060058,
+
+    // Undocumented (handwriting recognition / OCR):
+    RecognizedTextRoot = 0x00020054,
+    RecognizedTextLine = 0x00020055,
+    RecognizedTextBlock = 0x00020056,
+    RecognizedTextWord = 0x00020057,
 }
 
 impl PropertySetId {

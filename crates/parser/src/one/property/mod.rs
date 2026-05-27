@@ -213,4 +213,11 @@ pub(crate) enum PropertyType {
     MathInlineObjectChar = 0x10003453,
     MathInlineObjectChar1 = 0x10003454,
     MathInlineObjectChar2 = 0x10003455,
+
+    // Undocumented (handwriting recognition / OCR):
+    PageRecognizedTextContainer = 0x200035D7,
+    RecognizedTextChildNodes = 0x240035D9,
+    RecognizedText = 0x1C0035DA,
+    RecognizedTextLanguageId = 0x100035DC,
+    RecognizedTextStrokeReferences = 0x1C0035DF,
 }

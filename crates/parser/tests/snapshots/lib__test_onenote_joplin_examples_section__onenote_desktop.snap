@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 90
+expression: parser.parse_section(tp(&full)).unwrap()
 ---
 Section {
     display_name: "onenote_desktop",
@@ -555,6 +556,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -673,6 +675,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4511,6 +4514,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4541,6 +4545,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4627,6 +4632,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4725,6 +4731,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4755,6 +4762,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4817,6 +4825,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4911,6 +4920,7 @@ Section {
                                             color: Some(
                                                 9129728,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5957,6 +5967,7 @@ Section {
                                             color: Some(
                                                 3836928,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5987,6 +5998,7 @@ Section {
                                             color: Some(
                                                 3836928,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7141,6 +7153,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -7943,6 +7956,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -8583,6 +8597,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

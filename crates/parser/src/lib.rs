@@ -190,6 +190,9 @@ pub mod contents {
     pub use crate::onenote::embedded_file::EmbeddedFile;
     pub use crate::onenote::image::Image;
     pub use crate::onenote::ink::{Ink, InkBoundingBox, InkPoint, InkStroke};
+    pub use crate::onenote::ink_recognition::{
+        InkRecognition, InkRecognizedLine, InkRecognizedWord,
+    };
     pub use crate::onenote::list::List;
     pub use crate::onenote::math_inline_object::{MathInlineObject, MathObjectType};
     pub use crate::onenote::note_tag::NoteTag;

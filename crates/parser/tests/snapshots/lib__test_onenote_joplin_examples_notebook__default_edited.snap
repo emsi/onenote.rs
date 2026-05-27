@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_notebook(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 100
+expression: parser.parse_notebook(tp(&full)).unwrap()
 ---
 Notebook {
     entries: [
@@ -6519,6 +6520,7 @@ Notebook {
                                         },
                                     ),
                                 ],
+                                ink_recognition: None,
                             },
                         ],
                     },

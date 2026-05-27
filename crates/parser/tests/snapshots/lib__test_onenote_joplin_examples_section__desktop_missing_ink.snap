@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 90
+expression: parser.parse_section(tp(&full)).unwrap()
 ---
 Section {
     display_name: "desktop_missing_ink",
@@ -691,6 +692,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -1024,6 +1026,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -1139,6 +1142,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -1230,6 +1234,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -1585,6 +1590,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -1888,6 +1894,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -2035,6 +2042,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -2254,6 +2262,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -2337,6 +2346,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -2636,6 +2646,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -2927,6 +2938,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3054,6 +3066,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3149,6 +3162,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3616,6 +3630,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3727,6 +3742,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3826,6 +3842,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -3905,6 +3922,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -4408,6 +4426,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -5059,6 +5078,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -5655,6 +5675,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -6090,6 +6111,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -7159,6 +7181,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -7298,6 +7321,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -7897,6 +7921,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -8404,6 +8429,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -8551,6 +8577,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -8678,6 +8705,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -8961,6 +8989,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -9575,6 +9604,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -9738,6 +9768,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -9845,6 +9876,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -9992,6 +10024,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                         ],
                                                                                     ),
@@ -10349,6 +10382,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -10480,6 +10514,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -10595,6 +10630,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -10710,6 +10746,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                             InkStroke {
                                                                                                 path: [
@@ -10829,6 +10866,7 @@ Section {
                                                                                                 color: Some(
                                                                                                     2366701,
                                                                                                 ),
+                                                                                                recognized_word: None,
                                                                                             },
                                                                                         ],
                                                                                     ),
@@ -11370,6 +11408,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -11481,6 +11520,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -12060,6 +12100,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -12279,6 +12320,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -12386,6 +12428,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -12661,6 +12704,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -12910,6 +12954,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -13013,6 +13058,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -13426,6 +13472,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -13613,6 +13660,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -13712,6 +13760,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -14367,6 +14416,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -14594,6 +14644,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -14713,6 +14764,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -15084,6 +15136,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -15215,6 +15268,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -15646,6 +15700,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -15737,6 +15792,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -15964,6 +16020,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -16095,6 +16152,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -16610,6 +16668,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -17281,6 +17340,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -17440,6 +17500,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -17711,6 +17772,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -17930,6 +17992,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -18053,6 +18116,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -18328,6 +18392,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -18695,6 +18760,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -19066,6 +19132,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -19449,6 +19516,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -19724,6 +19792,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -20047,6 +20116,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -20198,6 +20268,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -20317,6 +20388,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -20964,6 +21036,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -21575,6 +21648,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -22074,6 +22148,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -22481,6 +22556,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -22916,6 +22992,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -23375,6 +23452,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -23913,6 +23991,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -24040,6 +24119,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -24323,6 +24403,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -24678,6 +24759,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -25121,6 +25203,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -25806,6 +25889,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -26229,6 +26313,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -26508,6 +26593,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -26833,6 +26919,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -27124,6 +27211,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -27383,6 +27471,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -27486,6 +27575,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -27813,6 +27903,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -28088,6 +28179,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -28651,6 +28743,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -28958,6 +29051,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -29081,6 +29175,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -29428,6 +29523,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -29699,6 +29795,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -30018,6 +30115,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -30441,6 +30539,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -30604,6 +30703,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -31311,6 +31411,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -31630,6 +31731,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -31733,6 +31835,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -31828,6 +31931,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -32141,6 +32245,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -32218,6 +32323,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -32343,6 +32449,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -32584,6 +32691,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -32949,6 +33057,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -33190,6 +33299,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -33447,6 +33557,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -33840,6 +33951,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -34305,6 +34417,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -34802,6 +34915,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -34979,6 +35093,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -35660,6 +35775,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -36177,6 +36293,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -36763,6 +36880,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -36892,6 +37010,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -36989,6 +37108,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -37490,6 +37610,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -37591,6 +37712,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -37732,6 +37854,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -37895,6 +38018,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -37948,6 +38072,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -38361,6 +38486,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -38770,6 +38896,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -39267,6 +39394,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -39826,6 +39954,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -40267,6 +40396,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -40616,6 +40746,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -41121,6 +41252,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -41366,6 +41498,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -41647,6 +41780,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -41908,6 +42042,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -42101,6 +42236,7 @@ Section {
                                                                                     height: 50.000004,
                                                                                     width: 50.000004,
                                                                                     color: None,
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -42809,6 +42945,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -42992,6 +43129,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -43231,6 +43369,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -43334,6 +43473,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -43449,6 +43589,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -44020,6 +44161,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -44263,6 +44405,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -44400,6 +44543,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -44603,6 +44747,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -44858,6 +45003,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -45293,6 +45439,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -45548,6 +45695,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -45659,6 +45807,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -45742,6 +45891,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -46029,6 +46179,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -46464,6 +46615,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -46850,6 +47002,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -46945,6 +47098,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -47024,6 +47178,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -47467,6 +47622,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -47666,6 +47822,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -47781,6 +47938,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -48250,6 +48408,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -48717,6 +48876,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -49316,6 +49476,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -49511,6 +49672,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -49650,6 +49812,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -50061,6 +50224,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -50148,6 +50312,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -50343,6 +50508,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -50450,6 +50616,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -50900,6 +51067,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -51331,6 +51499,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -51674,6 +51843,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -52157,6 +52327,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -52248,6 +52419,7 @@ Section {
                                                                                     color: Some(
                                                                                         8388736,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -52610,6 +52782,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -53301,6 +53474,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -53460,6 +53634,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -53603,6 +53778,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -53694,6 +53870,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -54011,6 +54188,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -54426,6 +54604,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -54529,6 +54708,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -54748,6 +54928,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -54895,6 +55076,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -54998,6 +55180,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -55457,6 +55640,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -56008,6 +56192,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -56435,6 +56620,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -56554,6 +56740,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -56953,6 +57140,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -57048,6 +57236,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -57539,6 +57728,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -57924,6 +58114,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -58187,6 +58378,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -58310,6 +58502,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -58629,6 +58822,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -58980,6 +59174,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -59519,6 +59714,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -59830,6 +60026,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -60167,6 +60364,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -60298,6 +60496,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -60725,6 +60924,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -60816,6 +61016,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -61227,6 +61428,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -61690,6 +61892,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -62149,6 +62352,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -62632,6 +62836,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -63163,6 +63368,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -63343,6 +63549,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -63666,6 +63873,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -63909,6 +64117,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -64260,6 +64469,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -64611,6 +64821,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -64922,6 +65133,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -65361,6 +65573,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -65680,6 +65893,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -66099,6 +66313,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -66402,6 +66617,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -66545,6 +66761,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -66916,6 +67133,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                         InkStroke {
                                             path: [
@@ -67263,6 +67481,7 @@ Section {
                                             color: Some(
                                                 2366701,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -67409,6 +67628,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -68176,6 +68396,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -68867,6 +69088,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -69026,6 +69248,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -69169,6 +69392,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -69260,6 +69484,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -69577,6 +69802,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -69992,6 +70218,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -70095,6 +70322,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -70314,6 +70542,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -70461,6 +70690,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -70564,6 +70794,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -71023,6 +71254,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -71574,6 +71806,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -72001,6 +72234,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -72120,6 +72354,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -72519,6 +72754,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -72614,6 +72850,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -73105,6 +73342,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -73490,6 +73728,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -73753,6 +73992,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -73876,6 +74116,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -74195,6 +74436,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -74546,6 +74788,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -75085,6 +75328,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -75396,6 +75640,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -75733,6 +75978,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -75864,6 +76110,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -76291,6 +76538,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -76382,6 +76630,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -76793,6 +77042,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -77256,6 +77506,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -77715,6 +77966,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -78198,6 +78450,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                                 InkStroke {
                                                                                     path: [
@@ -78729,6 +78982,7 @@ Section {
                                                                                     color: Some(
                                                                                         2366701,
                                                                                     ),
+                                                                                    recognized_word: None,
                                                                                 },
                                                                             ],
                                                                         ),
@@ -79163,6 +79417,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

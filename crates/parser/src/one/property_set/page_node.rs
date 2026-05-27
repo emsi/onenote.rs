@@ -21,6 +21,7 @@ pub(crate) struct Data {
     pub(crate) author: Option<Author>,
     pub(crate) content: Vec<ExGuid>,
     pub(crate) title: Option<ExGuid>,
+    pub(crate) recognized_text: Option<ExGuid>,
     pub(crate) orientation_portrait: bool,
     pub(crate) page_width: Option<f32>,
     pub(crate) page_height: Option<f32>,
@@ -46,6 +47,8 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
         .unwrap_or_default()
         .first()
         .copied();
+    let recognized_text =
+        ObjectReference::parse(PropertyType::PageRecognizedTextContainer, object)?;
     let orientation_portrait =
         simple::parse_bool(PropertyType::PortraitPage, object)?.unwrap_or_default();
     let page_width = simple::parse_f32(PropertyType::PageWidth, object)?;
@@ -65,6 +68,7 @@ pub(crate) fn parse(object: &Object) -> Result<Data> {
         author,
         content,
         title,
+        recognized_text,
         orientation_portrait,
         page_width,
         page_height,

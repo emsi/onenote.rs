@@ -4,6 +4,7 @@ use crate::one::property_set::{
     ink_container, ink_data_node, ink_stroke_node, stroke_properties_node,
 };
 use crate::onenote::ParserContext;
+use crate::onenote::ink_recognition::InkRecognizedWord;
 use crate::onestore::ObjectSpace;
 
 /// An ink object.
@@ -82,6 +83,7 @@ pub struct InkStroke {
     pub(crate) height: f32,
     pub(crate) width: f32,
     pub(crate) color: Option<u32>,
+    pub(crate) recognized_word: Option<InkRecognizedWord>,
 }
 
 impl InkStroke {
@@ -121,6 +123,19 @@ impl InkStroke {
     /// The exact meaning is not specified.
     pub fn color(&self) -> Option<u32> {
         self.color
+    }
+
+    /// The handwriting-recognition word this stroke is part of, if OneNote for
+    /// Windows recognized it.
+    ///
+    /// Multiple strokes that form the same word share an equal value here. The
+    /// same words are also reachable page-wide, in the recognizer's order, via
+    /// [`Page::ink_recognition`]. Returns `None` for strokes that are drawing
+    /// rather than recognized handwriting.
+    ///
+    /// [`Page::ink_recognition`]: crate::page::Page::ink_recognition
+    pub fn recognized_word(&self) -> Option<&InkRecognizedWord> {
+        self.recognized_word.as_ref()
     }
 }
 
@@ -352,6 +367,8 @@ fn parse_ink_stroke(
 
     let path = parse_ink_path(data.path, &props, scale_x, scale_y)?;
 
+    let recognized_word = ctx.recognized_words.get(&ink_stroke_id).cloned();
+
     Ok(InkStroke {
         path,
         pen_tip: props.pen_tip,
@@ -359,6 +376,7 @@ fn parse_ink_stroke(
         height: props.ink_height,
         width: props.ink_width,
         color: props.color,
+        recognized_word,
     })
 }
 

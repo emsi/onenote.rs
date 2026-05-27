@@ -1,5 +1,6 @@
 ---
 source: crates/parser/tests/lib.rs
+assertion_line: 70
 expression: parser.parse_section(path).unwrap()
 ---
 Section {
@@ -751,6 +752,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

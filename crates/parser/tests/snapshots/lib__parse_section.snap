@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: parser.parse_section(&path).unwrap()
+assertion_line: 20
+expression: parser.parse_section(path).unwrap()
 ---
 Section {
     display_name: "New Section 1",
@@ -7456,6 +7457,7 @@ Section {
                                             height: 35.0,
                                             width: 35.0,
                                             color: None,
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7602,6 +7604,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

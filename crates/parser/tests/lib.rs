@@ -55,6 +55,14 @@ fn test_readme_example_parse_notebook() {
 }
 
 #[test]
+fn test_parse_section_handwriting_recognition() {
+    let path = tp("tests/samples/handwriting_recognition.one");
+
+    let parser = Parser::new();
+    assert_debug_snapshot!(parser.parse_section(path).unwrap());
+}
+
+#[test]
 fn test_onenote_2016_parse_notebook() {
     let path = tp("tests/samples/onenote-2016/OneWithFileData.one");
     let parser = Parser::new();

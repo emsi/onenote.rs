@@ -73,6 +73,7 @@ pub(crate) fn parse_section(store: &(impl OneStore + ?Sized), filename: String) 
     let mut ctx = ParserContext {
         page: None,
         report: Report::new(),
+        recognized_words: Default::default(),
     };
 
     let metadata = parse_metadata(store.data_root())?;

@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 90
+expression: parser.parse_section(tp(&full)).unwrap()
 ---
 Section {
     display_name: "Quick Notes",
@@ -573,6 +574,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -683,6 +685,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -981,6 +984,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -1255,6 +1259,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -1341,6 +1346,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -1699,6 +1705,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -2013,6 +2020,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -2431,6 +2439,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -2542,6 +2551,28 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: Some(
+                        InkRecognition {
+                            lines: [
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "PEPRO",
+                                                "PED 20",
+                                                "Per 20",
+                                                "PEORO",
+                                                "Pes 20",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
                 },
             ],
         },
@@ -2991,6 +3022,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3093,6 +3125,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3195,6 +3228,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3297,6 +3331,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3391,6 +3426,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3473,6 +3509,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3527,6 +3564,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3577,6 +3615,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3643,6 +3682,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3701,6 +3741,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3767,6 +3808,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3841,6 +3883,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3899,6 +3942,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -3957,6 +4001,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4035,6 +4080,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4105,6 +4151,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4175,6 +4222,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4241,6 +4289,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4295,6 +4344,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4361,6 +4411,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4403,6 +4454,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4461,6 +4513,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4519,6 +4572,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4573,6 +4627,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4635,6 +4690,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4681,6 +4737,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4727,6 +4784,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4769,6 +4827,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4823,6 +4882,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4885,6 +4945,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -4951,6 +5012,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5009,6 +5071,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5071,6 +5134,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5117,6 +5181,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5179,6 +5244,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5249,6 +5315,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5307,6 +5374,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5373,6 +5441,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5443,6 +5512,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5509,6 +5579,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5563,6 +5634,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5601,6 +5673,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5651,6 +5724,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5709,6 +5783,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5771,6 +5846,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5833,6 +5909,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5899,6 +5976,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -5949,6 +6027,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6011,6 +6090,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6077,6 +6157,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6147,6 +6228,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6213,6 +6295,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6271,6 +6354,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6333,6 +6417,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6395,6 +6480,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6461,6 +6547,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6523,6 +6610,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6589,6 +6677,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6635,6 +6724,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6689,6 +6779,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6755,6 +6846,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6833,6 +6925,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6879,6 +6972,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6945,6 +7039,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -6987,6 +7082,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7053,6 +7149,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7115,6 +7212,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7177,6 +7275,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7231,6 +7330,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7293,6 +7393,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7355,6 +7456,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7429,6 +7531,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7467,6 +7570,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7513,6 +7617,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7567,6 +7672,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7633,6 +7739,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7703,6 +7810,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7765,6 +7873,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7831,6 +7940,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7901,6 +8011,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -7967,6 +8078,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8017,6 +8129,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8067,6 +8180,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8137,6 +8251,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8211,6 +8326,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8269,6 +8385,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8351,6 +8468,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8401,6 +8519,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8455,6 +8574,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8501,6 +8621,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8575,6 +8696,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8641,6 +8763,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8675,6 +8798,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8741,6 +8865,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8807,6 +8932,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8873,6 +8999,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8935,6 +9062,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -8993,6 +9121,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9059,6 +9188,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9129,6 +9259,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9199,6 +9330,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9249,6 +9381,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9323,6 +9456,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9385,6 +9519,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9423,6 +9558,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9501,6 +9637,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9543,6 +9680,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9585,6 +9723,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9627,6 +9766,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9685,6 +9825,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9747,6 +9888,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9813,6 +9955,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9867,6 +10010,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -9929,6 +10073,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10003,6 +10148,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10037,6 +10183,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10083,6 +10230,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10145,6 +10293,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10211,6 +10360,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10281,6 +10431,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10339,6 +10490,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10405,6 +10557,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10471,6 +10624,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10525,6 +10679,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10559,6 +10714,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10621,6 +10777,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10683,6 +10840,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10745,6 +10903,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10803,6 +10962,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10865,6 +11025,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -10935,6 +11096,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11001,6 +11163,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11071,6 +11234,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11117,6 +11281,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11155,6 +11320,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11201,6 +11367,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11271,6 +11438,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11325,6 +11493,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11379,6 +11548,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11433,6 +11603,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11503,6 +11674,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11561,6 +11733,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11615,6 +11788,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11669,6 +11843,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11715,6 +11890,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11769,6 +11945,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11827,6 +12004,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11949,6 +12127,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -11995,6 +12174,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12057,6 +12237,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12107,6 +12288,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12161,6 +12343,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12223,6 +12406,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12289,6 +12473,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12359,6 +12544,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12425,6 +12611,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12479,6 +12666,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12553,6 +12741,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12615,6 +12804,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -12677,6 +12867,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13483,6 +13674,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13517,6 +13709,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13555,6 +13748,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13593,6 +13787,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13635,6 +13830,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13681,6 +13877,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13731,6 +13928,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13769,6 +13967,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13815,6 +14014,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13853,6 +14053,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13899,6 +14100,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -13957,6 +14159,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14011,6 +14214,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14069,6 +14273,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14123,6 +14328,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14177,6 +14383,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14247,6 +14454,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14281,6 +14489,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -14419,6 +14628,584 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: Some(
+                        InkRecognition {
+                            lines: [
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                ",",
+                                                "-",
+                                                ":",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "\\",
+                                                ".",
+                                                ",",
+                                                "`",
+                                                "'",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                ",",
+                                                "$",
+                                                "!",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ",",
+                                                "\\",
+                                                "`",
+                                                ")",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ",",
+                                                ".",
+                                                "/",
+                                                "!",
+                                                "'",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ", ,",
+                                                ". ,",
+                                                ", .",
+                                                "\"",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                ",",
+                                                "$",
+                                                "!",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ",",
+                                                "-",
+                                                ":",
+                                                ";",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "1",
+                                                "!",
+                                                "\"",
+                                                "(",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                "-",
+                                                ";",
+                                                ".",
+                                                "!",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ", :",
+                                                ". :",
+                                                "l :",
+                                                "| :",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "=",
+                                                ":",
+                                                ",",
+                                                ".",
+                                                "x",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "T",
+                                                "t",
+                                                "I",
+                                                "x",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "--",
+                                                "-",
+                                                "=",
+                                                "-n",
+                                                "..",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "\"",
+                                                "!",
+                                                ".",
+                                                ":",
+                                                "s",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                "-",
+                                                ",",
+                                                "r",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "-",
+                                                "_",
+                                                ".",
+                                                ",",
+                                                "1",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ";",
+                                                "\"",
+                                                ".",
+                                                ",",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "\\",
+                                                ",",
+                                                ")",
+                                                ":",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "--",
+                                                "-",
+                                                "=",
+                                                ".",
+                                                "..",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "\"",
+                                                ":",
+                                                "-",
+                                                ".",
+                                                ";",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ",",
+                                                ".",
+                                                ")",
+                                                ";",
+                                                "/",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "-",
+                                                "r",
+                                                ",",
+                                                "\\",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "-",
+                                                ",",
+                                                "`",
+                                                "r",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "-",
+                                                ".",
+                                                "_",
+                                                ",",
+                                                "1",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "-",
+                                                ".",
+                                                "_",
+                                                ",",
+                                                ")",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ";",
+                                                ".",
+                                                "\"",
+                                                "\\",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                "\"",
+                                                ";",
+                                                ",",
+                                                "!",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ".",
+                                                "i",
+                                                "!",
+                                                ",",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ":",
+                                                ".",
+                                                "-",
+                                                ",",
+                                                "'",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "!",
+                                                ",",
+                                                "?",
+                                                ":",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "!",
+                                                ".",
+                                                "\"",
+                                                ":",
+                                                "?",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ",",
+                                                ".",
+                                                "/",
+                                                ";",
+                                                "!",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ",",
+                                                ".",
+                                                ":",
+                                                "\"",
+                                                "\\",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "..",
+                                                "...",
+                                                "....",
+                                                ".....",
+                                                "I...",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                ",",
+                                                "-",
+                                                "N",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "----",
+                                                "---",
+                                                "--",
+                                                "-",
+                                                "=",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "--",
+                                                "-",
+                                                "=",
+                                                "..",
+                                                ".",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "-",
+                                                "_",
+                                                ",",
+                                                ":",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "/",
+                                                ",",
+                                                "$",
+                                                ")",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
                 },
             ],
         },
@@ -16067,6 +16854,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -16369,6 +17157,7 @@ Section {
                                             color: Some(
                                                 2159610,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -16575,6 +17364,7 @@ Section {
                                             color: Some(
                                                 2159610,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -16588,6 +17378,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -19339,6 +20130,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -19869,6 +20661,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -20299,6 +21092,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -20813,6 +21607,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -21371,6 +22166,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -21384,6 +22180,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -22513,6 +23310,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -22691,6 +23489,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -22801,6 +23600,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -22963,6 +23763,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23181,6 +23982,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23299,6 +24101,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23409,6 +24212,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23595,6 +24399,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23781,6 +24586,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -23794,6 +24600,124 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: Some(
+                        InkRecognition {
+                            lines: [
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "r",
+                                                "-",
+                                                ":",
+                                                ",",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ":",
+                                                ",",
+                                                "u",
+                                                "-",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ":",
+                                                ",",
+                                                "T",
+                                                "@",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ",",
+                                                ":",
+                                                "u",
+                                                "U",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                "T",
+                                                "r",
+                                                "F",
+                                                "t",
+                                                "i",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                ",",
+                                                ":",
+                                                "s",
+                                                "T",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                                InkRecognizedLine {
+                                    words: [
+                                        InkRecognizedWord {
+                                            alternatives: [
+                                                ".",
+                                                "s",
+                                                ",",
+                                                ":",
+                                                "S",
+                                            ],
+                                            language_id: Some(
+                                                1033,
+                                            ),
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ),
                 },
             ],
         },
@@ -25257,6 +26181,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -25351,6 +26276,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -25489,6 +26415,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -25771,6 +26698,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -25925,6 +26853,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -25987,6 +26916,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -26077,6 +27007,7 @@ Section {
                                             color: Some(
                                                 4210752,
                                             ),
+                                            recognized_word: None,
                                         },
                                     ],
                                 ),
@@ -26090,6 +27021,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

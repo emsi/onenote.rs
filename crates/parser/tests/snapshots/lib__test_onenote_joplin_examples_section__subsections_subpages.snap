@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: "parser.parse_section(Path::new(&*format!(\"tests/samples/joplin/{path}\"))).unwrap()"
+assertion_line: 90
+expression: parser.parse_section(tp(&full)).unwrap()
 ---
 Section {
     display_name: "Section",
@@ -622,6 +623,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{B3E4BC02-F975-4B98-9882-87F8EA2366F2}",
@@ -1135,6 +1137,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{F1C52C40-28D4-4F24-91C8-8953D684716F}",
@@ -1650,6 +1653,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },
@@ -2169,6 +2173,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{A74CC303-786A-421F-8E42-821AD413BCD7}",
@@ -2684,6 +2689,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{61FF840E-989A-4D18-A24B-63DEE50386C6}",
@@ -3199,6 +3205,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{7FA895BF-CB43-4FC0-93B3-CD2B06419453}",
@@ -3714,6 +3721,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{8B9413EF-7137-417E-BD89-9B9B73A1C3AF}",
@@ -4229,6 +4237,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
                 Page {
                     link_target_id: "{1244E84F-0A7F-4600-BCD5-A662F0F1F503}",
@@ -4744,6 +4753,7 @@ Section {
                             },
                         ),
                     ],
+                    ink_recognition: None,
                 },
             ],
         },

@@ -1,6 +1,7 @@
 ---
 source: crates/parser/tests/lib.rs
-expression: parser.parse_notebook(&path).unwrap()
+assertion_line: 36
+expression: parser.parse_notebook(path).unwrap()
 ---
 Notebook {
     entries: [
@@ -7463,6 +7464,7 @@ Notebook {
                                                         height: 35.0,
                                                         width: 35.0,
                                                         color: None,
+                                                        recognized_word: None,
                                                     },
                                                 ],
                                             ),
@@ -7609,6 +7611,7 @@ Notebook {
                                         },
                                     ),
                                 ],
+                                ink_recognition: None,
                             },
                         ],
                     },
@@ -8056,6 +8059,7 @@ Notebook {
                                     21.75,
                                 ),
                                 contents: [],
+                                ink_recognition: None,
                             },
                         ],
                     },
@@ -8465,6 +8469,7 @@ Notebook {
                                 author: None,
                                 height: None,
                                 contents: [],
+                                ink_recognition: None,
                             },
                         ],
                     },
@@ -8906,6 +8911,7 @@ Notebook {
                                     21.75,
                                 ),
                                 contents: [],
+                                ink_recognition: None,
                             },
                         ],
                     },
@@ -9365,6 +9371,7 @@ Notebook {
                                     21.75,
                                 ),
                                 contents: [],
+                                ink_recognition: None,
                             },
                         ],
                     },
