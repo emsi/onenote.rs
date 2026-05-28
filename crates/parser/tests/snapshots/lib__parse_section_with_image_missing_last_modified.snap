@@ -10918,6 +10918,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 101,
                                             alternatives: [
                                                 "Handwritin",
                                                 "Hand Writin",
@@ -10934,6 +10935,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 104,
                                             alternatives: [
                                                 "Marker",
                                                 "Mark er",
@@ -10950,6 +10952,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 107,
                                             alternatives: [
                                                 "PNG!",
                                                 "PNG t",
@@ -10966,6 +10969,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 110,
                                             alternatives: [
                                                 ".",
                                                 "7",
@@ -10982,6 +10986,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 113,
                                             alternatives: [
                                                 "J",
                                                 ",",
@@ -10998,6 +11003,7 @@ Section {
                                 InkRecognizedLine {
                                     words: [
                                         InkRecognizedWord {
+                                            id: 116,
                                             alternatives: [
                                                 ".",
                                                 "-",

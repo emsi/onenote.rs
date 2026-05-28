@@ -73,11 +73,30 @@ impl InkRecognizedLine {
 /// A single recognized word together with the recognizer's alternative guesses.
 #[derive(Clone, Debug)]
 pub struct InkRecognizedWord {
+    pub(crate) id: u32,
     pub(crate) alternatives: Vec<String>,
     pub(crate) language_id: Option<u16>,
 }
 
 impl InkRecognizedWord {
+    /// A stable identity for this recognized word, unique within the page's
+    /// recognition tree.
+    ///
+    /// Every clone of the same word — both the copy on
+    /// [`InkStroke::recognized_word`] and the copy in
+    /// [`Page::ink_recognition`] — carries the same value here, so two strokes
+    /// referring to the same word can be matched by `id()` even when two
+    /// different words happen to share the same text (e.g. "Hello" appearing
+    /// twice on the page). The value is the word node's ExGuid allocation
+    /// index within the recognition tree's namespace; it is opaque outside
+    /// that scope and **must not** be compared across pages.
+    ///
+    /// [`InkStroke::recognized_word`]: crate::contents::InkStroke::recognized_word
+    /// [`Page::ink_recognition`]: crate::page::Page::ink_recognition
+    pub fn id(&self) -> u32 {
+        self.id
+    }
+
     /// The recognizer's best guess for this word, if any.
     ///
     /// This is the first of [`alternatives`](InkRecognizedWord::alternatives).
@@ -165,6 +184,7 @@ fn collect_words(
         let word = recognized_text_node::parse_word(object)?;
         if !word.alternatives.is_empty() {
             let recognized = InkRecognizedWord {
+                id: id.value,
                 alternatives: word.alternatives,
                 language_id: word.language_id,
             };
