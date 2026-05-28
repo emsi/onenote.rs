@@ -30,6 +30,14 @@ non-fatal issues as warnings. See PR [#28].
 - Page creation and last-modified timestamps are now exposed on `Page`.
 - Support for the `hyperlink_protected` and `hidden` text-run properties, and
   for importing nested ink containers.
+- **Handwriting recognition (OCR)** output written by OneNote for Windows is
+  now parsed. `Page::ink_recognition()` exposes the recognized lines and words
+  — best guess plus alternative candidates and the recognizer's locale — in
+  the recognizer's reading order. `InkStroke::recognized_word()` attaches each
+  handwriting stroke to the word it belongs to, and a stable
+  `InkRecognizedWord::id()` deduplicates the recognized words encountered when
+  iterating strokes — a word spans multiple strokes, each of which surfaces
+  the same word with the same id. See [#6].
 - An `inspect` binary for dumping `.one` debug output.
 
 ### Changed
@@ -67,6 +75,7 @@ non-fatal issues as warnings. See PR [#28].
 - Restore MSRV (Rust 1.85) compilation.
 
 [#28]: https://github.com/msiemens/onenote.rs/pull/28
+[#6]: https://github.com/msiemens/onenote.rs/issues/6
 
 ## [1.1.1] - 2026-05-15
 

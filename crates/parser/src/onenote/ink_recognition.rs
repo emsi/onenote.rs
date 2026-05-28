@@ -82,14 +82,14 @@ impl InkRecognizedWord {
     /// A stable identity for this recognized word, unique within the page's
     /// recognition tree.
     ///
-    /// Every clone of the same word — both the copy on
-    /// [`InkStroke::recognized_word`] and the copy in
-    /// [`Page::ink_recognition`] — carries the same value here, so two strokes
-    /// referring to the same word can be matched by `id()` even when two
-    /// different words happen to share the same text (e.g. "Hello" appearing
-    /// twice on the page). The value is the word node's ExGuid allocation
-    /// index within the recognition tree's namespace; it is opaque outside
-    /// that scope and **must not** be compared across pages.
+    /// Each stroke that contributed to a recognized word exposes that word via
+    /// [`InkStroke::recognized_word`]. A word spans multiple strokes, so
+    /// iterating strokes encounters the same word once per contributing
+    /// stroke; `id()` is the deduplication key. Every stroke that belongs to
+    /// the same word reports an equal id, matching the id on the page-level
+    /// [`Page::ink_recognition`] entry for that word. The value is unique
+    /// within a single page's recognition tree; it is opaque otherwise and
+    /// **must not** be compared across pages.
     ///
     /// [`InkStroke::recognized_word`]: crate::contents::InkStroke::recognized_word
     /// [`Page::ink_recognition`]: crate::page::Page::ink_recognition
