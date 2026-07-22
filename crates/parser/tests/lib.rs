@@ -36,6 +36,19 @@ fn test_parse_notebook_new() {
     assert_debug_snapshot!(parser.parse_notebook(path).unwrap());
 }
 
+/// Regression test for parsing a `.onetoc2` exported from OneNote Desktop after copying pages
+/// between sections. Such files describe their table of contents using object revisions
+/// (`ObjectRevisionWithRefCountFNDX`, [MS-ONESTORE] 2.5.13) that inherit their GUID from a
+/// dependency revision's global ID table via `GlobalIdTableEntry2FNDX` ([MS-ONESTORE] 2.5.11).
+/// The parser used to reject those nodes outright. See issue #31.
+#[test]
+fn test_parse_notebook_object_revision() {
+    let path = tp("tests/samples/object-revision/Open Notebook.onetoc2");
+
+    let parser = Parser::new();
+    assert_debug_snapshot!(parser.parse_notebook(path).unwrap());
+}
+
 #[test]
 fn test_parse_section_with_image_missing_last_modified() {
     let path = tp("tests/samples/Schnelle Notizen.one");

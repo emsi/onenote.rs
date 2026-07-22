@@ -14,6 +14,16 @@ pub(crate) struct ObjectRevisionWithRefCountFNDX {
     c_ref: u8,
 }
 
+impl ObjectRevisionWithRefCountFNDX {
+    pub(crate) fn oid(&self) -> CompactId {
+        self.oid
+    }
+
+    pub(crate) fn property_set(&self) -> &ObjectPropSet {
+        &self.property_set
+    }
+}
+
 impl<'a> ParseWithRef<'a> for ObjectRevisionWithRefCountFNDX {
     fn parse(reader: Reader, data_ref: &FileNodeDataRef) -> crate::errors::Result<Self> {
         let property_set = read_property_set(reader, data_ref)?;
@@ -37,6 +47,16 @@ pub(crate) struct ObjectRevisionWithRefCount2FNDX {
     f_has_osid_references: bool,
     property_set: ObjectPropSet,
     c_ref: u32,
+}
+
+impl ObjectRevisionWithRefCount2FNDX {
+    pub(crate) fn oid(&self) -> CompactId {
+        self.oid
+    }
+
+    pub(crate) fn property_set(&self) -> &ObjectPropSet {
+        &self.property_set
+    }
 }
 
 impl<'a> ParseWithRef<'a> for ObjectRevisionWithRefCount2FNDX {

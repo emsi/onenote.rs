@@ -5,6 +5,7 @@ use crate::fsshttpb::data::exguid::ExGuid;
 use crate::onestore::desktop::file_node::FileNodeData;
 use crate::onestore::desktop::file_node::revision_manifest::RevisionManifestListStartFND;
 use crate::onestore::desktop::file_structure::FileNodeDataIterator;
+use crate::onestore::desktop::objects::id_mapping::IdMapping;
 use crate::onestore::desktop::objects::parse_context::ParseContext;
 use crate::onestore::desktop::objects::revision;
 
@@ -39,6 +40,11 @@ impl<'a> RevisionManifestList {
     ) -> Result<()> {
         let mut revisions_seen: HashSet<ExGuid> = HashSet::new();
 
+        // Merged global ID table of each revision in this list, keyed by revision id. Lets a
+        // dependent revision resolve `GlobalIdTableEntry2FNDX` references into the global ID table
+        // of its dependency revision ([MS-ONESTORE] 2.5.11).
+        let mut revision_id_maps: HashMap<ExGuid, IdMapping> = HashMap::new();
+
         let mut last_index = iterator.get_index();
         while let Some(current) = iterator.peek() {
             match current {
@@ -71,13 +77,19 @@ impl<'a> RevisionManifestList {
                     }
                 }
                 node => {
-                    let revision_id = revision::try_parse_into(iterator, context, roots, objects)?
-                        .ok_or_else(|| {
-                            onestore_parse_error!(
-                                "Unexpected node encountered in RevisionManifestList: {:?}",
-                                node
-                            )
-                        })?;
+                    let revision_id = revision::try_parse_into(
+                        iterator,
+                        context,
+                        roots,
+                        objects,
+                        &mut revision_id_maps,
+                    )?
+                    .ok_or_else(|| {
+                        onestore_parse_error!(
+                            "Unexpected node encountered in RevisionManifestList: {:?}",
+                            node
+                        )
+                    })?;
                     revisions_seen.insert(revision_id);
                 }
             }

@@ -63,7 +63,9 @@ impl ObjectGroupList {
             }
         };
 
-        let id_table = GlobalIdTable::try_parse(iterator)?
+        // Object groups only occur in `.one` files, whose global ID tables never use
+        // `GlobalIdTableEntry2FNDX` dependency-revision references, so no parent table is needed.
+        let id_table = GlobalIdTable::try_parse(iterator, None)?
             .ok_or_else(|| onestore_parse_error!("Global ID table not found in ObjectGroupList"))?;
         let parse_context = context.with_id_table(&id_table);
 

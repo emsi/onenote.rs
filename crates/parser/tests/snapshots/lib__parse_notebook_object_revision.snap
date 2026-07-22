@@ -1,0 +1,19 @@
+---
+source: crates/parser/tests/lib.rs
+assertion_line: 49
+expression: parser.parse_notebook(path).unwrap()
+---
+Notebook {
+    entries: [],
+    color: Some(
+        Color {
+            alpha: 255,
+            r: 155,
+            g: 187,
+            b: 210,
+        },
+    ),
+    report: Report {
+        warnings: [],
+    },
+}

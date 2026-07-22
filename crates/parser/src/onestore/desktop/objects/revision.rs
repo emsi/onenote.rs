@@ -8,8 +8,11 @@ use crate::fsshttpb::data::exguid::ExGuid;
 use crate::onestore::desktop::file_node::FileNodeData;
 use crate::onestore::desktop::file_structure::FileNodeDataIterator;
 use crate::onestore::desktop::objects::global_id_table::GlobalIdTable;
+use crate::onestore::desktop::objects::id_mapping::IdMapping;
 use crate::onestore::desktop::objects::object::Object;
 use crate::onestore::desktop::objects::parse_context::ParseContext;
+use crate::onestore::shared::compact_id::CompactId;
+use crate::onestore::shared::object_prop_set::ObjectPropSet;
 use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::convert::TryInto;
@@ -39,6 +42,7 @@ pub(crate) fn try_parse_into<'a>(
     context: &'a ParseContext<'a>,
     roots: &mut HashMap<RootRole, ExGuid>,
     objects: &mut HashMap<ExGuid, crate::onestore::Object>,
+    revision_id_maps: &mut HashMap<ExGuid, IdMapping>,
 ) -> Result<Option<ExGuid>> {
     let next = iterator.peek();
 
@@ -47,7 +51,13 @@ pub(crate) fn try_parse_into<'a>(
             FileNodeData::RevisionManifestStart4FND(_)
             | FileNodeData::RevisionManifestStart6FND(_)
             | FileNodeData::RevisionManifestStart7FND(_),
-        ) => Ok(Some(parse_into(iterator, context, roots, objects)?)),
+        ) => Ok(Some(parse_into(
+            iterator,
+            context,
+            roots,
+            objects,
+            revision_id_maps,
+        )?)),
         _ => Ok(None),
     }
 }
@@ -57,6 +67,7 @@ fn parse_into<'a>(
     context: &'a ParseContext<'a>,
     roots: &mut HashMap<RootRole, ExGuid>,
     objects: &mut HashMap<ExGuid, crate::onestore::Object>,
+    revision_id_maps: &mut HashMap<ExGuid, IdMapping>,
 ) -> Result<ExGuid> {
     macro_rules! iterator_skip_if_matching {
         ($iterator:expr, $match_condition:pat) => {
@@ -67,7 +78,7 @@ fn parse_into<'a>(
     }
 
     let start = iterator.next();
-    let (id, _parent_id): (ExGuid, ExGuid) = match start {
+    let (id, parent_id): (ExGuid, ExGuid) = match start {
         Some(FileNodeData::RevisionManifestStart4FND(data)) => {
             (data.rid.into(), data.rid_dependent.into())
         }
@@ -84,6 +95,15 @@ fn parse_into<'a>(
         }
     };
 
+    // The global ID table of the revision this one depends on. `ridDependent` always refers to an
+    // earlier revision manifest in the list ([MS-ONESTORE] 2.5.6), so its merged mapping has
+    // already been recorded. It is needed to resolve `GlobalIdTableEntry2FNDX` references.
+    let parent_id_map = revision_id_maps.get(&parent_id).cloned();
+
+    // Accumulates the entries of every global ID table in this revision so that a later dependent
+    // revision can inherit from them.
+    let mut revision_id_map = IdMapping::new();
+
     let mut global_id_tables: Vec<GlobalIdTable> = Vec::new();
 
     let mut last_index = iterator.get_index();
@@ -97,7 +117,11 @@ fn parse_into<'a>(
                 iterator,
                 Some(FileNodeData::ObjectInfoDependencyOverridesFND(_))
             );
-        } else if let Some(global_id_table) = GlobalIdTable::try_parse(iterator)? {
+        } else if let Some(global_id_table) =
+            GlobalIdTable::try_parse(iterator, parent_id_map.as_ref())?
+        {
+            revision_id_map.merge(&global_id_table.id_map);
+
             // In .onetoc2 files, objects can directly follow GlobalIdTables:
             let parse_context = context.with_id_table(&global_id_table);
             iterator_skip_if_matching!(
@@ -105,9 +129,39 @@ fn parse_into<'a>(
                 Some(FileNodeData::DataSignatureGroupDefinitionFND(_))
             );
 
-            while let Some(object) = Object::try_parse(iterator, &parse_context)? {
-                let id = global_id_table.resolve_id(&object.compact_id)?;
-                objects.insert(id, object.data);
+            loop {
+                if let Some(object) = Object::try_parse(iterator, &parse_context)? {
+                    let id = global_id_table.resolve_id(&object.compact_id)?;
+                    objects.insert(id, object.data);
+                } else {
+                    // Object revisions ([MS-ONESTORE] 2.5.13/2.5.14) revise an
+                    // object that was declared by an earlier revision. They carry
+                    // a new property set but not a JCID, since the object's type
+                    // MUST NOT change when it is revised ([MS-ONESTORE] 2.1.5).
+                    let revision = match iterator.peek() {
+                        Some(FileNodeData::ObjectRevisionWithRefCountFNDX(rev)) => {
+                            Some((rev.oid(), rev.property_set().clone()))
+                        }
+                        Some(FileNodeData::ObjectRevisionWithRefCount2FNDX(rev)) => {
+                            Some((rev.oid(), rev.property_set().clone()))
+                        }
+                        _ => None,
+                    };
+
+                    match revision {
+                        Some((oid, props)) => {
+                            iterator.next();
+                            apply_object_revision(
+                                &oid,
+                                props,
+                                &global_id_table,
+                                &parse_context,
+                                objects,
+                            )?;
+                        }
+                        None => break,
+                    }
+                }
 
                 // Skip the reference counting object, if present
                 iterator_skip_if_matching!(
@@ -164,5 +218,43 @@ fn parse_into<'a>(
         last_index = current_index;
     }
 
+    revision_id_maps.insert(id, revision_id_map);
+
     Ok(id)
+}
+
+/// Applies an object revision ([MS-ONESTORE] 2.5.13/2.5.14) to the object map.
+///
+/// A revision node supplies a fresh property set for an object that was declared
+/// by an earlier revision but does not restate the object's JCID, because the
+/// type of an object MUST NOT change when it is revised ([MS-ONESTORE] 2.1.5).
+/// The dependency (declaring) revision always precedes the revising one in the
+/// file, since `RevisionManifestStart*.ridDependent` points to an earlier
+/// revision manifest, so the original declaration's JCID is already known.
+fn apply_object_revision(
+    oid: &CompactId,
+    props: ObjectPropSet,
+    global_id_table: &GlobalIdTable,
+    parse_context: &ParseContext,
+    objects: &mut HashMap<ExGuid, crate::onestore::Object>,
+) -> Result<()> {
+    let id = global_id_table.resolve_id(oid)?;
+
+    let Some(jc_id) = objects.get(&id).map(|object| object.jc_id) else {
+        log::warn!("Object revision {id:?} has no prior declaration; skipping");
+        return Ok(());
+    };
+
+    objects.insert(
+        id,
+        crate::onestore::Object {
+            context_id: parse_context.context_id,
+            jc_id,
+            props,
+            file_data: None,
+            mapping: parse_context.id_map.clone(),
+        },
+    );
+
+    Ok(())
 }

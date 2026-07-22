@@ -34,4 +34,19 @@ impl IdMapping {
     pub(crate) fn add_mapping(&mut self, guid_index: u32, guid: Guid) {
         self.0.insert(guid_index, guid);
     }
+
+    /// Looks up the raw GUID stored at a given index, if any.
+    ///
+    /// Used to resolve [`GlobalIdTableEntry2FNDX`] references, which inherit a
+    /// GUID from a dependency revision's global identification table.
+    ///
+    /// [`GlobalIdTableEntry2FNDX`]: crate::onestore::desktop::file_node::FileNodeData::GlobalIdTableEntry2FNDX
+    pub(crate) fn guid_for_index(&self, guid_index: u32) -> Option<Guid> {
+        self.0.get(&guid_index).copied()
+    }
+
+    /// Merges all entries from another mapping into this one.
+    pub(crate) fn merge(&mut self, other: &IdMapping) {
+        self.0.extend(other.0.iter().map(|(k, v)| (*k, *v)));
+    }
 }

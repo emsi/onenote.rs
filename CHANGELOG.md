@@ -73,8 +73,16 @@ non-fatal issues as warnings. See PR [#28].
   is still hard-rejected, and `NativeFs` reads go through the Windows verbatim
   (`\\?\`) namespace.
 - Restore MSRV (Rust 1.85) compilation.
+- Parse desktop `.onetoc2` files that describe their table of contents using
+  object revisions (`ObjectRevisionWithRefCountFNDX`/`ObjectRevisionWithRefCount2FNDX`),
+  which OneNote Desktop writes after copying pages between sections. Such
+  revisions inherit their object's JCID from the declaration in a dependency
+  revision, and their global ID table entries (`GlobalIdTableEntry2FNDX`) are now
+  resolved against that dependency revision's table instead of being ignored. See
+  [#31].
 
 [#28]: https://github.com/msiemens/onenote.rs/pull/28
+[#31]: https://github.com/msiemens/onenote.rs/issues/31
 [#6]: https://github.com/msiemens/onenote.rs/issues/6
 
 ## [1.1.1] - 2026-05-15
