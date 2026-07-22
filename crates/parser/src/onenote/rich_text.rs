@@ -414,9 +414,9 @@ pub(crate) fn parse_rich_text(
 
     // Parse the base paragraph style
     let paragraph_style = if let Some(paragraph_style_id) = data.paragraph_style {
-        let paragraph_style_object = space
-            .get_object(paragraph_style_id)
-            .ok_or_else(|| ErrorKind::MalformedOneNoteData("paragraph styling is missing".into()))?;
+        let paragraph_style_object = space.get_object(paragraph_style_id).ok_or_else(|| {
+            ErrorKind::MalformedOneNoteData("paragraph styling is missing".into())
+        })?;
         let paragraph_style_data = paragraph_style_object::parse(paragraph_style_object, ctx)?;
         parse_style(paragraph_style_data)
     } else {
