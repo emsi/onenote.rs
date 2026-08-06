@@ -39,6 +39,15 @@ non-fatal issues as warnings. See PR [#28].
   iterating strokes — a word spans multiple strokes, each of which surfaces
   the same word with the same id. See [#6].
 - An `inspect` binary for dumping `.one` debug output.
+- **Structured rich-text hyperlinks**: `TextHyperlink` exposes each link's
+  target URL together with its UTF-16 source range in the text, reconstructed
+  from OneNote's hidden `HYPERLINK` markers and hyperlink-styled runs — so
+  consumers can render clickable links without duplicating parser-internal
+  conventions. See PR [#42].
+- `Image::data_status()` and `EmbeddedFile::data_status()` expose a
+  non-exhaustive `FileDataStatus`, so consumers can distinguish an attachment
+  whose payload is invalid or missing from a legitimate zero-byte file. See
+  PR [#36].
 
 ### Changed
 
@@ -56,8 +65,28 @@ non-fatal issues as warnings. See PR [#28].
 
 ### Fixed
 
-- Continue parsing past sections and attachments that fail, importing invalid
-  attachments as empty files instead of aborting the whole notebook.
+- Continue parsing past sections and attachments that fail instead of aborting
+  the whole notebook. Attachments with an explicitly invalid (`<invfdo>`) or
+  missing payload are preserved with a `FileDataStatus` and a page-scoped
+  warning; sections without a file-data store no longer fail before the
+  reference can be classified. See PR [#36], issue [#35].
+- Desktop revision materialization: revisions are now kept as immutable deltas
+  linked to their declared dependency, and only the latest default-context
+  role-1 dependency chain is materialized. Pages no longer expose stale or
+  incomplete content mixed in from unrelated coauthor or history branches.
+  See PR [#41].
+- Accept outline elements and outline groups without a creation or
+  last-modified timestamp, as written by some OneNote Desktop backups: the
+  outline tree is preserved and a page-scoped warning is reported instead of
+  rejecting the whole section. See PR [#37], issue [#33].
+- Accept `PageSize` and `ParagraphAlignment` values encoded with wider integer
+  widths (`U16`/`U32`/`U64`), as written by OneNote Desktop backups. Values
+  above `u8::MAX` are still rejected rather than truncated. See PR [#38],
+  issue [#34].
+- Preserve the latest notebook TOC ordering when a `.onetoc2` object retains
+  multiple ordering snapshots: repeated filenames resolve to their most recent
+  reference before sorting, so sections no longer appear twice and section
+  groups no longer move among ordinary sections. See PR [#40], issue [#5].
 - Ink: allow negative coordinates in bounding boxes, skip ink when the data
   object is missing, read `InkScalingY` from the correct property type, and warn
   (instead of erroring) when an ink data node has no strokes.
@@ -84,6 +113,16 @@ non-fatal issues as warnings. See PR [#28].
 [#28]: https://github.com/msiemens/onenote.rs/pull/28
 [#31]: https://github.com/msiemens/onenote.rs/issues/31
 [#6]: https://github.com/msiemens/onenote.rs/issues/6
+[#5]: https://github.com/msiemens/onenote.rs/issues/5
+[#33]: https://github.com/msiemens/onenote.rs/issues/33
+[#34]: https://github.com/msiemens/onenote.rs/issues/34
+[#35]: https://github.com/msiemens/onenote.rs/issues/35
+[#36]: https://github.com/msiemens/onenote.rs/pull/36
+[#37]: https://github.com/msiemens/onenote.rs/pull/37
+[#38]: https://github.com/msiemens/onenote.rs/pull/38
+[#40]: https://github.com/msiemens/onenote.rs/pull/40
+[#41]: https://github.com/msiemens/onenote.rs/pull/41
+[#42]: https://github.com/msiemens/onenote.rs/pull/42
 
 ## [1.1.1] - 2026-05-15
 
