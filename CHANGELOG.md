@@ -14,6 +14,11 @@ non-fatal issues as warnings. See PR [#28].
 
 ### Security
 
+- No longer pre-allocate `Vec`s from attacker-controlled element counts when
+  parsing property values and object streams. A crafted file of a few
+  kilobytes could previously trigger an allocation attempt of up to ~192 GB,
+  aborting the consuming process. Collections now grow as elements actually
+  parse, keeping allocation proportional to the input size.
 - Documented that `Image::image_filename()` returns attacker-controlled data
   that must be sanitised before use in filesystem paths, matching the existing
   warning on `EmbeddedFile::filename()`.

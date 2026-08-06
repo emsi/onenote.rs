@@ -40,9 +40,7 @@ impl ObjectPropSet {
 impl ObjectPropSet {
     pub(crate) fn parse(reader: Reader) -> Result<ObjectPropSet> {
         let header = ObjectStreamHeader::parse(reader)?;
-        let object_ids = (0..header.count)
-            .map(|_| CompactId::parse(reader))
-            .collect::<Result<Vec<_>>>()?;
+        let object_ids = Self::parse_compact_ids(reader, header.count)?;
 
         let mut object_space_ids = vec![];
         let mut context_ids = vec![];
@@ -50,15 +48,11 @@ impl ObjectPropSet {
         if !header.osid_stream_not_present {
             let header = ObjectStreamHeader::parse(reader)?;
 
-            object_space_ids = (0..header.count)
-                .map(|_| CompactId::parse(reader))
-                .collect::<Result<Vec<_>>>()?;
+            object_space_ids = Self::parse_compact_ids(reader, header.count)?;
 
             if header.extended_streams_present {
                 let header = ObjectStreamHeader::parse(reader)?;
-                context_ids = (0..header.count)
-                    .map(|_| CompactId::parse(reader))
-                    .collect::<Result<Vec<_>>>()?;
+                context_ids = Self::parse_compact_ids(reader, header.count)?;
             };
         }
 
@@ -70,6 +64,16 @@ impl ObjectPropSet {
             context_ids,
             properties,
         })
+    }
+
+    /// `count` comes straight from the file; grow the `Vec` as elements
+    /// actually parse instead of pre-allocating an attacker-controlled count.
+    fn parse_compact_ids(reader: Reader, count: u32) -> Result<Vec<CompactId>> {
+        let mut ids = Vec::new();
+        for _ in 0..count {
+            ids.push(CompactId::parse(reader)?);
+        }
+        Ok(ids)
     }
 
     pub(crate) fn get(&self, prop_type: PropertyType) -> Option<&PropertyValue> {

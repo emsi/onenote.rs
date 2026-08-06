@@ -174,9 +174,13 @@ impl PropertyValue {
 
         // Parse property values
 
-        let values = (0..size)
-            .map(|_| PropertySet::parse(reader))
-            .collect::<Result<_>>()?;
+        // `size` comes straight from the file; grow the `Vec` as elements
+        // actually parse instead of pre-allocating an attacker-controlled
+        // count.
+        let mut values = Vec::new();
+        for _ in 0..size {
+            values.push(PropertySet::parse(reader)?);
+        }
 
         Ok(PropertyValue::PropertyValues(id, values))
     }
