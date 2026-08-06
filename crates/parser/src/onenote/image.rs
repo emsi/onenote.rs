@@ -132,6 +132,18 @@ impl Image {
     ///
     /// See [\[MS-ONE\] 2.2.75].
     ///
+    /// # Untrusted input
+    ///
+    /// This string is metadata from the parsed OneNote file and is
+    /// fully controlled by whoever authored that file. It may contain
+    /// path separators (`/`, `\`), parent-directory components (`..`),
+    /// NUL bytes, Windows reserved device names (`CON`, `COM1`, ...),
+    /// extremely long sequences, or arbitrary Unicode. **Consumers
+    /// that use this value as part of a write path on disk must
+    /// sanitise it themselves** — typically with `sanitize_filename`
+    /// or equivalent. Passing it unmodified to `std::fs::File::create`
+    /// is a path-traversal / device-handle vulnerability.
+    ///
     /// [\[MS-ONE\] 2.2.75]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/91f543ab-dfe5-47ce-9c61-a49680c726bb
     pub fn image_filename(&self) -> Option<&str> {
         self.image_filename.as_deref()

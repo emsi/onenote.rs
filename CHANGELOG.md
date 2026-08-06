@@ -12,6 +12,12 @@ OneDrive downloads. This release also introduces a pluggable `FileSystem`
 abstraction, streams attachments lazily instead of buffering them, and collects
 non-fatal issues as warnings. See PR [#28].
 
+### Security
+
+- Documented that `Image::image_filename()` returns attacker-controlled data
+  that must be sanitised before use in filesystem paths, matching the existing
+  warning on `EmbeddedFile::filename()`.
+
 ### Added
 
 - **OneNote desktop file parsing** (2016, 2019, LTSC, …) for `.one`/`.onetoc2`
