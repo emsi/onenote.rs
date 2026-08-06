@@ -43,7 +43,7 @@ Add the dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-onenote_parser = "1.1"
+onenote_parser = "2.0"
 ```
 
 ```rust
@@ -74,7 +74,7 @@ is exposed through `std::error::Error::backtrace()`.
 
 ```toml
 [dependencies]
-onenote_parser = { version = "1.1", features = ["backtrace"] }
+onenote_parser = { version = "2.0", features = ["backtrace"] }
 ```
 
 ## Stability

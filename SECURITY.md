@@ -6,8 +6,8 @@ The following versions of `onenote_parser` are currently supported with security
 
 | Version           | Supported |
 |-------------------|-----------|
-| 1.x (latest only) | ✅         |
-| < 1.0             | ❌         |
+| 2.x (latest only) | ✅         |
+| < 2.0             | ❌         |
 
 ## Reporting a Vulnerability
 

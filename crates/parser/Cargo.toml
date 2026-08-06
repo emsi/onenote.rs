@@ -4,6 +4,9 @@ readme = "../../README.md"
 description = "A parser for Microsoft OneNote® files"
 keywords = ["onenote", "parser"]
 categories = ["parser-implementations"]
+# Test fixtures and benches reference ~270 MB of sample files; shipping them
+# would blow past the crates.io package size limit.
+exclude = ["/tests", "/benches"]
 
 version.workspace = true
 authors.workspace = true
@@ -11,6 +14,10 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
+
+# docs.rs builds on nightly, so the backtrace feature is available there.
+[package.metadata.docs.rs]
+all-features = true
 
 [features]
 default = ["native-fs"]
