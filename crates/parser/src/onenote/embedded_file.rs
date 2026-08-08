@@ -4,19 +4,22 @@ use crate::one::property::file_type::FileType;
 use crate::one::property_set::{embedded_file_container, embedded_file_node};
 use crate::onenote::ParserContext;
 use crate::onenote::note_tag::{NoteTag, parse_note_tags};
+use crate::onenote::picture::Picture;
 use crate::onestore::ObjectSpace;
 use crate::onestore::shared::file_blob::{FileBlob, FileDataStatus};
+use std::fmt;
 
 /// An embedded file.
 ///
 /// See [\[MS-ONE\] 2.2.32].
 ///
 /// [\[MS-ONE\] 2.2.32]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/a665b5ad-ff40-4c0c-9e42-4b707254dc3f
-#[derive(Clone, PartialEq, Debug)]
+#[derive(Clone, PartialEq)]
 pub struct EmbeddedFile {
     pub(crate) filename: String,
     pub(crate) file_type: FileType,
     pub(crate) data: FileBlob,
+    pub(crate) icon: Option<Picture>,
 
     pub(crate) layout_max_width: Option<f32>,
     pub(crate) layout_max_height: Option<f32>,
@@ -25,6 +28,24 @@ pub struct EmbeddedFile {
     pub(crate) offset_vertical: Option<f32>,
 
     pub(crate) note_tags: Vec<NoteTag>,
+}
+
+impl fmt::Debug for EmbeddedFile {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut file = f.debug_struct("EmbeddedFile");
+        file.field("filename", &self.filename)
+            .field("file_type", &self.file_type)
+            .field("data", &self.data);
+        if let Some(icon) = &self.icon {
+            file.field("icon", icon);
+        }
+        file.field("layout_max_width", &self.layout_max_width)
+            .field("layout_max_height", &self.layout_max_height)
+            .field("offset_horizontal", &self.offset_horizontal)
+            .field("offset_vertical", &self.offset_vertical)
+            .field("note_tags", &self.note_tags)
+            .finish()
+    }
 }
 
 impl EmbeddedFile {
@@ -86,6 +107,11 @@ impl EmbeddedFile {
         self.data.status()
     }
 
+    /// The icon stored by OneNote for this embedded file, when available.
+    pub fn icon(&self) -> Option<&Picture> {
+        self.icon.as_ref()
+    }
+
     /// The max width of the embedded file's icon in half-inch increments.
     ///
     /// See [\[MS-ONE\] 2.3.21].
@@ -138,12 +164,31 @@ pub(crate) fn parse_embedded_file(
         .ok_or_else(|| ErrorKind::MalformedOneNoteData("embedded file is missing".into()))?;
     let node = embedded_file_node::parse(node_object)?;
 
+    let icon = node.picture_container.and_then(|container_id| {
+        let result = space
+            .get_object(container_id)
+            .ok_or_else(|| {
+                ErrorKind::MalformedOneNoteData("embedded file icon container is missing".into())
+                    .into()
+            })
+            .and_then(crate::one::property_set::picture_container::parse);
+
+        match result {
+            Ok(data) => Some(Picture::new(data.data, data.extension)),
+            Err(err) => {
+                warn!(ctx, "could not parse embedded file icon: {err}");
+                None
+            }
+        }
+    });
+
     // Helper function to create a fallback for corrupted files
     let create_fallback = |filename: String| -> Result<EmbeddedFile> {
         Ok(EmbeddedFile {
             filename,
             file_type: node.file_type,
             data: FileBlob::missing(),
+            icon: icon.clone(),
             layout_max_width: node.layout_max_width,
             layout_max_height: node.layout_max_height,
             offset_horizontal: node.offset_from_parent_horiz,
@@ -184,6 +229,7 @@ pub(crate) fn parse_embedded_file(
         filename: embedded_filename,
         file_type: node.file_type,
         data: container.into_value(),
+        icon,
         layout_max_width: node.layout_max_width,
         layout_max_height: node.layout_max_height,
         offset_horizontal: node.offset_from_parent_horiz,
