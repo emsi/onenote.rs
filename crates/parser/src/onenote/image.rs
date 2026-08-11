@@ -8,14 +8,13 @@ use crate::onenote::note_tag::{NoteTag, parse_note_tags};
 use crate::onenote::picture::Picture;
 use crate::onestore::ObjectSpace;
 use crate::onestore::shared::file_blob::{FileBlob, FileDataStatus};
-use std::fmt;
 
 /// An embedded image.
 ///
 /// See [\[MS-ONE\] 2.2.24].
 ///
 /// [\[MS-ONE\] 2.2.24]: https://docs.microsoft.com/en-us/openspecs/office_file_formats/ms-one/b7bb4d1a-2a57-4819-9eb4-5a2ce8cf210f
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub struct Image {
     pub(crate) data: Option<FileBlob>,
     pub(crate) extension: Option<String>,
@@ -237,40 +236,6 @@ impl Image {
     /// Embedded iframes for this image.
     pub fn embeds(&self) -> &[IFrame] {
         &self.embeds
-    }
-}
-
-impl fmt::Debug for Image {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut image = f.debug_struct("Image");
-        image
-            .field("data", &self.data)
-            .field("extension", &self.extension);
-        if let Some(web_picture) = &self.web_picture {
-            image.field("web_picture", web_picture);
-        }
-        image
-            .field("layout_max_width", &self.layout_max_width)
-            .field("layout_max_height", &self.layout_max_height)
-            .field("alt_text", &self.alt_text)
-            .field(
-                "layout_alignment_in_parent",
-                &self.layout_alignment_in_parent,
-            )
-            .field("layout_alignment_self", &self.layout_alignment_self)
-            .field("image_filename", &self.image_filename)
-            .field("displayed_page_number", &self.displayed_page_number)
-            .field("text", &self.text)
-            .field("text_language_code", &self.text_language_code)
-            .field("picture_width", &self.picture_width)
-            .field("picture_height", &self.picture_height)
-            .field("hyperlink_url", &self.hyperlink_url)
-            .field("offset_horizontal", &self.offset_horizontal)
-            .field("offset_vertical", &self.offset_vertical)
-            .field("is_background", &self.is_background)
-            .field("note_tags", &self.note_tags)
-            .field("embeds", &self.embeds)
-            .finish()
     }
 }
 
