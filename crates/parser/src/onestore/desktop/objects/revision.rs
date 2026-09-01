@@ -203,6 +203,12 @@ fn parse<'a>(
             roots.insert(object_reference.root_role.try_into()?, oid_root);
         } else if let FileNodeData::DataSignatureGroupDefinitionFND(_) = current {
             iterator.next();
+        } else if let FileNodeData::ObjectInfoDependencyOverridesFND(_) = current {
+            // Dependency overrides are used for reference counting only and do
+            // not affect the materialized object state. Newer OneNote versions
+            // can emit them directly in the revision's file node list, so skip
+            // them here instead of failing the whole revision.
+            iterator.next();
         } else {
             return Err(
                 onestore_parse_error!("Unexpected node (parsing Revision): {:?}", current).into(),
