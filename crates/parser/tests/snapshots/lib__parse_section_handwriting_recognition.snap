@@ -1,9 +1,11 @@
 ---
 source: crates/parser/tests/lib.rs
-assertion_line: 62
 expression: parser.parse_section(path).unwrap()
 ---
 Section {
+    file_identity: FileIdentity(
+        Guid {3EF70C2A-1787-854A-A0B4-EF192956C142},
+    ),
     display_name: "handwriting_recognition",
     page_series: [
         PageSeries {
@@ -5928,6 +5930,7 @@ Section {
                                                             FileBlob [ ffd8ffe000104a46494600010101004800480000ffdb00430003020203020203 ... f43c7f77dde2727c5dff0041dbc3cd9cfe99cdce2f4ce2f57c4feafb3e0fffd9; 88 KiB ],
                                                         ),
                                                         extension: None,
+                                                        web_picture: None,
                                                         layout_max_width: Some(
                                                             12.5,
                                                         ),
